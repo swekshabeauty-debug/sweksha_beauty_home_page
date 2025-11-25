@@ -41,8 +41,14 @@ export async function POST(request: Request) {
         };
 
         // Add to beginning of list
-        const updatedBookings = [newBooking, ...bookings];
-        await saveBookings(updatedBookings);
+        // Try to save to file (works locally, might fail on Vercel)
+        try {
+            const updatedBookings = [newBooking, ...bookings];
+            await saveBookings(updatedBookings);
+        } catch (fileError) {
+            console.warn('⚠️ Could not save booking to file (expected on Vercel):', fileError);
+            // Continue execution to send email
+        }
 
         // Send email notification to admin
         try {
