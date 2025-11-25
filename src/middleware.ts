@@ -16,8 +16,11 @@ export async function middleware(req: NextRequest) {
         return NextResponse.next();
     }
 
-    // 2. Global Lock: If no token, redirect to login
-    if (!token) {
+    // 2. Protected Routes: Only redirect to login for specific paths
+    const protectedPaths = ['/admin', '/booking'];
+    const isProtected = protectedPaths.some(path => pathname.startsWith(path));
+
+    if (isProtected && !token) {
         const url = new URL('/login', req.url);
         url.searchParams.set('callbackUrl', encodeURI(req.url));
         return NextResponse.redirect(url);
@@ -26,7 +29,7 @@ export async function middleware(req: NextRequest) {
     // 3. Admin Lock: If accessing /admin, check email
     if (pathname.startsWith('/admin')) {
         const allowedAdmins = ['swekshabeauty@gmail.com', 'jayant.kgp81@gmail.com'];
-        const userEmail = token.email || '';
+        const userEmail = token?.email || '';
 
         if (!allowedAdmins.includes(userEmail)) {
             // Redirect to home with error or access denied page
