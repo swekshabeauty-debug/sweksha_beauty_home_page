@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
     }
 
     // 2. Protected Routes: Only redirect to login for specific paths
-    const protectedPaths = ['/admin', '/booking'];
+    const protectedPaths = ['/admin'];
     const isProtected = protectedPaths.some(path => pathname.startsWith(path));
 
     if (isProtected && !token) {
