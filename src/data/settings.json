@@ -1,0 +1,24 @@
+{
+    "admin": {
+        "username": "admin",
+        "passwordHash": "$2b$10$UVSxLV0QB78n5tDAUxAbguv/SmXOf0nbeRss4M1viwNaSkh12Jnki"
+    },
+    "contact": {
+        "phone": "+91 9065347011",
+        "whatsapp": "+91 9065347011",
+        "email": "swekshabeauty@gmail.com",
+        "address": "Main Market, Haveli Kharagpur, Munger, Bihar 811213, India",
+        "mapsLink": "https://share.google/tUJHz3CbGBlVYsa25",
+        "instagram": "sweksha_beauty"
+    },
+    "hours": {
+        "monday": "10:00 AM – 7:30 PM",
+        "tuesday": "10:00 AM – 7:30 PM",
+        "wednesday": "10:00 AM – 7:30 PM",
+        "thursday": "10:00 AM – 7:30 PM",
+        "friday": "10:00 AM – 7:30 PM",
+        "saturday": "10:00 AM – 7:30 PM",
+        "sunday": "10:00 AM – 7:30 PM"
+    },
+    "paymentNote": "Payment accepted in parlour by Cash or UPI."
+}

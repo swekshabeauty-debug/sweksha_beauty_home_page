@@ -1,0 +1,170 @@
+[
+  {
+    "id": "cat_waxing",
+    "name": "Waxing & Grooming",
+    "services": [
+      {
+        "id": "wax_full_body",
+        "name": "Full Body Waxing",
+        "price": "1500",
+        "duration": "60 min",
+        "description": "Complete body waxing for smooth skin.",
+        "active": true,
+        "image": "/uploads/b0f6c568-dfca-4505-bca0-d6a5589c1e9a.jpg"
+      },
+      {
+        "id": "wax_arms_full",
+        "name": "Full Arms Waxing",
+        "price": "300",
+        "duration": "20 min",
+        "description": "Full arms waxing.",
+        "active": true
+      },
+      {
+        "id": "wax_legs_full",
+        "name": "Full Legs Waxing",
+        "price": "500",
+        "duration": "30 min",
+        "description": "Full legs waxing.",
+        "active": true
+      },
+      {
+        "id": "wax_underarms",
+        "name": "Underarms Waxing",
+        "price": "100",
+        "duration": "10 min",
+        "description": "Underarms waxing.",
+        "active": true,
+        "image": "/uploads/dd3dd8ca-d62c-4785-9cfc-531212cfc5c1.jpg"
+      },
+      {
+        "id": "thread_eyebrows",
+        "name": "Eyebrow Threading",
+        "price": "50",
+        "duration": "10 min",
+        "description": "Shape your eyebrows perfectly.",
+        "active": true
+      }
+    ]
+  },
+  {
+    "id": "cat_facials",
+    "name": "Facials & Cleanups",
+    "services": [
+      {
+        "id": "face_detan",
+        "name": "Detan Cleanup",
+        "price": "800",
+        "duration": "45 min",
+        "description": "Removes tan and restores glow.",
+        "active": true
+      },
+      {
+        "id": "face_glow",
+        "name": "Glow Facial",
+        "price": "1200",
+        "duration": "60 min",
+        "description": "Instant glow for special occasions.",
+        "active": true
+      },
+      {
+        "id": "face_hydra",
+        "name": "Hydrating Facial",
+        "price": "1500",
+        "duration": "60 min",
+        "description": "Deep hydration for dry skin.",
+        "active": true
+      },
+      {
+        "id": "face_acne",
+        "name": "Anti-Acne Facial",
+        "price": "1400",
+        "duration": "60 min",
+        "description": "Treatment for acne-prone skin.",
+        "active": true
+      }
+    ]
+  },
+  {
+    "id": "cat_hair",
+    "name": "Hair Services",
+    "services": [
+      {
+        "id": "hair_cut",
+        "name": "Haircut & Trim",
+        "price": "300",
+        "duration": "30 min",
+        "description": "Stylish haircut by experts.",
+        "active": true
+      },
+      {
+        "id": "hair_spa",
+        "name": "Hair Spa",
+        "price": "1000",
+        "duration": "60 min",
+        "description": "Relaxing hair spa for healthy hair.",
+        "active": true
+      },
+      {
+        "id": "hair_smooth",
+        "name": "Hair Smoothing",
+        "price": "4000",
+        "duration": "180 min",
+        "description": "Silky smooth straight hair.",
+        "active": true
+      },
+      {
+        "id": "hair_color",
+        "name": "Global Hair Color",
+        "price": "3000",
+        "duration": "120 min",
+        "description": "Ammonia-free hair color.",
+        "active": true
+      }
+    ]
+  },
+  {
+    "id": "cat_hands_feet",
+    "name": "Hands & Feet Care",
+    "services": [
+      {
+        "id": "manicure",
+        "name": "Manicure",
+        "price": "500",
+        "duration": "45 min",
+        "description": "Complete hand care.",
+        "active": true
+      },
+      {
+        "id": "pedicure",
+        "name": "Pedicure",
+        "price": "600",
+        "duration": "45 min",
+        "description": "Relaxing foot care.",
+        "active": true
+      }
+    ]
+  },
+  {
+    "id": "cat_makeup",
+    "name": "Makeup & Special Occasions",
+    "services": [
+      {
+        "id": "makeup_party",
+        "name": "Party Makeup",
+        "price": "2500",
+        "duration": "90 min",
+        "description": "Glamorous look for parties.",
+        "active": true
+      },
+      {
+        "id": "makeup_bridal",
+        "name": "Bridal Makeup Package",
+        "price": "15000",
+        "duration": "180 min",
+        "description": "Complete bridal makeover including trial.",
+        "active": true
+      }
+    ]
+  }
+]

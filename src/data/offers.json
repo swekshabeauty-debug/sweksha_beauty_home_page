@@ -1,0 +1,17 @@
+[
+    {
+        "id": "offer_winter_wax",
+        "title": "Winter Waxing Offer – 20% Off",
+        "details": "Flat 20% Off on all Waxing Services. Limited time only.",
+        "validity": "31st Dec 2025",
+        "active": true,
+        "type": "banner"
+    },
+    {
+        "id": "offer_welcome",
+        "title": "Welcome Offer",
+        "details": "Get 10% off on your first visit!",
+        "active": true,
+        "type": "popup"
+    }
+]

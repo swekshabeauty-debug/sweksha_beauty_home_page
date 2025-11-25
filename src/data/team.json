@@ -1,0 +1,18 @@
+[
+  {
+    "id": "team_owner",
+    "name": "Sweksha Singh",
+    "role": "Owner & Senior Beautician",
+    "bio": "Expert in bridal makeup and skin care with 10+ years of experience.",
+    "image": "",
+    "active": true
+  },
+  {
+    "id": "team_staff1",
+    "name": "Priya",
+    "role": "Hair Specialist",
+    "bio": "Specialist in hair cutting, coloring and smoothing treatments.",
+    "image": "",
+    "active": true
+  }
+]

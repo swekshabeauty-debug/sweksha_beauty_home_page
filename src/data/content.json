@@ -1,0 +1,22 @@
+{
+  "home": {
+    "heroTitle": "Sweksha Beauty – Your Go-To Parlour for Glow, Gloss and Confidence",
+    "heroSubtitle": "From everyday grooming to party and bridal looks, we take care of all your beauty needs with hygiene, care and love.",
+    "heroImage": "/uploads/a8ef80fa-e9ac-41c8-8315-66d5516bec47.png",
+    "highlights": [
+      "Experienced beauticians",
+      "Hygienic & comfortable ambience",
+      "Quality products only"
+    ]
+  },
+  "about": {
+    "title": "About Sweksha Beauty",
+    "description": "Sweksha Beauty is a friendly neighbourhood parlour in Main Market, Haveli Kharagpur, Munger, Bihar. Our aim is to give every woman a clean, comfortable and relaxed space where she can refresh herself and walk out with confidence. From simple threading to complete bridal makeovers, we believe in hygiene, quality products and personalised care.",
+    "values": [
+      "Clean and hygienic setup",
+      "Comfortable and safe for ladies",
+      "Quality products and tools",
+      "Honest suggestions that suit your skin and hair"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "pkg_glow_wax",
+    "name": "Glow & Wax Combo",
+    "description": "Full body waxing + Glow Facial at a special price.",
+    "services": [
+      "Full Body Waxing",
+      "Glow Facial"
+    ],
+    "price": "2500",
+    "duration": "2 hours",
+    "tag": "Popular",
+    "active": true,
+    "image": ""
+  },
+  {
+    "id": "pkg_bridal",
+    "name": "Pre-Bridal Package",
+    "description": "Complete head-to-toe grooming for the bride-to-be.",
+    "services": [
+      "Full Body Waxing",
+      "Body Polishing",
+      "Hair Spa",
+      "Manicure",
+      "Pedicure",
+      "Facial"
+    ],
+    "price": "8000",
+    "duration": "5 hours",
+    "tag": "Bridal",
+    "active": true,
+    "image": "/images/package-bridal.jpg"
+  }
+]
