@@ -109,7 +109,7 @@ export default function AskSwekshaChat({ customTrigger }: AskSwekshaChatProps) {
 
             {/* Chat Window */}
             {isOpen && (
-                <div className="fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200">
+                <div className="fixed bottom-6 right-6 z-[100] w-96 max-w-[calc(100vw-3rem)] h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200">
                     {/* Header */}
                     <div className="bg-gradient-to-r from-brand-primary to-pink-500 text-white p-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
