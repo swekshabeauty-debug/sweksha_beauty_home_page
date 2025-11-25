@@ -11,7 +11,7 @@
     "duration": "2 hours",
     "tag": "Popular",
     "active": true,
-    "image": ""
+    "image": "/uploads/889b88b4-11f4-49f4-96e6-8de847a5df0e.jpg"
   },
   {
     "id": "pkg_bridal",
@@ -29,6 +29,6 @@
     "duration": "5 hours",
     "tag": "Bridal",
     "active": true,
-    "image": "/images/package-bridal.jpg"
+    "image": "/uploads/058e882f-892f-41d8-82a9-cdd8e918cef2.jpg"
   }
 ]
