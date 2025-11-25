@@ -10,7 +10,7 @@ const handler = NextAuth({
     ],
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
-        signIn: '/booking', // Redirect to booking page if sign in is needed
+        signIn: '/login', // Redirect to login page if sign in is needed
     },
     callbacks: {
         async session({ session, token }) {
