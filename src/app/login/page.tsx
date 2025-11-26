@@ -2,7 +2,8 @@
 
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 import { useSession } from 'next-auth/react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useEffect, Suspense } from 'react';
 
 function LoginContent() {
     const { data: session } = useSession();
