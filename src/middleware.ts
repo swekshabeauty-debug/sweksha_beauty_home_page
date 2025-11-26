@@ -30,6 +30,7 @@ export async function middleware(req: NextRequest) {
     if (pathname.startsWith('/admin')) {
         const allowedAdmins = ['swekshabeauty@gmail.com', 'jayant.kgp81@gmail.com'];
         const userEmail = token?.email || '';
+        console.log('🔐 Admin Access Attempt:', { userEmail, allowed: allowedAdmins.includes(userEmail) });
 
         if (!allowedAdmins.includes(userEmail)) {
             // Redirect to home with error or access denied page
