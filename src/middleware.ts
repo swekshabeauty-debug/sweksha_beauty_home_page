@@ -21,6 +21,11 @@ export async function middleware(req: NextRequest) {
     const isProtected = protectedPaths.some(path => pathname.startsWith(path));
 
     if (isProtected && !token) {
+        // If trying to access admin, go to admin login
+        if (pathname.startsWith('/admin')) {
+            return NextResponse.redirect(new URL('/admin/login', req.url));
+        }
+        // Otherwise go to generic login
         const url = new URL('/login', req.url);
         url.searchParams.set('callbackUrl', encodeURI(req.url));
         return NextResponse.redirect(url);
