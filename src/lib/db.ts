@@ -1,53 +1,88 @@
-import fs from 'fs/promises';
-import path from 'path';
+import { db } from './firebase';
+import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 
-const DATA_DIR = path.join(process.cwd(), 'src', 'data');
-
-export async function readJSON<T>(filename: string): Promise<T> {
-    const filePath = path.join(DATA_DIR, filename);
+// Helper to read a single document (like settings.json)
+async function readDocument<T>(collectionName: string, docId: string): Promise<T> {
     try {
-        const data = await fs.readFile(filePath, 'utf-8');
-        return JSON.parse(data) as T;
+        const docRef = doc(db, collectionName, docId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return docSnap.data() as T;
+        }
+        // If document doesn't exist, return empty object or default
+        return {} as T;
     } catch (error) {
-        console.error(`Error reading ${filename}:`, error);
-        throw new Error(`Failed to read data from ${filename}`);
+        console.error(`Error reading ${collectionName}/${docId}:`, error);
+        return {} as T;
     }
 }
 
-export async function writeJSON<T>(filename: string, data: T): Promise<void> {
-    const filePath = path.join(DATA_DIR, filename);
+// Helper to write a single document
+async function writeDocument<T>(collectionName: string, docId: string, data: T): Promise<void> {
     try {
-        await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+        await setDoc(doc(db, collectionName, docId), data as any);
     } catch (error) {
-        console.error(`Error writing ${filename}:`, error);
-        throw new Error(`Failed to write data to ${filename}`);
+        console.error(`Error writing ${collectionName}/${docId}:`, error);
+        throw new Error(`Failed to write data to ${collectionName}`);
     }
 }
 
-// Typed helpers for specific files
-export const getSettings = () => readJSON<any>('settings.json');
-export const saveSettings = (data: any) => writeJSON('settings.json', data);
+// Helper to read a collection as an array (like services.json)
+// Note: In Firestore, we will store the array inside a single document for simplicity 
+// to match the previous JSON structure, OR we could use a real collection.
+// For easiest migration from JSON files, we will store the entire JSON content 
+// as a single document in a 'data' collection.
+// e.g. collection 'data', doc 'services' -> { list: [...] }
 
-export const getServices = () => readJSON<any[]>('services.json');
-export const saveServices = (data: any[]) => writeJSON('services.json', data);
+async function readList<T>(docId: string): Promise<T[]> {
+    try {
+        const docRef = doc(db, 'data', docId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return (docSnap.data().list || []) as T[];
+        }
+        return [];
+    } catch (error) {
+        console.error(`Error reading list ${docId}:`, error);
+        return [];
+    }
+}
 
-export const getPackages = () => readJSON<any[]>('packages.json');
-export const savePackages = (data: any[]) => writeJSON('packages.json', data);
+async function writeList<T>(docId: string, list: T[]): Promise<void> {
+    try {
+        await setDoc(doc(db, 'data', docId), { list });
+    } catch (error) {
+        console.error(`Error writing list ${docId}:`, error);
+        throw new Error(`Failed to write list to ${docId}`);
+    }
+}
 
-export const getOffers = () => readJSON<any[]>('offers.json');
-export const saveOffers = (data: any[]) => writeJSON('offers.json', data);
+// Typed helpers for specific data
+// We map each JSON file to a document in the 'data' collection
 
-export const getBookings = () => readJSON<any[]>('bookings.json');
-export const saveBookings = (data: any[]) => writeJSON('bookings.json', data);
+export const getSettings = () => readDocument<any>('data', 'settings');
+export const saveSettings = (data: any) => writeDocument('data', 'settings', data);
 
-export const getReviews = () => readJSON<any[]>('reviews.json');
-export const saveReviews = (data: any[]) => writeJSON('reviews.json', data);
+export const getServices = () => readList<any>('services');
+export const saveServices = (data: any[]) => writeList('services', data);
 
-export const getTeam = () => readJSON<any[]>('team.json');
-export const saveTeam = (data: any[]) => writeJSON('team.json', data);
+export const getPackages = () => readList<any>('packages');
+export const savePackages = (data: any[]) => writeList('packages', data);
 
-export const getGallery = () => readJSON<any[]>('gallery.json');
-export const saveGallery = (data: any[]) => writeJSON('gallery.json', data);
+export const getOffers = () => readList<any>('offers');
+export const saveOffers = (data: any[]) => writeList('offers', data);
 
-export const getContent = () => readJSON<any>('content.json');
-export const saveContent = (data: any) => writeJSON('content.json', data);
+export const getBookings = () => readList<any>('bookings');
+export const saveBookings = (data: any[]) => writeList('bookings', data);
+
+export const getReviews = () => readList<any>('reviews');
+export const saveReviews = (data: any[]) => writeList('reviews', data);
+
+export const getTeam = () => readList<any>('team');
+export const saveTeam = (data: any[]) => writeList('team', data);
+
+export const getGallery = () => readList<any>('gallery');
+export const saveGallery = (data: any[]) => writeList('gallery', data);
+
+export const getContent = () => readDocument<any>('data', 'content');
+export const saveContent = (data: any) => writeDocument('data', 'content', data);
