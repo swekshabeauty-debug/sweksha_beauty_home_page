@@ -2,18 +2,19 @@
 
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 function LoginContent() {
     const { data: session } = useSession();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl') || '/';
 
     useEffect(() => {
         if (session) {
-            router.push('/');
+            router.push(callbackUrl);
         }
-    }, [session, router]);
+    }, [session, router, callbackUrl]);
 
     return (
         <div className="min-h-screen bg-brand-bg flex items-center justify-center p-4">
