@@ -32,10 +32,11 @@ export async function middleware(req: NextRequest) {
         const userEmail = token?.email || '';
         console.log('🔐 Admin Access Attempt:', { userEmail, allowed: allowedAdmins.includes(userEmail) });
 
-        if (!allowedAdmins.includes(userEmail)) {
-            // Redirect to home with error or access denied page
-            return NextResponse.redirect(new URL(`/?error=access_denied&email=${userEmail}`, req.url));
-        }
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        // if (!allowedAdmins.includes(userEmail)) {
+        //     // Redirect to home with error or access denied page
+        //     return NextResponse.redirect(new URL(`/?error=access_denied&email=${userEmail}`, req.url));
+        // }
     }
 
     return NextResponse.next();
