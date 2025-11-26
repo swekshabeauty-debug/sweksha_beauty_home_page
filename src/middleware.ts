@@ -34,7 +34,7 @@ export async function middleware(req: NextRequest) {
 
         if (!allowedAdmins.includes(userEmail)) {
             // Redirect to home with error or access denied page
-            return NextResponse.redirect(new URL('/', req.url));
+            return NextResponse.redirect(new URL(`/?error=access_denied&email=${userEmail}`, req.url));
         }
     }
 
