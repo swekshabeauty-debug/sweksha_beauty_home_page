@@ -27,13 +27,41 @@ export default function TestDB() {
         testConnection();
     }, []);
 
+    const handleMigrate = async () => {
+        setStatus('Migrating data... Please wait.');
+        try {
+            const res = await fetch('/api/migrate', { method: 'POST' });
+            const result = await res.json();
+            if (result.success) {
+                setStatus('Migration Successful! Refreshing data...');
+                window.location.reload();
+            } else {
+                setStatus('Migration Failed: ' + result.error);
+            }
+        } catch (err: any) {
+            setStatus('Migration Error: ' + err.message);
+        }
+    };
+
     return (
         <div className="p-10">
             <h1 className="text-2xl font-bold mb-4">Firebase Connection Test</h1>
             <div className="space-y-4">
-                <div className={`p-4 rounded ${status.startsWith('Success') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                <div className={`p-4 rounded ${status.startsWith('Success') ? 'bg-green-100 text-green-800' : status.startsWith('Migration Successful') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                     <strong>Status:</strong> {status}
                 </div>
+
+                {status.includes('EMPTY') && (
+                    <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
+                        <p className="text-yellow-800 mb-2">The database is empty. Click below to upload default data.</p>
+                        <button
+                            onClick={handleMigrate}
+                            className="bg-brand-primary text-white px-4 py-2 rounded hover:bg-opacity-90"
+                        >
+                            Start Data Migration
+                        </button>
+                    </div>
+                )}
 
                 {error && (
                     <div className="p-4 bg-red-50 border border-red-200 rounded text-red-600 font-mono text-sm">
