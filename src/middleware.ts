@@ -26,18 +26,10 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(url);
     }
 
-    // 3. Admin Lock: If accessing /admin, check email
-    if (pathname.startsWith('/admin')) {
-        const allowedAdmins = ['swekshabeauty@gmail.com', 'jayant.kgp81@gmail.com'];
-        const userEmail = token?.email || '';
-        console.log('🔐 Admin Access Attempt:', { userEmail, allowed: allowedAdmins.includes(userEmail) });
-
-        // TEMPORARILY DISABLED FOR DEBUGGING
-        // if (!allowedAdmins.includes(userEmail)) {
-        //     // Redirect to home with error or access denied page
-        //     return NextResponse.redirect(new URL(`/?error=access_denied&email=${userEmail}`, req.url));
-        // }
-    }
+    // 3. Admin Lock: REMOVED
+    // if (pathname.startsWith('/admin')) {
+    //    // Logic removed to ensure access
+    // }
 
     return NextResponse.next();
 }
