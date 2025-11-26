@@ -4,13 +4,17 @@ import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { useSearchParams } from 'next/navigation';
+
 export default function GoogleSignInButton() {
     const [isLoading, setIsLoading] = useState(false);
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl') || '/booking';
 
     const handleSignIn = async () => {
         setIsLoading(true);
         try {
-            await signIn('google', { callbackUrl: '/booking' });
+            await signIn('google', { callbackUrl });
         } catch (error) {
             console.error('Login failed:', error);
             setIsLoading(false);
