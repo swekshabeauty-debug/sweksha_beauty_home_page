@@ -20,6 +20,11 @@ export async function middleware(req: NextRequest) {
     const protectedPaths = ['/admin'];
     const isProtected = protectedPaths.some(path => pathname.startsWith(path));
 
+    // EXCEPTION: Allow access to admin login page
+    if (pathname === '/admin/login') {
+        return NextResponse.next();
+    }
+
     if (isProtected && !token) {
         // If trying to access admin, go to admin login
         if (pathname.startsWith('/admin')) {
