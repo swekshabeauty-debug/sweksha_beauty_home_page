@@ -10,6 +10,23 @@ export const metadata: Metadata = {
 export default async function ContactPage() {
     const settings = await getSettings();
 
+    // Default fallbacks in case DB is empty or loading
+    const contact = settings?.contact || {
+        address: 'Main Market, Haveli Kharagpur, Bihar 811213',
+        phone: '+91 90653 47011',
+        email: 'swekshabeauty@gmail.com'
+    };
+
+    const hours = settings?.hours || {
+        monday: '10:00 AM - 07:30 PM',
+        tuesday: '10:00 AM - 07:30 PM',
+        wednesday: '10:00 AM - 07:30 PM',
+        thursday: '10:00 AM - 07:30 PM',
+        friday: '10:00 AM - 07:30 PM',
+        saturday: '10:00 AM - 07:30 PM',
+        sunday: '10:00 AM - 07:30 PM'
+    };
+
     return (
         <div className="bg-white min-h-screen">
             <div className="bg-brand-bg py-16 text-center">
@@ -32,7 +49,7 @@ export default async function ContactPage() {
                                     </div>
                                     <div>
                                         <h3 className="font-semibold text-gray-900 mb-1">Visit Us</h3>
-                                        <p className="text-gray-600">{settings.contact.address}</p>
+                                        <p className="text-gray-600">{contact.address}</p>
                                     </div>
                                 </div>
 
@@ -42,8 +59,8 @@ export default async function ContactPage() {
                                     </div>
                                     <div>
                                         <h3 className="font-semibold text-gray-900 mb-1">Call Us</h3>
-                                        <a href={`tel:${settings.contact.phone}`} className="text-gray-600 hover:text-brand-primary">
-                                            {settings.contact.phone}
+                                        <a href={`tel:${contact.phone}`} className="text-gray-600 hover:text-brand-primary">
+                                            {contact.phone}
                                         </a>
                                     </div>
                                 </div>
@@ -54,8 +71,8 @@ export default async function ContactPage() {
                                     </div>
                                     <div>
                                         <h3 className="font-semibold text-gray-900 mb-1">Email Us</h3>
-                                        <a href={`mailto:${settings.contact.email}`} className="text-gray-600 hover:text-brand-primary">
-                                            {settings.contact.email}
+                                        <a href={`mailto:${contact.email}`} className="text-gray-600 hover:text-brand-primary">
+                                            {contact.email}
                                         </a>
                                     </div>
                                 </div>
@@ -67,10 +84,10 @@ export default async function ContactPage() {
                                 <Clock className="w-6 h-6 text-brand-primary" /> Opening Hours
                             </h2>
                             <div className="space-y-3">
-                                {Object.entries(settings.hours).map(([day, hours]: [string, any]) => (
+                                {Object.entries(hours).map(([day, time]: [string, any]) => (
                                     <div key={day} className="flex justify-between text-sm border-b border-gray-50 pb-2 last:border-0">
                                         <span className="capitalize font-medium text-gray-700">{day}</span>
-                                        <span className="text-gray-500">{hours}</span>
+                                        <span className="text-gray-500">{time}</span>
                                     </div>
                                 ))}
                             </div>
