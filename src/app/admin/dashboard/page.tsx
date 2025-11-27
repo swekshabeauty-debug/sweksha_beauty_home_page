@@ -1,6 +1,7 @@
 import { getBookings, getServices, getReviews } from '@/lib/db';
 import { Calendar, CheckCircle, Clock, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
+import SyncDataButton from '@/components/SyncDataButton';
 
 export default async function AdminDashboard() {
     const bookings = await getBookings();
@@ -86,6 +87,7 @@ export default async function AdminDashboard() {
                         <Link href="/admin/gallery" className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition text-center">
                             <span className="block font-medium text-gray-700">Upload Photos</span>
                         </Link>
+                        <SyncDataButton />
                     </div>
                 </div>
             </div>
