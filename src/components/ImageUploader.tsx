@@ -49,9 +49,9 @@ export default function ImageUploader({ value, onChange, className = '' }: Image
             const url = await getDownloadURL(storageRef);
 
             onChange(url);
-        } catch (error) {
-            console.error(error);
-            alert('Failed to upload image');
+        } catch (error: any) {
+            console.error('Upload error:', error);
+            alert(`Failed to upload image: ${error.message || error}`);
         } finally {
             setLoading(false);
         }
