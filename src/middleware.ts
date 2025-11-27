@@ -17,10 +17,9 @@ export async function middleware(req: NextRequest) {
     }
 
     // 2. Protected Routes: Only redirect to login for specific paths
-    // 2. Protected Routes: DISABLED SERVER-SIDE CHECK
-    // const protectedPaths = ['/admin'];
-    // const isProtected = protectedPaths.some(path => pathname.startsWith(path));
-    const isProtected = false; // Force false to skip middleware check
+    // 2. Protected Routes: Only redirect to login for specific paths
+    const protectedPaths = ['/admin'];
+    const isProtected = protectedPaths.some(path => pathname.startsWith(path));
 
     // EXCEPTION: Allow access to admin login page
     if (pathname === '/admin/login') {
