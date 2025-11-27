@@ -28,7 +28,11 @@ export interface BookingDetails {
  * Send booking alert email to admin
  */
 export async function sendAdminBookingAlert(booking: BookingDetails) {
-    const confirmLink = `${process.env.NEXT_PUBLIC_APP_URL}/api/bookings/confirm/${booking.id}`;
+    // Determine the base URL
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ||
+        (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+
+    const confirmLink = `${baseUrl}/api/bookings/confirm/${booking.id}`;
 
     const htmlContent = `
         <!DOCTYPE html>
