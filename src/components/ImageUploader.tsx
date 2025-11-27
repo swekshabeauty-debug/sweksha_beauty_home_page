@@ -39,19 +39,17 @@ export default function ImageUploader({ value, onChange, className = '' }: Image
                 { type: 'image/jpeg' }
             );
 
-            // Upload compressed image
-            const formData = new FormData();
-            formData.append('file', compressedFile);
+            // Upload to Firebase Storage
+            const { storage } = await import('@/lib/firebase');
+            const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
 
-            const res = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData,
-            });
+            const filename = `${Date.now()}-${compressedFile.name}`;
+            const storageRef = ref(storage, `uploads/${filename}`);
 
-            if (!res.ok) throw new Error('Upload failed');
+            await uploadBytes(storageRef, compressedFile);
+            const url = await getDownloadURL(storageRef);
 
-            const data = await res.json();
-            onChange(data.url);
+            onChange(url);
         } catch (error) {
             console.error(error);
             alert('Failed to upload image');
