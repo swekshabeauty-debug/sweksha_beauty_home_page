@@ -6,6 +6,8 @@ export async function middleware(req: NextRequest) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     const { pathname } = req.nextUrl;
 
+    console.log(`[Middleware] Path: ${pathname}, Token: ${token ? 'Found' : 'Missing'}`);
+
     // 1. Allow public assets and auth routes
     if (
         pathname.startsWith('/_next') ||
