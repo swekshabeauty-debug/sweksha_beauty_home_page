@@ -20,8 +20,14 @@ export default function AdminLayout({
 
         if (status === 'unauthenticated') {
             router.push('/admin/login');
+        } else if (status === 'authenticated') {
+            const allowedEmails = ['swekshabeauty@gmail.com', 'jayant.kgp81@gmail.com'];
+            if (session?.user?.email && !allowedEmails.includes(session.user.email)) {
+                // User is logged in but not authorized
+                router.push('/admin/login?error=AccessDenied');
+            }
         }
-    }, [status, router, pathname]);
+    }, [status, router, pathname, session]);
 
     if (status === 'loading') {
         return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
