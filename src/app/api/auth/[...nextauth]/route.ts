@@ -13,6 +13,13 @@ const handler = NextAuth({
         signIn: '/login', // Redirect to login page if sign in is needed
     },
     callbacks: {
+        async signIn({ user }) {
+            const allowedEmails = ['swekshabeauty@gmail.com', 'jayant.kgp81@gmail.com'];
+            if (user.email && allowedEmails.includes(user.email)) {
+                return true;
+            }
+            return false; // Return false to deny access or a string URL to redirect to an error page
+        },
         async session({ session, token }) {
             return session;
         },
