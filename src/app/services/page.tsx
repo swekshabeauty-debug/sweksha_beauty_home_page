@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     description: 'Explore our wide range of beauty services including facials, waxing, hair spa, and bridal makeup at Sweksha Beauty.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function ServicesPage() {
     const services = await getServices();
 
