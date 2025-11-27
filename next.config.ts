@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+// Trigger redeploy for env vars
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
