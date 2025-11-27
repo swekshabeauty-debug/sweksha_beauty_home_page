@@ -1,8 +1,24 @@
 [
   {
     "id": "cat_waxing",
-    "name": "Waxing & Grooming",
+    "name": "Waxing & Threading",
     "services": [
+      {
+        "id": "thread_eyebrows",
+        "name": "Eyebrow Threading",
+        "price": "50",
+        "duration": "10 min",
+        "description": "Shape your eyebrows perfectly.",
+        "active": true
+      },
+      {
+        "id": "thread_upperlip",
+        "name": "Upper Lip Threading",
+        "price": "30",
+        "duration": "5 min",
+        "description": "Remove upper lip hair.",
+        "active": true
+      },
       {
         "id": "wax_full_body",
         "name": "Full Body Waxing",
@@ -10,7 +26,16 @@
         "duration": "60 min",
         "description": "Complete body waxing for smooth skin.",
         "active": true,
-        "image": "/uploads/b0f6c568-dfca-4505-bca0-d6a5589c1e9a.jpg"
+        "image": "/uploads/waxing_service.png"
+      },
+      {
+        "id": "wax_face",
+        "name": "Face Waxing",
+        "price": "200",
+        "duration": "15 min",
+        "description": "Gentle face waxing.",
+        "active": true,
+        "image": "/uploads/waxing_service.png"
       },
       {
         "id": "wax_arms_full",
@@ -34,53 +59,94 @@
         "price": "100",
         "duration": "10 min",
         "description": "Underarms waxing.",
-        "active": true,
-        "image": "/uploads/dd3dd8ca-d62c-4785-9cfc-531212cfc5c1.jpg"
-      },
-      {
-        "id": "thread_eyebrows",
-        "name": "Eyebrow Threading",
-        "price": "50",
-        "duration": "10 min",
-        "description": "Shape your eyebrows perfectly.",
         "active": true
       }
     ]
   },
   {
     "id": "cat_facials",
-    "name": "Facials & Cleanups",
+    "name": "Facials & Bleach",
     "services": [
+      {
+        "id": "bleach_fem_saffron",
+        "name": "Fem Saffron & Milk Bleach",
+        "price": "120",
+        "duration": "20 min",
+        "description": "Skin brightening bleach.",
+        "active": true
+      },
+      {
+        "id": "bleach_fem_gold",
+        "name": "Fem Gold Bleach",
+        "price": "130",
+        "duration": "20 min",
+        "description": "Golden glow bleach.",
+        "active": true
+      },
+      {
+        "id": "facial_natures_gold",
+        "name": "Nature's Gold Facial",
+        "price": "150",
+        "duration": "45 min",
+        "description": "Gold radiance facial.",
+        "active": true,
+        "image": "/uploads/facial_service.png"
+      },
+      {
+        "id": "facial_astaberry",
+        "name": "Astaberry Mix Fruit Facial",
+        "price": "150",
+        "duration": "45 min",
+        "description": "Fruit nourishment for skin.",
+        "active": true
+      },
+      {
+        "id": "facial_aquaglo",
+        "name": "Aquaglo Papaya Facial",
+        "price": "400",
+        "duration": "50 min",
+        "description": "Hydrating papaya facial.",
+        "active": true,
+        "image": "/uploads/facial_service.png"
+      },
+      {
+        "id": "facial_vlcc",
+        "name": "VLCC Papaya & Gold",
+        "price": "800",
+        "duration": "60 min",
+        "description": "Premium VLCC facial treatment.",
+        "active": true
+      },
+      {
+        "id": "facial_lotus",
+        "name": "Lotus Diamond Facial",
+        "price": "1200",
+        "duration": "60 min",
+        "description": "Diamond shine and polish.",
+        "active": true
+      },
+      {
+        "id": "facial_shahnaz",
+        "name": "Shahnaz Husain Facial",
+        "price": "1000",
+        "duration": "60 min",
+        "description": "Herbal beauty treatment.",
+        "active": true
+      },
+      {
+        "id": "facial_natures_silver",
+        "name": "Nature's Essence Silver",
+        "price": "600",
+        "duration": "50 min",
+        "description": "Silver detox facial.",
+        "active": true
+      },
       {
         "id": "face_detan",
         "name": "Detan Cleanup",
         "price": "800",
         "duration": "45 min",
         "description": "Removes tan and restores glow.",
-        "active": true
-      },
-      {
-        "id": "face_glow",
-        "name": "Glow Facial",
-        "price": "1200",
-        "duration": "60 min",
-        "description": "Instant glow for special occasions.",
-        "active": true
-      },
-      {
-        "id": "face_hydra",
-        "name": "Hydrating Facial",
-        "price": "1500",
-        "duration": "60 min",
-        "description": "Deep hydration for dry skin.",
-        "active": true
-      },
-      {
-        "id": "face_acne",
-        "name": "Anti-Acne Facial",
-        "price": "1400",
-        "duration": "60 min",
-        "description": "Treatment for acne-prone skin.",
         "active": true
       }
     ]
@@ -103,14 +169,23 @@
         "price": "1000",
         "duration": "60 min",
         "description": "Relaxing hair spa for healthy hair.",
+        "active": true,
+        "image": "/uploads/hair_service.png"
+      },
+      {
+        "id": "hair_straight",
+        "name": "Hair Straightening",
+        "price": "3000",
+        "duration": "180 min",
+        "description": "Permanent hair straightening.",
         "active": true
       },
       {
-        "id": "hair_smooth",
-        "name": "Hair Smoothing",
-        "price": "4000",
-        "duration": "180 min",
-        "description": "Silky smooth straight hair.",
+        "id": "hair_curl",
+        "name": "Hair Curling",
+        "price": "1500",
+        "duration": "60 min",
+        "description": "Temporary or semi-permanent curls.",
         "active": true
       },
       {
@@ -125,7 +200,7 @@
   },
   {
     "id": "cat_hands_feet",
-    "name": "Hands & Feet Care",
+    "name": "Hands, Feet & Nails",
     "services": [
       {
         "id": "manicure",
@@ -142,12 +217,38 @@
         "duration": "45 min",
         "description": "Relaxing foot care.",
         "active": true
+      },
+      {
+        "id": "nail_ext",
+        "name": "Nail Extension",
+        "price": "1500",
+        "duration": "90 min",
+        "description": "Gel or Acrylic nail extensions.",
+        "active": true
+      },
+      {
+        "id": "mehndi_full",
+        "name": "Full Hand Mehndi",
+        "price": "500",
+        "duration": "60 min",
+        "description": "Intricate full hand design.",
+        "active": true,
+        "image": "/uploads/mehndi_design.png"
+      },
+      {
+        "id": "mehndi_half",
+        "name": "Half Hand Mehndi",
+        "price": "250",
+        "duration": "30 min",
+        "description": "Beautiful half hand design.",
+        "active": true,
+        "image": "/uploads/mehndi_design.png"
       }
     ]
   },
   {
     "id": "cat_makeup",
-    "name": "Makeup & Special Occasions",
+    "name": "Makeup & Bridal",
     "services": [
       {
         "id": "makeup_party",
@@ -159,11 +260,36 @@
       },
       {
         "id": "makeup_bridal",
-        "name": "Bridal Makeup Package",
+        "name": "Bridal Makeup (Bride Decorate)",
         "price": "15000",
         "duration": "180 min",
         "description": "Complete bridal makeover including trial.",
-        "active": true
+        "active": true,
+        "image": "/uploads/bridal_makeup.png"
+      }
+    ]
+  },
+  {
+    "id": "cat_piercing",
+    "name": "Piercing",
+    "services": [
+      {
+        "id": "pierce_ears",
+        "name": "Ear Piercing",
+        "price": "200",
+        "duration": "15 min",
+        "description": "Safe and hygienic ear piercing.",
+        "active": true,
+        "image": "/uploads/piercing_service.png"
+      },
+      {
+        "id": "pierce_nose",
+        "name": "Nose Piercing",
+        "price": "100",
+        "duration": "15 min",
+        "description": "Safe and hygienic nose piercing.",
+        "active": true,
+        "image": "/uploads/piercing_service.png"
       }
     ]
   }
