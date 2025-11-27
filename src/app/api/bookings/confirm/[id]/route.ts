@@ -118,7 +118,7 @@ export async function GET(
                            class="btn" style="background: #25D366;">
                             📱 Send WhatsApp
                         </a>
-                        <a href="${process.env.NEXT_PUBLIC_APP_URL}/admin/bookings" class="btn">
+                        <a href="/admin/bookings" class="btn">
                             View All Bookings
                         </a>
                     </div>
