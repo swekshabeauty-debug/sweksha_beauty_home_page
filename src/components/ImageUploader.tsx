@@ -42,6 +42,14 @@ export default function ImageUploader({ value, onChange, className = '' }: Image
             );
 
             // Upload to Firebase Storage
+            const { auth } = await import('@/lib/firebase');
+            const { signInAnonymously } = await import('firebase/auth');
+
+            // Ensure user is signed in (anonymously) to satisfy security rules
+            if (!auth.currentUser) {
+                await signInAnonymously(auth);
+            }
+
             const filename = `${Date.now()}-${compressedFile.name}`;
             const storageRef = ref(storage, `uploads/${filename}`);
 
