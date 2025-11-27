@@ -12,9 +12,12 @@ const firebaseConfig = {
     measurementId: "G-65HEVYRL0S"
 };
 
+import { getAuth } from 'firebase/auth';
+
 // Initialize Firebase
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const db = getFirestore(app);
 const storage = getStorage(app);
+const auth = getAuth(app);
 
-export { db, storage };
+export { db, storage, auth };
