@@ -5,8 +5,6 @@ import { useDropzone } from 'react-dropzone';
 import { Upload, X, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import imageCompression from 'browser-image-compression';
-import { storage } from '@/lib/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 interface ImageUploaderProps {
     value?: string;
@@ -34,29 +32,30 @@ export default function ImageUploader({ value, onChange, className = '' }: Image
 
             const compressedBlob = await imageCompression(file, options);
 
-            // Create a new File with proper .jpg extension
-            const compressedFile = new File(
-                [compressedBlob],
-                file.name.replace(/\.[^/.]+$/, '.jpg'),
-                { type: 'image/jpeg' }
-            );
+            // Cloudinary Upload
+            const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+            const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
-            // Upload to Firebase Storage
-            const { auth } = await import('@/lib/firebase');
-            const { signInAnonymously } = await import('firebase/auth');
-
-            // Ensure user is signed in (anonymously) to satisfy security rules
-            if (!auth.currentUser) {
-                await signInAnonymously(auth);
+            if (!cloudName || !uploadPreset) {
+                throw new Error('Cloudinary configuration missing. Please check .env.local');
             }
 
-            const filename = `${Date.now()}-${compressedFile.name}`;
-            const storageRef = ref(storage, `uploads/${filename}`);
+            const formData = new FormData();
+            formData.append('file', compressedBlob);
+            formData.append('upload_preset', uploadPreset);
 
-            await uploadBytes(storageRef, compressedFile);
-            const url = await getDownloadURL(storageRef);
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+                method: 'POST',
+                body: formData,
+            });
 
-            onChange(url);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || 'Upload failed');
+            }
+
+            const data = await response.json();
+            onChange(data.secure_url);
         } catch (error: any) {
             console.error('Upload error:', error);
             alert(`Failed to upload image: ${error.message || error}`);
