@@ -10,7 +10,7 @@ export default function AdminLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const { status } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
     const pathname = usePathname();
 
