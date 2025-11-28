@@ -48,9 +48,10 @@ export async function sendAdminBookingAlert(booking: BookingDetails) {
         <!DOCTYPE html>
         <html>
         <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+                .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
                 .header { background: #F29D8D; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
                 .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
                 .detail-row { margin: 15px 0; padding: 10px; background: white; border-radius: 4px; }
@@ -67,6 +68,13 @@ export async function sendAdminBookingAlert(booking: BookingDetails) {
                     font-weight: bold;
                 }
                 .footer { text-align: center; margin-top: 20px; color: #666; font-size: 12px; }
+                
+                @media only screen and (max-width: 600px) {
+                    .container { padding: 10px; }
+                    .content { padding: 20px; }
+                    .label { display: block; width: 100%; margin-bottom: 5px; }
+                    .detail-row { padding: 15px; }
+                }
             </style>
         </head>
         <body>
@@ -147,9 +155,10 @@ export async function sendCustomerConfirmation(booking: BookingDetails) {
         <!DOCTYPE html>
         <html>
         <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+                .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
                 .header { background: linear-gradient(135deg, #F29D8D 0%, #FCD8B8 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
                 .content { background: #FFF3EB; padding: 30px; border-radius: 0 0 8px 8px; }
                 .success-icon { font-size: 48px; margin-bottom: 10px; }
@@ -159,6 +168,13 @@ export async function sendCustomerConfirmation(booking: BookingDetails) {
                 .value { color: #333; font-size: 18px; }
                 .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
                 .contact-info { margin-top: 20px; font-size: 14px; color: #666; }
+                
+                @media only screen and (max-width: 600px) {
+                    .container { padding: 10px; }
+                    .header { padding: 20px; }
+                    .content { padding: 20px; }
+                    .value { font-size: 16px; }
+                }
             </style>
         </head>
         <body>
