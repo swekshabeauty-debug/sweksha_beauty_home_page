@@ -4,23 +4,44 @@ import { useState, useEffect } from 'react';
 import { Check, X, Search, Filter, MoreHorizontal } from 'lucide-react';
 
 export default function BookingsPage() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [bookings, setBookings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('All');
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
+        const fetchBookings = async () => {
+            const res = await fetch('/api/data/bookings');
+            const data = await res.json();
+            setBookings(data.reverse());
+            setLoading(false);
+        };
         fetchBookings();
     }, []);
 
-    const fetchBookings = async () => {
-        const res = await fetch('/api/data/bookings');
-        const data = await res.json();
-        setBookings(data.reverse());
-        setLoading(false);
-    };
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateStatus = async (booking: any, status: string) => {
+        if (status === 'Confirmed') {
+            // Use the specific confirmation API to trigger email
+            try {
+                const res = await fetch(`/api/bookings/confirm/${booking.id}?format=json`);
+                if (!res.ok) throw new Error('Failed to confirm');
+
+                // Update local state
+                const updatedBookings = bookings.map(b =>
+                    b.id === booking.id ? { ...b, status: 'Confirmed', confirmedAt: new Date().toISOString() } : b
+                );
+                setBookings(updatedBookings);
+                alert('Booking confirmed and email sent to customer!');
+            } catch (error) {
+                alert('Error confirming booking');
+                console.error(error);
+            }
+            return;
+        }
+
+        // For other statuses, just update the data
         const updatedBookings = bookings.map(b =>
             b.id === booking.id ? { ...b, status } : b
         );
