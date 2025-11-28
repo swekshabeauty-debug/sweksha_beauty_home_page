@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Check, X, Search, Filter, MoreHorizontal } from 'lucide-react';
+import { Check, X, Search, Filter, MessageCircle } from 'lucide-react';
 
 export default function BookingsPage() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,6 +53,21 @@ export default function BookingsPage() {
         });
 
         setBookings(updatedBookings);
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sendWhatsApp = (booking: any) => {
+        const upiLink = `upi://pay?pa=jayant.kgp81@oksbi&pn=SwekshaBeauty&am=${booking.price || 0}&cu=INR`;
+        const message = `Hello ${booking.name}, your booking for ${booking.service} on ${booking.date} at ${booking.time} is CONFIRMED!
+Total Amount: ₹${booking.price || 0}
+
+Pay Advance via UPI: ${upiLink}
+Or pay at the shop.
+
+See you soon at Sweksha Beauty! ✨`;
+
+        const encodedMessage = encodeURIComponent(message);
+        window.open(`https://wa.me/91${booking.phone}?text=${encodedMessage}`, '_blank');
     };
 
     const deleteBooking = async (id: string) => {
@@ -198,15 +213,24 @@ export default function BookingsPage() {
                                                     </>
                                                 )}
                                                 {booking.status === 'Confirmed' && (
-                                                    <button
-                                                        onClick={() => updateStatus(booking, 'Completed')}
-                                                        className="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 transition"
-                                                    >
-                                                        Complete
-                                                    </button>
+                                                    <div className="flex gap-2 justify-end">
+                                                        <button
+                                                            onClick={() => sendWhatsApp(booking)}
+                                                            className="px-3 py-1 bg-[#25D366] text-white text-xs font-medium rounded hover:bg-[#128C7E] transition flex items-center gap-1"
+                                                            title="Send Confirmation WhatsApp"
+                                                        >
+                                                            <MessageCircle className="w-3 h-3" /> WhatsApp
+                                                        </button>
+                                                        <button
+                                                            onClick={() => updateStatus(booking, 'Completed')}
+                                                            className="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 transition"
+                                                        >
+                                                            Complete
+                                                        </button>
+                                                    </div>
                                                 )}
                                                 {booking.status === 'Completed' && (
-                                                    <div className="flex items-center gap-2">
+                                                    <div className="flex items-center gap-2 justify-end">
                                                         <span className="text-xs text-gray-400 flex items-center gap-1">
                                                             <Check className="w-3 h-3" /> Done
                                                         </span>
