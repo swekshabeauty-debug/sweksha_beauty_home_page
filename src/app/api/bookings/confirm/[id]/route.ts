@@ -26,13 +26,22 @@ export async function GET(
         // Send confirmation email to customer
         await sendCustomerConfirmation(booking);
 
-        // Return a success HTML page
+        // Check if the request expects JSON (e.g. from Admin Panel)
+        const acceptHeader = request.headers.get('accept') || '';
+        const formatParam = request.nextUrl.searchParams.get('format');
+
+        if (acceptHeader.includes('application/json') || formatParam === 'json') {
+            return NextResponse.json({ success: true, message: 'Booking confirmed and email sent' });
+        }
+
+        // Return a success HTML page (Legacy/Direct Access)
         return new NextResponse(
             `
             <!DOCTYPE html>
             <html>
             <head>
                 <title>Booking Confirmed</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <style>
                     body {
                         font-family: Arial, sans-serif;
@@ -50,6 +59,7 @@ export async function GET(
                         border-radius: 16px;
                         box-shadow: 0 10px 40px rgba(0,0,0,0.1);
                         max-width: 500px;
+                        width: 90%;
                     }
                     .success-icon {
                         font-size: 64px;
@@ -58,6 +68,7 @@ export async function GET(
                     h1 {
                         color: #22c55e;
                         margin-bottom: 10px;
+                        font-size: 24px;
                     }
                     .details {
                         background: #f9f9f9;
@@ -83,6 +94,7 @@ export async function GET(
                         border-radius: 6px;
                         margin-top: 20px;
                         font-weight: bold;
+                        font-size: 14px;
                     }
                     .btn:hover {
                         opacity: 0.9;
@@ -113,7 +125,7 @@ export async function GET(
                         </div>
                     </div>
 
-                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
                         <a href="https://wa.me/91${booking.phone}?text=Hello ${booking.name}, your booking for ${booking.service} on ${booking.date} at ${booking.time} is CONFIRMED! See you soon at Sweksha Beauty. ✨" 
                            class="btn" style="background: #25D366;">
                             📱 Send WhatsApp
