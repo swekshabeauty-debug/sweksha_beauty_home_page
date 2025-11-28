@@ -174,10 +174,10 @@ function BookingForm() {
                             pattern="[6-9]\d{9}"
                             maxLength={10}
                             className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none"
-                            placeholder="9065347011"
+                            placeholder="Ex: 9876543210"
                             title="Please enter a valid 10-digit mobile number starting with 6-9"
                         />
-                        <p className="text-xs text-gray-500 mt-1">Enter 10-digit number (e.g. 9065347011)</p>
+                        <p className="text-xs text-gray-500 mt-1">Enter 10-digit number</p>
                     </div>
                 </div>
 
