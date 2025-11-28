@@ -262,11 +262,48 @@ function BookingForm() {
                                 className="w-full border border-gray-300 rounded-lg p-3 pl-10 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none"
                             >
                                 <option value="">Select Time Slot</option>
-                                <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
-                                <option value="12:00 PM - 02:00 PM">12:00 PM - 02:00 PM</option>
-                                <option value="02:00 PM - 04:00 PM">02:00 PM - 04:00 PM</option>
-                                <option value="04:00 PM - 06:00 PM">04:00 PM - 06:00 PM</option>
-                                <option value="06:00 PM - 07:30 PM">06:00 PM - 07:30 PM</option>
+                                {(() => {
+                                    const timeSlots = [
+                                        "10:00 AM - 12:00 PM",
+                                        "12:00 PM - 02:00 PM",
+                                        "02:00 PM - 04:00 PM",
+                                        "04:00 PM - 06:00 PM",
+                                        "06:00 PM - 07:30 PM"
+                                    ];
+
+                                    const getAvailableTimeSlots = () => {
+                                        if (!formData.date) return timeSlots;
+
+                                        const today = new Date();
+                                        const selectedDate = new Date(formData.date);
+
+                                        // Reset hours to compare just the dates
+                                        const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                                        const checkDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+
+                                        if (checkDate.getTime() === todayDate.getTime()) {
+                                            const currentHour = today.getHours();
+                                            return timeSlots.filter(slot => {
+                                                const startTime = slot.split(' - ')[0]; // e.g., "10:00 AM"
+                                                let [time, period] = startTime.split(' ');
+                                                let [hours, minutes] = time.split(':').map(Number);
+
+                                                if (period === 'PM' && hours !== 12) hours += 12;
+                                                if (period === 'AM' && hours === 12) hours = 0;
+
+                                                // Allow booking if the slot hasn't started yet (or maybe give a 1 hour buffer?)
+                                                // Let's say if it's 1:30 PM (13:30), 12:00 PM slot (12) is gone.
+                                                // 2:00 PM slot (14) is available.
+                                                return hours > currentHour;
+                                            });
+                                        }
+                                        return timeSlots;
+                                    };
+
+                                    return getAvailableTimeSlots().map(slot => (
+                                        <option key={slot} value={slot}>{slot}</option>
+                                    ));
+                                })()}
                             </select>
                         </div>
                     </div>
