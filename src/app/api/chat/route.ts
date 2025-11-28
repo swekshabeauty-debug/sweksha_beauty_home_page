@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
+import { getServices } from '@/lib/db';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
@@ -20,16 +21,18 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Message is required' }, { status: 400 });
         }
 
+        // Fetch services dynamically
+        const services = await getServices();
+        const servicesList = services.map((cat: any) => {
+            const catServices = cat.services.map((s: any) => `${s.name} (₹${s.price})`).join(', ');
+            return `- **${cat.name}:** ${catServices}`;
+        }).join('\n');
+
         // System prompt with Sweksha Beauty context
         const systemPrompt = `You are "Ask Sweksha", an expert beauty advisor for Sweksha Beauty parlour in Haveli Kharagpur, Munger, Bihar. You provide professional beauty advice in both Hindi and English.
 
 **Your Services & Pricing (in INR):**
-- **Waxing:** Full Body (1500), Full Arms (300), Full Legs (500), Underarms (100)
-- **Threading:** Eyebrows (50)
-- **Facials:** Detan Cleanup (800), Glow Facial (1200), Hydrating Facial (1500), Anti-Acne (1400)
-- **Hair:** Haircut (300), Hair Spa (1000), Smoothing (4000), Global Color (3000)
-- **Hands & Feet:** Manicure (500), Pedicure (600)
-- **Makeup:** Party Makeup (2500), Bridal Package (15000)
+${servicesList}
 
 **Your Role:**
 - Answer beauty-related questions professionally
