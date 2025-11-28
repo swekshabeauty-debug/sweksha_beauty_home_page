@@ -83,7 +83,7 @@ function BookingForm() {
             } else {
                 alert('Something went wrong. Please try again.');
             }
-        } catch (error) {
+        } catch {
             alert('Error submitting booking.');
         } finally {
             setSubmitting(false);
@@ -116,29 +116,36 @@ function BookingForm() {
         );
     }
 
+    if (!session) {
+        return (
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-brand-secondary/20 text-center">
+                <h2 className="text-2xl font-bold font-serif text-gray-900 mb-4">Sign In to Book</h2>
+                <p className="text-gray-600 mb-8">Please sign in with your Google account to book an appointment. This helps us confirm your booking and send you updates.</p>
+                <div className="flex justify-center">
+                    <GoogleSignInButton />
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="bg-white p-8 rounded-2xl shadow-lg border border-brand-secondary/20">
             <h2 className="text-2xl font-bold font-serif text-gray-900 mb-6">Book Your Appointment</h2>
 
-            {/* Auth Section */}
+            {/* Auth Info */}
             <div className="mb-8">
-                {!session ? (
-                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 text-center">
-                        <h3 className="text-lg font-semibold text-blue-900 mb-2">Have a Google Account?</h3>
-                        <p className="text-blue-700 mb-4 text-sm">Sign in to auto-fill your details and book faster.</p>
-                        <GoogleSignInButton />
-                    </div>
-                ) : (
-                    <div className="bg-green-50 border border-green-100 rounded-xl p-4 flex items-center gap-4">
-                        {session.user?.image && (
+                <div className="bg-green-50 border border-green-100 rounded-xl p-4 flex items-center gap-4">
+                    {session.user?.image && (
+                        <>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={session.user.image} alt={session.user.name || 'User'} className="w-10 h-10 rounded-full" />
-                        )}
-                        <div>
-                            <p className="text-green-800 font-medium">Welcome, {session.user?.name}!</p>
-                            <p className="text-green-600 text-xs">You are signed in with {session.user?.email}</p>
-                        </div>
+                        </>
+                    )}
+                    <div>
+                        <p className="text-green-800 font-medium">Welcome, {session.user?.name}!</p>
+                        <p className="text-green-600 text-xs">Booking as {session.user?.email}</p>
                     </div>
-                )}
+                </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -154,16 +161,7 @@ function BookingForm() {
                             placeholder="Enter your full name"
                         />
                     </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Email Address (Optional)</label>
-                        <input
-                            type="email"
-                            value={formData.email}
-                            onChange={e => setFormData({ ...formData, email: e.target.value })}
-                            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none"
-                            placeholder="your.email@example.com"
-                        />
-                    </div>
+                    {/* Email field removed - using session email */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number (10 digits)</label>
                         <input
@@ -205,7 +203,7 @@ function BookingForm() {
                                 className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none disabled:bg-gray-50"
                             >
                                 <option value="">Select Service</option>
-                                {availableServices.map((s: any) => (
+                                {availableServices.map((s: { id: string; name: string; price: number }) => (
                                     <option key={s.id} value={s.name}>{s.name} (₹{s.price})</option>
                                 ))}
                             </select>
@@ -288,7 +286,7 @@ function BookingForm() {
                     Payment accepted in parlour by Cash or UPI. No online payment required.
                 </p>
             </form>
-        </div>
+        </div >
     );
 }
 
