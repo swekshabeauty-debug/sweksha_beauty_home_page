@@ -28,17 +28,8 @@ export interface BookingDetails {
  * Send booking alert email to admin
  */
 export async function sendAdminBookingAlert(booking: BookingDetails) {
-    // Determine the base URL
-    let baseUrl = process.env.NEXT_PUBLIC_APP_URL;
-
-    if (!baseUrl) {
-        if (process.env.VERCEL_URL) {
-            baseUrl = `https://${process.env.VERCEL_URL}`;
-        } else {
-            // Fallback to production URL if env vars are missing
-            baseUrl = 'https://sweksha-beauty-home-page.vercel.app';
-        }
-    }
+    // Force production URL for admin emails as requested
+    const baseUrl = 'https://sweksha-beauty-home-page.vercel.app';
 
     console.log('🔗 Generating email link with base URL:', baseUrl);
 
