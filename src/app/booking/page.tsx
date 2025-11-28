@@ -19,6 +19,7 @@ function BookingForm() {
         phone: '',
         serviceCategory: '',
         service: '',
+        price: 0,
         package: preselectedPackage || '',
         date: '',
         time: '',
@@ -54,7 +55,8 @@ function BookingForm() {
                             setFormData(prev => ({
                                 ...prev,
                                 serviceCategory: category.name,
-                                service: preselectedService
+                                service: preselectedService,
+                                price: foundService.price || 0
                             }));
                             break;
                         }
@@ -79,7 +81,7 @@ function BookingForm() {
             if (res.ok) {
                 setSuccess(true);
                 // Reset form
-                setFormData({ name: '', email: '', phone: '', serviceCategory: '', service: '', package: '', date: '', time: '', notes: '' });
+                setFormData({ name: '', email: '', phone: '', serviceCategory: '', service: '', price: 0, package: '', date: '', time: '', notes: '' });
             } else {
                 alert('Something went wrong. Please try again.');
             }
@@ -185,7 +187,7 @@ function BookingForm() {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Service Category</label>
                             <select
                                 value={formData.serviceCategory}
-                                onChange={e => setFormData({ ...formData, serviceCategory: e.target.value, service: '' })}
+                                onChange={e => setFormData({ ...formData, serviceCategory: e.target.value, service: '', price: 0 })}
                                 className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none"
                             >
                                 <option value="">Select Category</option>
@@ -198,7 +200,14 @@ function BookingForm() {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Specific Service</label>
                             <select
                                 value={formData.service}
-                                onChange={e => setFormData({ ...formData, service: e.target.value })}
+                                onChange={e => {
+                                    const selectedService = availableServices.find((s: any) => s.name === e.target.value);
+                                    setFormData({
+                                        ...formData,
+                                        service: e.target.value,
+                                        price: selectedService ? selectedService.price : 0
+                                    });
+                                }}
                                 disabled={!formData.serviceCategory}
                                 className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none disabled:bg-gray-50"
                             >
