@@ -35,14 +35,15 @@ export async function sendAdminBookingAlert(booking: BookingDetails) {
         if (process.env.VERCEL_URL) {
             baseUrl = `https://${process.env.VERCEL_URL}`;
         } else {
-            // Fallback for local development or if env vars are missing
-            baseUrl = 'http://localhost:3000';
+            // Fallback to production URL if env vars are missing
+            baseUrl = 'https://sweksha-beauty-home-page.vercel.app';
         }
     }
 
     console.log('🔗 Generating email link with base URL:', baseUrl);
 
-    const confirmLink = `${baseUrl}/api/bookings/confirm/${booking.id}`;
+    // Link to the admin panel bookings page instead of direct API confirmation
+    const confirmLink = `${baseUrl}/admin/bookings`;
 
     const htmlContent = `
         <!DOCTYPE html>
@@ -121,7 +122,7 @@ export async function sendAdminBookingAlert(booking: BookingDetails) {
                     ` : ''}
                     
                     <div style="text-align: center;">
-                        <a href="${confirmLink}" class="confirm-btn">✅ Confirm Booking</a>
+                        <a href="${confirmLink}" class="confirm-btn">View Request in Admin</a>
                     </div>
                 </div>
                 <div class="footer">
