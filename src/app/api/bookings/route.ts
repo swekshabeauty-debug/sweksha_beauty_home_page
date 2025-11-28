@@ -6,7 +6,7 @@ import { sendAdminBookingAlert } from '@/lib/notifications';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { name, email, phone, serviceCategory, service, package: pkg, date, time, notes } = body;
+        const { name, email, phone, serviceCategory, service, price, package: pkg, date, time, notes } = body;
 
         // Validation
         if (!name || !phone || (!service && !pkg) || !date || !time) {
@@ -30,6 +30,7 @@ export async function POST(request: Request) {
             phone,
             serviceCategory: serviceCategory || null,
             service: service || 'Package Booking',
+            price: price || 0,
             package: pkg || null,
             date,
             time,
