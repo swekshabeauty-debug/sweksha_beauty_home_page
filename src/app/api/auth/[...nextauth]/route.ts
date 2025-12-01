@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 const handler = NextAuth({
     providers: [
@@ -7,6 +8,18 @@ const handler = NextAuth({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         }),
+        CredentialsProvider({
+            name: "Admin Password",
+            credentials: {
+                password: { label: "Password", type: "password" }
+            },
+            async authorize(credentials) {
+                if (credentials?.password === "Sri Raj 4321#@") {
+                    return { id: "admin", name: "Admin", email: "admin@swekshabeauty.com" };
+                }
+                return null;
+            }
+        })
     ],
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
