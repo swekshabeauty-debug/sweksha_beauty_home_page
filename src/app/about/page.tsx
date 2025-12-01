@@ -22,7 +22,7 @@ export default async function AboutPage() {
                     <div className="md:w-1/2">
                         <div className="relative h-96 w-full rounded-2xl overflow-hidden shadow-lg">
                             <Image
-                                src="/images/about-placeholder.jpg"
+                                src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=1000&auto=format&fit=crop"
                                 alt="About Sweksha Beauty"
                                 fill
                                 className="object-cover"
