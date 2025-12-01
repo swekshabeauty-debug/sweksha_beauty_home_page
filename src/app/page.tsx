@@ -37,7 +37,7 @@ export default function Home() {
   // Get Instagram images (marked specifically for Instagram)
   const instagramImages = gallery.filter((img: any) => img.isInstagram).slice(0, 6);
   while (instagramImages.length < 6) {
-    instagramImages.push({ id: `placeholder-${instagramImages.length}`, url: '/images/hero-placeholder.jpg', caption: 'Sweksha Beauty', isInstagram: false });
+    instagramImages.push({ id: `placeholder-${instagramImages.length}`, url: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80', caption: 'Sweksha Beauty', isInstagram: false });
   }
 
   // JSON-LD Structured Data
@@ -45,7 +45,7 @@ export default function Home() {
     '@context': 'https://schema.org',
     '@type': 'BeautySalon',
     name: 'Sweksha Beauty',
-    image: 'https://swekshabeauty.com/images/hero-placeholder.jpg',
+    image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
     url: 'https://swekshabeauty.com',
     telephone: '+919065347011',
     address: {
@@ -109,7 +109,7 @@ export default function Home() {
           }}
         >
           <Image
-            src={content.home.heroImage || '/images/hero-placeholder.jpg'}
+            src={content.home.heroImage || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'}
             alt="Sweksha Beauty Hero"
             fill
             className="object-cover brightness-75"
@@ -325,7 +325,7 @@ export default function Home() {
               >
                 {/* In a real app, these would be real images. Using placeholders for now if no gallery data */}
                 <Image
-                  src={img.url || '/images/hero-placeholder.jpg'}
+                  src={img.url || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'}
                   alt={img.caption || 'Instagram Post'}
                   fill
                   className="object-cover"
