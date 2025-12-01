@@ -21,7 +21,7 @@ export default function AdminLayout({
         if (status === 'unauthenticated') {
             router.push('/admin/login');
         } else if (status === 'authenticated') {
-            const allowedEmails = ['swekshabeauty@gmail.com', 'jayant.kgp81@gmail.com'];
+            const allowedEmails = ['swekshabeauty@gmail.com', 'jayant.kgp81@gmail.com', 'admin@swekshabeauty.com'];
             if (session?.user?.email && !allowedEmails.includes(session.user.email)) {
                 // User is logged in but not authorized
                 router.push('/admin/login?error=AccessDenied');
