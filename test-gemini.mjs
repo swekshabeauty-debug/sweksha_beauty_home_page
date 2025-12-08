@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv'; // Not needed since we hardcoded the key
 
 // Manually load env since we are running with node directly
 // Hardcoding the key for the test script based on user input to be sure
