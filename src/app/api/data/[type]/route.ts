@@ -19,6 +19,7 @@ export async function GET(
             case 'gallery': data = await db.getGallery(); break;
             case 'content': data = await db.getContent(); break;
             case 'settings': data = await db.getSettings(); break;
+            case 'faq': data = await db.getFAQ(); break;
             default: return NextResponse.json({ error: 'Invalid type' }, { status: 400 });
         }
         return NextResponse.json(data);
@@ -45,6 +46,7 @@ export async function POST(
             case 'gallery': await db.saveGallery(body); break;
             case 'content': await db.saveContent(body); break;
             case 'settings': await db.saveSettings(body); break;
+            case 'faq': await db.saveFAQ(body); break;
             default: return NextResponse.json({ error: 'Invalid type' }, { status: 400 });
         }
         return NextResponse.json({ success: true });
