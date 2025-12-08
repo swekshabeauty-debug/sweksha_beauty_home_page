@@ -15,10 +15,10 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const { message, history } = await req.json();
+        const { message, history, image } = await req.json();
 
-        if (!message) {
-            return NextResponse.json({ error: 'Message is required' }, { status: 400 });
+        if (!message && !image) {
+            return NextResponse.json({ error: 'Message or image is required' }, { status: 400 });
         }
 
         // Fetch services dynamically
@@ -35,30 +35,35 @@ export async function POST(req: NextRequest) {
 ${servicesList}
 
 **Your Role:**
-- Answer beauty-related questions professionally
-- Suggest suitable services based on customer needs
-- Provide precautions and aftercare tips
-- Share natural beauty tips
-- Recommend treatments for specific concerns
-- Respond in the same language the customer uses (Hindi/English/Hinglish)
-- Be friendly, professional, and helpful
-- Always mention you're located at Haveli Kharagpur, Munger when relevant
+- Answer beauty-related questions professionally.
+- **Image Analysis**: If the user provides an image, analyze it for skin type, skin concerns (acne, pigmentation, wrinkles, dryness), or hair condition.
+- Recommend suitable services from the provided list based on your analysis or the user's question.
+- Provide precautions and aftercare tips.
+- Share natural beauty tips.
+- Respond in the same language the customer uses (Hindi/English/Hinglish).
+- Be friendly, professional, and helpful.
+- Always mention you're located at Haveli Kharagpur, Munger when relevant.
 
 **Important:**
 - If asked about pricing, suggest customers call +919065347011 or visit the salon.
 - Encourage booking appointments through the website or by calling.
-- Don't make medical claims, stick to beauty advice
-- Be culturally sensitive and respectful
+- Don't make medical claims, stick to beauty advice.
+- Be culturally sensitive and respectful.
 
 Answer the customer's question now.`;
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
         // Build conversation history
-        const chatHistory = history?.map((msg: any) => ({
-            role: msg.role === 'user' ? 'user' : 'model',
-            parts: [{ text: msg.content }],
-        })) || [];
+        const chatHistory = history?.map((msg: any) => {
+            const parts = [{ text: msg.content }];
+            // Note: History with images sends text representation mainly, or previous image analysis context.
+            // Simplified for now to text history. complex multimodal history needs proper formatting.
+            return {
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: parts,
+            };
+        }) || [];
 
         const chat = model.startChat({
             history: [
@@ -74,7 +79,22 @@ Answer the customer's question now.`;
             ],
         });
 
-        const result = await chat.sendMessage(message);
+        const parts: any[] = [];
+        if (message) {
+            parts.push({ text: message });
+        }
+        if (image) {
+            // image is expected to be base64 string without data prefix if possible, or handle stripping
+            const base64Data = image.split(',')[1] || image;
+            parts.push({
+                inlineData: {
+                    mimeType: 'image/jpeg', // Assuming jpeg/png, gemini handles common formats
+                    data: base64Data
+                }
+            });
+        }
+
+        const result = await chat.sendMessage(parts);
         const response = result.response;
         const text = response.text();
 
