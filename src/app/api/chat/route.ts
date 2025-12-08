@@ -52,7 +52,7 @@ ${servicesList}
 
 Answer the customer's question now.`;
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
         // Build conversation history
         const chatHistory = history?.map((msg: any) => {
