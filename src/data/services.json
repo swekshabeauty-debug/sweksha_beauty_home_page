@@ -9,7 +9,8 @@
         "price": "50",
         "duration": "10 min",
         "description": "Shape your eyebrows perfectly.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1522337660859-02fbefca4702?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "thread_upperlip",
@@ -17,7 +18,8 @@
         "price": "30",
         "duration": "5 min",
         "description": "Remove upper lip hair.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1522337660859-02fbefca4702?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "wax_full_body",
@@ -26,7 +28,7 @@
         "duration": "60 min",
         "description": "Complete body waxing for smooth skin.",
         "active": true,
-        "image": "/uploads/waxing_service.png"
+        "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "wax_face",
@@ -35,7 +37,7 @@
         "duration": "15 min",
         "description": "Gentle face waxing.",
         "active": true,
-        "image": "/uploads/waxing_service.png"
+        "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "wax_arms_full",
@@ -43,7 +45,8 @@
         "price": "300",
         "duration": "20 min",
         "description": "Full arms waxing.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "wax_legs_full",
@@ -51,7 +54,8 @@
         "price": "500",
         "duration": "30 min",
         "description": "Full legs waxing.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "wax_underarms",
@@ -59,7 +63,8 @@
         "price": "100",
         "duration": "10 min",
         "description": "Underarms waxing.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       }
     ]
   },
@@ -73,7 +78,8 @@
         "price": "120",
         "duration": "20 min",
         "description": "Skin brightening bleach.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "bleach_fem_gold",
@@ -81,7 +87,8 @@
         "price": "130",
         "duration": "20 min",
         "description": "Golden glow bleach.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "facial_natures_gold",
@@ -90,7 +97,7 @@
         "duration": "45 min",
         "description": "Gold radiance facial.",
         "active": true,
-        "image": "/uploads/facial_service.png"
+        "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "facial_astaberry",
@@ -98,7 +105,8 @@
         "price": "150",
         "duration": "45 min",
         "description": "Fruit nourishment for skin.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "facial_aquaglo",
@@ -107,7 +115,7 @@
         "duration": "50 min",
         "description": "Hydrating papaya facial.",
         "active": true,
-        "image": "/uploads/facial_service.png"
+        "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "facial_vlcc",
@@ -115,7 +123,8 @@
         "price": "800",
         "duration": "60 min",
         "description": "Premium VLCC facial treatment.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "facial_lotus",
@@ -123,7 +132,8 @@
         "price": "1200",
         "duration": "60 min",
         "description": "Diamond shine and polish.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "facial_shahnaz",
@@ -131,7 +141,8 @@
         "price": "1000",
         "duration": "60 min",
         "description": "Herbal beauty treatment.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "facial_natures_silver",
@@ -139,7 +150,8 @@
         "price": "600",
         "duration": "50 min",
         "description": "Silver detox facial.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "face_detan",
@@ -147,7 +159,8 @@
         "price": "800",
         "duration": "45 min",
         "description": "Removes tan and restores glow.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       }
     ]
   },
@@ -161,7 +174,8 @@
         "price": "300",
         "duration": "30 min",
         "description": "Stylish haircut by experts.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "hair_spa",
@@ -170,7 +184,7 @@
         "duration": "60 min",
         "description": "Relaxing hair spa for healthy hair.",
         "active": true,
-        "image": "/uploads/hair_service.png"
+        "image": "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "hair_straight",
@@ -178,7 +192,8 @@
         "price": "3000",
         "duration": "180 min",
         "description": "Permanent hair straightening.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "hair_curl",
@@ -186,7 +201,8 @@
         "price": "1500",
         "duration": "60 min",
         "description": "Temporary or semi-permanent curls.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "hair_color",
@@ -194,7 +210,8 @@
         "price": "3000",
         "duration": "120 min",
         "description": "Ammonia-free hair color.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       }
     ]
   },
@@ -208,7 +225,8 @@
         "price": "500",
         "duration": "45 min",
         "description": "Complete hand care.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1632345031635-fe5ae5272b97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "pedicure",
@@ -216,7 +234,8 @@
         "price": "600",
         "duration": "45 min",
         "description": "Relaxing foot care.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1632345031635-fe5ae5272b97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "nail_ext",
@@ -224,7 +243,8 @@
         "price": "1500",
         "duration": "90 min",
         "description": "Gel or Acrylic nail extensions.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1632345031635-fe5ae5272b97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "mehndi_full",
@@ -233,7 +253,7 @@
         "duration": "60 min",
         "description": "Intricate full hand design.",
         "active": true,
-        "image": "/uploads/mehndi_design.png"
+        "image": "https://images.unsplash.com/photo-1632345031635-fe5ae5272b97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "mehndi_half",
@@ -242,7 +262,7 @@
         "duration": "30 min",
         "description": "Beautiful half hand design.",
         "active": true,
-        "image": "/uploads/mehndi_design.png"
+        "image": "https://images.unsplash.com/photo-1632345031635-fe5ae5272b97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       }
     ]
   },
@@ -256,7 +276,8 @@
         "price": "2500",
         "duration": "90 min",
         "description": "Glamorous look for parties.",
-        "active": true
+        "active": true,
+        "image": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "makeup_bridal",
@@ -265,7 +286,7 @@
         "duration": "180 min",
         "description": "Complete bridal makeover including trial.",
         "active": true,
-        "image": "/uploads/bridal_makeup.png"
+        "image": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       }
     ]
   },
@@ -280,7 +301,7 @@
         "duration": "15 min",
         "description": "Safe and hygienic ear piercing.",
         "active": true,
-        "image": "/uploads/piercing_service.png"
+        "image": "https://images.unsplash.com/photo-1606907568152-4a0b23267793?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       },
       {
         "id": "pierce_nose",
@@ -289,7 +310,7 @@
         "duration": "15 min",
         "description": "Safe and hygienic nose piercing.",
         "active": true,
-        "image": "/uploads/piercing_service.png"
+        "image": "https://images.unsplash.com/photo-1606907568152-4a0b23267793?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       }
     ]
   }
