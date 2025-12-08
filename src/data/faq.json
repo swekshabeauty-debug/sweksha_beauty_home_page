@@ -1,0 +1,27 @@
+[
+    {
+        "id": "faq_1",
+        "question": "Do I need to book an appointment in advance?",
+        "answer": "While we accept walk-ins, we highly recommend booking an appointment to ensure you don't have to wait, especially on weekends."
+    },
+    {
+        "id": "faq_2",
+        "question": "What brands of products do you use?",
+        "answer": "We use only premium and safe brands like L'Oreal, O3+, VLCC, Lotus, and specialized herbal products for sensitive skin."
+    },
+    {
+        "id": "faq_3",
+        "question": "Do you offer bridal packages?",
+        "answer": "Yes! We have comprehensive bridal packages that include makeup, hair, skin care, and body polishing. We also offer pre-bridal packages."
+    },
+    {
+        "id": "faq_4",
+        "question": "Is home service available?",
+        "answer": "Currently, we provide services only at our parlour to ensure the best hygiene and equipment availability. However, for bridal makeup, we can discuss venue visits."
+    },
+    {
+        "id": "faq_5",
+        "question": "What are your opening hours?",
+        "answer": "We are open from 10:00 AM to 7:30 PM, all days of the week."
+    }
+]
