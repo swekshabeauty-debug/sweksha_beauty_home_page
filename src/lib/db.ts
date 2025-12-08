@@ -86,3 +86,6 @@ export const saveGallery = (data: any[]) => writeList('gallery', data);
 
 export const getContent = () => readDocument<any>('data', 'content');
 export const saveContent = (data: any) => writeDocument('data', 'content', data);
+
+export const getFAQ = () => readList<any>('faq');
+export const saveFAQ = (data: any[]) => writeList('faq', data);
