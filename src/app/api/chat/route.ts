@@ -99,8 +99,24 @@ Answer the customer's question now.`;
         const text = response.text();
 
         return NextResponse.json({ response: text });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Chat API error:', error);
+
+        // Handle specific Google AI errors
+        if (error.message?.includes('429') || error.status === 429) {
+            return NextResponse.json(
+                { response: "I'm receiving too many requests right now. Please wait a minute and try again. (Rate Limit Exceeded)" },
+                { status: 429 }
+            );
+        }
+
+        if (error.message?.includes('503') || error.status === 503) {
+            return NextResponse.json(
+                { response: "The AI service is currently overloaded. Please try again later." },
+                { status: 503 }
+            );
+        }
+
         return NextResponse.json(
             { error: 'Failed to process request' },
             { status: 500 }
