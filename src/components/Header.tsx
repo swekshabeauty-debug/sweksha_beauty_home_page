@@ -28,9 +28,8 @@ export default function Header() {
     }, [pathname]);
 
     return (
-        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm border-b border-brand-secondary/20">
+        <header className="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur-sm shadow-sm border-b border-brand-secondary/20 dark:border-white/10 transition-colors duration-300">
             <div className="container mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-3 sm:py-4 flex justify-between items-center">
-                {/* Logo - Responsive Size */}
                 {/* Logo - Responsive Size */}
                 <Link href="/" className="flex items-center">
                     <Image
@@ -38,18 +37,18 @@ export default function Header() {
                         alt="Sweksha Beauty"
                         width={180}
                         height={60}
-                        className="h-12 sm:h-14 w-auto object-contain"
+                        className="h-10 sm:h-12 md:h-14 w-auto object-contain"
                         priority
                     />
                 </Link>
 
-                {/* Desktop/Tablet Nav */}
+                {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-4 lg:gap-8">
                     {navLinks.map((link) => (
                         <Link
                             key={link.name}
                             href={link.href}
-                            className={`text-sm lg:text-base font-medium transition-colors hover:text-brand-primary ${pathname === link.href ? 'text-brand-primary' : 'text-gray-600'
+                            className={`text-sm lg:text-base font-medium transition-colors hover:text-brand-primary ${pathname === link.href ? 'text-brand-primary' : 'text-gray-600 dark:text-gray-300'
                                 }`}
                         >
                             {link.name}
@@ -66,7 +65,7 @@ export default function Header() {
 
                     {/* User Profile / Sign In */}
                     {session ? (
-                        <div className="flex items-center gap-3 pl-2 border-l border-gray-200">
+                        <div className="flex items-center gap-3 pl-2 border-l border-gray-200 dark:border-gray-700">
                             {session.user?.image ? (
                                 <img src={session.user.image} alt="User" className="w-8 h-8 rounded-full border border-gray-200" />
                             ) : (
@@ -85,7 +84,7 @@ export default function Header() {
                     ) : (
                         <button
                             onClick={() => signIn('google')}
-                            className="text-sm font-medium text-gray-600 hover:text-brand-primary"
+                            className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-brand-primary"
                         >
                             Sign In
                         </button>
@@ -99,9 +98,9 @@ export default function Header() {
                     </Link>
                 </nav>
 
-                {/* Mobile Menu Button */}
+                {/* Mobile Menu Button - Fixed Breakpoint (md:hidden to match hidden md:flex) */}
                 <button
-                    className="lg:hidden text-gray-700 p-2"
+                    className="md:hidden text-gray-700 dark:text-white p-2"
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -110,20 +109,21 @@ export default function Header() {
 
             {/* Mobile Nav */}
             {isOpen && (
-                <div className="lg:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+                <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 absolute w-full shadow-lg h-screen md:h-auto">
                     <nav className="flex flex-col p-4 space-y-4">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className={`text-base font-medium ${pathname === link.href ? 'text-brand-primary' : 'text-gray-600'
+                                onClick={() => setIsOpen(false)}
+                                className={`text-base font-medium ${pathname === link.href ? 'text-brand-primary' : 'text-gray-600 dark:text-gray-300'
                                     }`}
                             >
                                 {link.name}
                             </Link>
                         ))}
 
-                        <div className="border-t border-gray-100 pt-4 flex flex-col gap-4">
+                        <div className="border-t border-gray-100 dark:border-gray-800 pt-4 flex flex-col gap-4">
                             {session ? (
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">
@@ -134,7 +134,7 @@ export default function Header() {
                                                 {session.user?.name?.[0] || 'U'}
                                             </div>
                                         )}
-                                        <span className="font-medium text-gray-900">{session.user?.name}</span>
+                                        <span className="font-medium text-gray-900 dark:text-white">{session.user?.name}</span>
                                     </div>
                                     <button
                                         onClick={() => signOut()}
@@ -146,7 +146,7 @@ export default function Header() {
                             ) : (
                                 <button
                                     onClick={() => signIn('google')}
-                                    className="text-left font-medium text-gray-600 hover:text-brand-primary"
+                                    className="text-left font-medium text-gray-600 dark:text-gray-300 hover:text-brand-primary"
                                 >
                                     Sign In with Google
                                 </button>
