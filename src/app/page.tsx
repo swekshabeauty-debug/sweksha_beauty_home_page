@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Star, ArrowRight, CheckCircle, Sparkles, Instagram, Phone, Flower2, Image as ImageIcon, MessageCircle, ShieldCheck, Crown, HandPlatter, Package, Mail, Info, ChevronDown, ChevronUp, Quote } from 'lucide-react';
 import AskSwekshaChat from '@/components/AskSwekshaChat';
+import FadeIn from '@/components/animations/FadeIn';
 
 export default function Home() {
   const [content, setContent] = useState<any>(null);
@@ -34,6 +35,10 @@ export default function Home() {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log("Services Data:", services);
+  }, [services]);
 
   if (!content) return <div className="min-h-screen bg-brand-bg flex items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-brand-primary border-t-transparent rounded-full"></div></div>;
 
@@ -230,23 +235,22 @@ export default function Home() {
             ].map((item, i) => {
               const Icon = item.icon;
               return (
-                <motion.div
+                <FadeIn
                   key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.8 + i * 0.1 }}
+                  delay={i * 0.1}
                   className="snap-center shrink-0 w-28 sm:w-auto"
+                  width="fit-content"
                 >
                   <Link
                     href={item.href}
-                    className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-lg hover:shadow-xl transition flex flex-col items-center text-center gap-2 sm:gap-3 group h-full justify-center"
+                    className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-lg hover:shadow-xl transition flex flex-col items-center text-center gap-2 sm:gap-3 group h-full justify-center w-full"
                   >
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-brand-bg flex items-center justify-center text-brand-primary group-hover:bg-brand-secondary/20 transition">
                       <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
                     <span className="text-gray-700 font-medium text-xs sm:text-sm">{item.name}</span>
                   </Link>
-                </motion.div>
+                </FadeIn>
               );
             })}
           </div>
@@ -256,32 +260,24 @@ export default function Home() {
       {/* Why Choose Us - Enhanced Spacing */}
       <section className="py-8 sm:py-12 lg:py-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center font-serif"
-          >
-            Why Choose Us
-          </motion.h2>
+          <FadeIn>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center font-serif">
+              Why Choose Us
+            </h2>
+          </FadeIn>
 
           {/* Offer Banner - Responsive Padding */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-gradient-to-r from-brand-secondary to-brand-primary rounded-xl p-4 sm:p-6 md:p-8 mb-8 sm:mb-12 text-white text-center relative overflow-hidden shadow-md"
-          >
-            <div className="absolute top-0 left-0 w-full h-full opacity-10">
-              <Sparkles className="w-full h-full" />
+          <FadeIn delay={0.2}>
+            <div className="bg-gradient-to-r from-brand-secondary to-brand-primary rounded-xl p-4 sm:p-6 md:p-8 mb-8 sm:mb-12 text-white text-center relative overflow-hidden shadow-md">
+              <div className="absolute top-0 left-0 w-full h-full opacity-10">
+                <Sparkles className="w-full h-full" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold relative z-10 uppercase tracking-wide">
+                {activeBannerOffer.title}
+              </h3>
+              <p className="text-sm md:text-base opacity-90 relative z-10 mt-1">{activeBannerOffer.details}</p>
             </div>
-            <h3 className="text-xl md:text-2xl font-bold relative z-10 uppercase tracking-wide">
-              {activeBannerOffer.title}
-            </h3>
-            <p className="text-sm md:text-base opacity-90 relative z-10 mt-1">{activeBannerOffer.details}</p>
-          </motion.div>
+          </FadeIn>
 
           {/* Features Grid - Better Tablet Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 text-center">
@@ -292,19 +288,14 @@ export default function Home() {
             ].map((feature, i) => {
               const Icon = feature.icon;
               return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.2 }}
-                  className="flex flex-col items-center gap-4"
-                >
-                  <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-brand-primary shadow-sm">
-                    <Icon className="w-8 h-8" />
+                <FadeIn key={i} delay={i * 0.2}>
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-brand-primary shadow-sm">
+                      <Icon className="w-8 h-8" />
+                    </div>
+                    <h4 className="text-gray-700 font-medium">{feature.title}</h4>
                   </div>
-                  <h4 className="text-gray-700 font-medium">{feature.title}</h4>
-                </motion.div>
+                </FadeIn>
               );
             })}
           </div>
@@ -321,34 +312,29 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.flatMap(cat => cat.services).filter(s => s.active && s.image).slice(0, 4).map((service, i) => (
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group"
-              >
-                <div className="h-48 relative overflow-hidden">
-                  <Image
-                    src={service.image}
-                    alt={service.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition duration-500"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-gray-800 mb-1">{service.name}</h3>
-                  <p className="text-sm text-gray-500 mb-3 line-clamp-2">{service.description}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-brand-primary">₹{service.price}</span>
-                    <Link href={`/booking?service=${encodeURIComponent(service.name)}`} className="text-xs bg-gray-900 text-white px-3 py-1.5 rounded-full hover:bg-gray-700 transition">
-                      Book
-                    </Link>
+            {(Array.isArray(services) ? services : []).flatMap(cat => cat.services || []).filter(s => s.active && s.image).slice(0, 4).map((service, i) => (
+              <FadeIn key={service.id} delay={i * 0.1}>
+                <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group h-full">
+                  <div className="h-48 relative overflow-hidden">
+                    <Image
+                      src={service.image}
+                      alt={service.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition duration-500"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-bold text-gray-800 mb-1">{service.name}</h3>
+                    <p className="text-sm text-gray-500 mb-3 line-clamp-2">{service.description}</p>
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-brand-primary">₹{service.price}</span>
+                      <Link href={`/booking?service=${encodeURIComponent(service.name)}`} className="text-xs bg-gray-900 text-white px-3 py-1.5 rounded-full hover:bg-gray-700 transition">
+                        Book
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
+              </FadeIn>
             ))}
           </div>
 
@@ -364,36 +350,40 @@ export default function Home() {
       <section className="py-16 px-4 bg-white">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col md:flex-row items-center gap-10">
-            <div className="w-full md:w-1/2 relative h-[400px] rounded-2xl overflow-hidden shadow-xl">
-              <Image
-                src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="Sweksha Beauty Salon Interior"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="w-full md:w-1/2 text-center md:text-left">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 font-serif">Experience Beauty & Relaxation</h2>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                At Sweksha Beauty, we believe that beauty is not just about looking good, but feeling good. Our expert team is dedicated to providing you with the best services in a hygienic and relaxing environment.
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                  <CheckCircle className="w-5 h-5 text-brand-primary" /> Expert Stylists
+            <FadeIn className="w-full md:w-1/2">
+              <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl">
+                <Image
+                  src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  alt="Sweksha Beauty Salon Interior"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </FadeIn>
+            <FadeIn className="w-full md:w-1/2" delay={0.2}>
+              <div className="text-center md:text-left">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 font-serif">Experience Beauty & Relaxation</h2>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  At Sweksha Beauty, we believe that beauty is not just about looking good, but feeling good. Our expert team is dedicated to providing you with the best services in a hygienic and relaxing environment.
+                </p>
+                <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                    <CheckCircle className="w-5 h-5 text-brand-primary" /> Expert Stylists
+                  </div>
+                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                    <CheckCircle className="w-5 h-5 text-brand-primary" /> Premium Products
+                  </div>
+                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                    <CheckCircle className="w-5 h-5 text-brand-primary" /> Hygienic Space
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                  <CheckCircle className="w-5 h-5 text-brand-primary" /> Premium Products
-                </div>
-                <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                  <CheckCircle className="w-5 h-5 text-brand-primary" /> Hygienic Space
+                <div className="mt-8">
+                  <Link href="/about" className="bg-gray-900 text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition shadow-lg">
+                    Learn More About Us
+                  </Link>
                 </div>
               </div>
-              <div className="mt-8">
-                <Link href="/about" className="bg-gray-900 text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition shadow-lg">
-                  Learn More About Us
-                </Link>
-              </div>
-            </div>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -404,27 +394,24 @@ export default function Home() {
           <Sparkles className="w-full h-full text-brand-primary" />
         </div>
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-10 text-center font-serif">What Our Clients Say</h2>
+          <FadeIn>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-10 text-center font-serif">What Our Clients Say</h2>
+          </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {reviews.filter(r => r.active).slice(0, 3).map((review, i) => (
-              <motion.div
-                key={review.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.2 }}
-                className="bg-white p-6 rounded-2xl relative shadow-sm"
-              >
-                <Quote className="w-8 h-8 text-brand-primary/20 absolute top-4 right-4" />
-                <div className="flex gap-1 mb-3">
-                  {[...Array(5)].map((_, starI) => (
-                    <Star key={starI} className={`w-4 h-4 ${starI < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} />
-                  ))}
+              <FadeIn key={review.id} delay={i * 0.2}>
+                <div className="bg-white p-6 rounded-2xl relative shadow-sm h-full">
+                  <Quote className="w-8 h-8 text-brand-primary/20 absolute top-4 right-4" />
+                  <div className="flex gap-1 mb-3">
+                    {[...Array(5)].map((_, starI) => (
+                      <Star key={starI} className={`w-4 h-4 ${starI < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 italic mb-4 text-sm">"{review.text}"</p>
+                  <p className="font-bold text-gray-900 text-sm">- {review.name}</p>
                 </div>
-                <p className="text-gray-700 italic mb-4 text-sm">"{review.text}"</p>
-                <p className="font-bold text-gray-900 text-sm">- {review.name}</p>
-              </motion.div>
+              </FadeIn>
             ))}
           </div>
 
@@ -443,26 +430,21 @@ export default function Home() {
 
           <div className="space-y-4">
             {faq.map((item, i) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-brand-bg/20 rounded-xl overflow-hidden"
-              >
-                <details className="group">
-                  <summary className="flex justify-between items-center p-4 cursor-pointer list-none font-medium text-gray-800">
-                    <span>{item.question}</span>
-                    <span className="transition group-open:rotate-180">
-                      <ChevronDown className="w-5 h-5 text-gray-400" />
-                    </span>
-                  </summary>
-                  <div className="px-4 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-100/50 pt-2">
-                    {item.answer}
-                  </div>
-                </details>
-              </motion.div>
+              <FadeIn key={item.id} delay={i * 0.1}>
+                <div className="bg-brand-bg/20 rounded-xl overflow-hidden">
+                  <details className="group">
+                    <summary className="flex justify-between items-center p-4 cursor-pointer list-none font-medium text-gray-800">
+                      <span>{item.question}</span>
+                      <span className="transition group-open:rotate-180">
+                        <ChevronDown className="w-5 h-5 text-gray-400" />
+                      </span>
+                    </summary>
+                    <div className="px-4 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-100/50 pt-2">
+                      {item.answer}
+                    </div>
+                  </details>
+                </div>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -475,30 +457,24 @@ export default function Home() {
             Instagram @swekshabeauty
           </h2>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8"
-          >
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
             {instagramImages.map((img: any, i: number) => (
-              <motion.div
-                key={i}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-                className="aspect-square relative rounded-xl overflow-hidden bg-gray-100"
-              >
-                {/* In a real app, these would be real images. Using placeholders for now if no gallery data */}
-                <Image
-                  src={img.url || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'}
-                  alt={img.caption || 'Instagram Post'}
-                  fill
-                  className="object-cover"
-                />
-              </motion.div>
+              <FadeIn key={i} delay={i * 0.1}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                  className="aspect-square relative rounded-xl overflow-hidden bg-gray-100"
+                >
+                  <Image
+                    src={img.url || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'}
+                    alt={img.caption || 'Instagram Post'}
+                    fill
+                    className="object-cover"
+                  />
+                </motion.div>
+              </FadeIn>
             ))}
-          </motion.div>
+          </div>
 
           <a
             href="https://instagram.com/sweksha_beauty"
@@ -536,4 +512,3 @@ export default function Home() {
     </div>
   );
 }
-
