@@ -13,8 +13,8 @@
   --color-brand-bg: var(--background);
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-outfit);
+  --font-sans: var(--font-outfit);
+  --font-serif: var(--font-inter);
 }
 
 @media (prefers-color-scheme: dark) {
