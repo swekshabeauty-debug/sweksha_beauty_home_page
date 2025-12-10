@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FFF3EB; /* Warm light peach background */
+  --background: #FFF3EB;
+  /* Warm light peach background */
   --foreground: #4A4A4A;
-  --brand-primary: #F29D8D; /* Salmon pink */
-  --brand-secondary: #FCD8B8; /* Light peach */
+  --brand-primary: #F29D8D;
+  /* Salmon pink */
+  --brand-secondary: #FCD8B8;
+  /* Light peach */
 }
 
 @theme inline {
@@ -21,6 +24,10 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --brand-primary: #F29D8D;
+    /* Keep salmon or make slightly lighter/pop */
+    --brand-secondary: #2A1C19;
+    /* Dark brown/peach for dark mode bg */
   }
 }
 
