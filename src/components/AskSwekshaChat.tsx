@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
+import { MessageCircle, X, Send, Loader2, ImagePlus } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 interface Message {
     role: 'user' | 'assistant';
@@ -14,6 +15,7 @@ interface AskSwekshaChatProps {
 }
 
 export default function AskSwekshaChat({ customTrigger }: AskSwekshaChatProps) {
+    const { data: session } = useSession();
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
@@ -24,7 +26,9 @@ export default function AskSwekshaChat({ customTrigger }: AskSwekshaChatProps) {
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -36,29 +40,60 @@ export default function AskSwekshaChat({ customTrigger }: AskSwekshaChatProps) {
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages]);
+    }, [messages, selectedImage]);
+
+    const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedImage(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const sendMessage = async () => {
-        if (!input.trim() || isLoading) return;
+        if ((!input.trim() && !selectedImage) || isLoading) return;
 
-        const userMessage: Message = { role: 'user', content: input };
+        const userMessage: Message = {
+            role: 'user',
+            content: input + (selectedImage ? ' [Image Attached]' : '')
+        };
+        // Note: We don't display the image in chat history for simplicity yet, only text
+
         setMessages((prev) => [...prev, userMessage]);
+
+        const payload = {
+            message: input,
+            image: selectedImage, // Send base64 image
+            history: messages.slice(1),
+            userName: session?.user?.name || "Guest"
+        };
+
         setInput('');
+        setSelectedImage(null);
         setIsLoading(true);
 
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: input,
-                    history: messages.slice(1), // Exclude welcome message
-                }),
+                body: JSON.stringify(payload),
             });
 
             const data = await response.json();
 
             if (!response.ok) {
+                // If rate limited, just show the message without throwing a console error
+                if (response.status === 429) {
+                    const rateLimitMsg: Message = {
+                        role: 'assistant',
+                        content: data.response || "I'm busy right now. Please try again in 30 seconds."
+                    };
+                    setMessages((prev) => [...prev, rateLimitMsg]);
+                    return; // Exit normally
+                }
                 throw new Error(data.error || 'Failed to send message');
             }
 
@@ -67,15 +102,14 @@ export default function AskSwekshaChat({ customTrigger }: AskSwekshaChatProps) {
                 content: data.response,
             };
             setMessages((prev) => [...prev, assistantMessage]);
+
         } catch (error: any) {
             console.error('Error:', error);
             setMessages((prev) => [
                 ...prev,
                 {
                     role: 'assistant',
-                    content: error.message === 'Failed to send message'
-                        ? 'Main abhi available nahi hoon. Thodi der mein dobara try karein. 🙏'
-                        : 'Sorry, I encountered an error. Please try again.',
+                    content: error.message || 'Connection Error (Please Refresh Page)',
                 },
             ]);
         } finally {
@@ -140,21 +174,53 @@ export default function AskSwekshaChat({ customTrigger }: AskSwekshaChatProps) {
                 <div ref={messagesEndRef} />
             </div>
 
+            {/* Image Preview */}
+            {selectedImage && (
+                <div className="px-4 pt-2 bg-white/80 backdrop-blur-sm border-t border-gray-100 flex items-center gap-2">
+                    <div className="relative group">
+                        <img src={selectedImage} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-pink-200" />
+                        <button
+                            onClick={() => setSelectedImage(null)}
+                            className="absolute -top-2 -right-2 bg-rose-500 text-white rounded-full p-0.5 shadow-md hover:bg-rose-600 transition-all opacity-0 group-hover:opacity-100"
+                        >
+                            <X className="w-3 h-3" />
+                        </button>
+                    </div>
+                    <span className="text-xs text-gray-400">Image attached</span>
+                </div>
+            )}
+
             {/* Input */}
             <div className="p-4 bg-white/80 backdrop-blur-sm border-t border-gray-100">
                 <div className="flex gap-2 items-center bg-gray-50 border border-gray-200 rounded-full px-2 py-1 focus-within:ring-2 focus-within:ring-pink-500/20 focus-within:border-pink-500 transition-all duration-300">
+                    <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="p-2 text-gray-400 hover:text-pink-500 transition-colors"
+                        title="Upload Photo"
+                        disabled={isLoading}
+                    >
+                        <ImagePlus className="w-5 h-5" />
+                    </button>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        ref={fileInputRef}
+                        onChange={handleImageSelect}
+                    />
+
                     <input
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyPress={handleKeyPress}
-                        placeholder="Ask about beauty treatments..."
+                        placeholder={selectedImage ? "Describe your concern..." : "Ask about beauty treatments..."}
                         className="flex-1 px-3 py-2 bg-transparent focus:outline-none text-sm text-gray-800 placeholder:text-gray-400"
                         disabled={isLoading}
                     />
                     <button
                         onClick={sendMessage}
-                        disabled={!input.trim() || isLoading}
+                        disabled={(!input.trim() && !selectedImage) || isLoading}
                         className="bg-gradient-to-r from-rose-500 to-pink-600 text-white p-2 rounded-full hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 active:scale-95"
                     >
                         <Send className="w-4 h-4" />
