@@ -93,7 +93,7 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-brand-bg min-h-screen font-sans">
+    <div className="bg-brand-bg dark:bg-black min-h-screen font-sans transition-colors duration-300">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -243,12 +243,12 @@ export default function Home() {
                 >
                   <Link
                     href={item.href}
-                    className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-lg hover:shadow-xl transition flex flex-col items-center text-center gap-2 sm:gap-3 group h-full justify-center w-full"
+                    className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-lg hover:shadow-xl transition flex flex-col items-center text-center gap-2 sm:gap-3 group h-full justify-center w-full"
                   >
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-brand-bg flex items-center justify-center text-brand-primary group-hover:bg-brand-secondary/20 transition">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-brand-bg dark:bg-brand-primary/20 flex items-center justify-center text-brand-primary group-hover:bg-brand-secondary/20 transition">
                       <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
-                    <span className="text-gray-700 font-medium text-xs sm:text-sm">{item.name}</span>
+                    <span className="text-gray-700 dark:text-gray-200 font-medium text-xs sm:text-sm">{item.name}</span>
                   </Link>
                 </FadeIn>
               );
@@ -261,7 +261,7 @@ export default function Home() {
       <section className="py-8 sm:py-12 lg:py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <FadeIn>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center font-serif">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center font-serif">
               Why Choose Us
             </h2>
           </FadeIn>
@@ -290,10 +290,10 @@ export default function Home() {
               return (
                 <FadeIn key={i} delay={i * 0.2}>
                   <div className="flex flex-col items-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-brand-primary shadow-sm">
+                    <div className="w-16 h-16 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-brand-primary shadow-sm">
                       <Icon className="w-8 h-8" />
                     </div>
-                    <h4 className="text-gray-700 font-medium">{feature.title}</h4>
+                    <h4 className="text-gray-700 dark:text-gray-200 font-medium">{feature.title}</h4>
                   </div>
                 </FadeIn>
               );
@@ -304,17 +304,17 @@ export default function Home() {
 
 
       {/* Featured Services */}
-      <section className="py-12 px-4 bg-brand-bg/50">
+      <section className="py-12 px-4 bg-brand-bg/50 dark:bg-black/80">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2 font-serif">Featured Services</h2>
-            <p className="text-gray-600">Discover our most popular beauty treatments</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2 font-serif">Featured Services</h2>
+            <p className="text-gray-600 dark:text-gray-400">Discover our most popular beauty treatments</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {(Array.isArray(services) ? services : []).flatMap(cat => cat.services || []).filter(s => s.active && s.image).slice(0, 4).map((service, i) => (
               <FadeIn key={service.id} delay={i * 0.1}>
-                <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group h-full">
+                <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group h-full">
                   <div className="h-48 relative overflow-hidden">
                     <Image
                       src={service.image}
@@ -324,11 +324,11 @@ export default function Home() {
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="font-bold text-gray-800 mb-1">{service.name}</h3>
-                    <p className="text-sm text-gray-500 mb-3 line-clamp-2">{service.description}</p>
+                    <h3 className="font-bold text-gray-800 dark:text-white mb-1">{service.name}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">{service.description}</p>
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-brand-primary">₹{service.price}</span>
-                      <Link href={`/booking?service=${encodeURIComponent(service.name)}`} className="text-xs bg-gray-900 text-white px-3 py-1.5 rounded-full hover:bg-gray-700 transition">
+                      <Link href={`/booking?service=${encodeURIComponent(service.name)}`} className="text-xs bg-gray-900 dark:bg-white dark:text-gray-900 text-white px-3 py-1.5 rounded-full hover:bg-gray-700 dark:hover:bg-gray-200 transition">
                         Book
                       </Link>
                     </div>
@@ -347,7 +347,7 @@ export default function Home() {
       </section>
 
       {/* About Snippet */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-white dark:bg-gray-900">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col md:flex-row items-center gap-10">
             <FadeIn className="w-full md:w-1/2">
@@ -362,23 +362,23 @@ export default function Home() {
             </FadeIn>
             <FadeIn className="w-full md:w-1/2" delay={0.2}>
               <div className="text-center md:text-left">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 font-serif">Experience Beauty & Relaxation</h2>
-                <p className="text-gray-600 mb-6 leading-relaxed">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-4 font-serif">Experience Beauty & Relaxation</h2>
+                <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
                   At Sweksha Beauty, we believe that beauty is not just about looking good, but feeling good. Our expert team is dedicated to providing you with the best services in a hygienic and relaxing environment.
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                     <CheckCircle className="w-5 h-5 text-brand-primary" /> Expert Stylists
                   </div>
-                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                     <CheckCircle className="w-5 h-5 text-brand-primary" /> Premium Products
                   </div>
-                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                     <CheckCircle className="w-5 h-5 text-brand-primary" /> Hygienic Space
                   </div>
                 </div>
                 <div className="mt-8">
-                  <Link href="/about" className="bg-gray-900 text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition shadow-lg">
+                  <Link href="/about" className="bg-gray-900 dark:bg-white dark:text-gray-900 text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition shadow-lg">
                     Learn More About Us
                   </Link>
                 </div>
@@ -389,27 +389,27 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 px-4 bg-brand-bg/30 relative overflow-hidden">
+      <section className="py-16 px-4 bg-brand-bg/30 dark:bg-black/50 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
           <Sparkles className="w-full h-full text-brand-primary" />
         </div>
         <div className="container mx-auto max-w-4xl">
           <FadeIn>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-10 text-center font-serif">What Our Clients Say</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-10 text-center font-serif">What Our Clients Say</h2>
           </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {reviews.filter(r => r.active).slice(0, 3).map((review, i) => (
               <FadeIn key={review.id} delay={i * 0.2}>
-                <div className="bg-white p-6 rounded-2xl relative shadow-sm h-full">
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl relative shadow-sm h-full">
                   <Quote className="w-8 h-8 text-brand-primary/20 absolute top-4 right-4" />
                   <div className="flex gap-1 mb-3">
                     {[...Array(5)].map((_, starI) => (
-                      <Star key={starI} className={`w-4 h-4 ${starI < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} />
+                      <Star key={starI} className={`w-4 h-4 ${starI < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300 dark:text-gray-600'}`} />
                     ))}
                   </div>
-                  <p className="text-gray-700 italic mb-4 text-sm">"{review.text}"</p>
-                  <p className="font-bold text-gray-900 text-sm">- {review.name}</p>
+                  <p className="text-gray-700 dark:text-gray-300 italic mb-4 text-sm">"{review.text}"</p>
+                  <p className="font-bold text-gray-900 dark:text-white text-sm">- {review.name}</p>
                 </div>
               </FadeIn>
             ))}
@@ -424,22 +424,22 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-12 px-4 bg-white">
+      <section className="py-12 px-4 bg-white dark:bg-gray-900">
         <div className="container mx-auto max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center font-serif">Frequently Asked Questions</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center font-serif">Frequently Asked Questions</h2>
 
           <div className="space-y-4">
             {faq.map((item, i) => (
               <FadeIn key={item.id} delay={i * 0.1}>
-                <div className="bg-brand-bg/20 rounded-xl overflow-hidden">
+                <div className="bg-brand-bg/20 dark:bg-gray-800 rounded-xl overflow-hidden">
                   <details className="group">
-                    <summary className="flex justify-between items-center p-4 cursor-pointer list-none font-medium text-gray-800">
+                    <summary className="flex justify-between items-center p-4 cursor-pointer list-none font-medium text-gray-800 dark:text-gray-200">
                       <span>{item.question}</span>
                       <span className="transition group-open:rotate-180">
                         <ChevronDown className="w-5 h-5 text-gray-400" />
                       </span>
                     </summary>
-                    <div className="px-4 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-100/50 pt-2">
+                    <div className="px-4 pb-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed border-t border-gray-100/50 dark:border-gray-700 pt-2">
                       {item.answer}
                     </div>
                   </details>
@@ -451,9 +451,9 @@ export default function Home() {
       </section>
 
       {/* Instagram Section */}
-      <section className="py-12 px-4 bg-white">
+      <section className="py-12 px-4 bg-white dark:bg-gray-900">
         <div className="container mx-auto max-w-4xl text-center relative">
-          <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-8 font-serif">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-8 font-serif">
             Instagram @swekshabeauty
           </h2>
 
@@ -463,7 +463,7 @@ export default function Home() {
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
-                  className="aspect-square relative rounded-xl overflow-hidden bg-gray-100"
+                  className="aspect-square relative rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800"
                 >
                   <Image
                     src={img.url || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'}
@@ -480,17 +480,17 @@ export default function Home() {
             href="https://instagram.com/sweksha_beauty"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-brand-bg text-brand-primary px-8 py-2 rounded-full font-bold text-sm hover:bg-brand-secondary transition"
+            className="inline-block bg-brand-bg dark:bg-brand-primary/20 text-brand-primary px-8 py-2 rounded-full font-bold text-sm hover:bg-brand-secondary transition"
           >
             FOLLOW US
           </a>
 
           {/* Floating QR Code (Desktop) */}
-          <div className="hidden lg:block absolute -right-24 bottom-10 bg-white p-4 rounded-xl shadow-xl border border-gray-100 transform rotate-3 hover:rotate-0 transition">
-            <div className="w-24 h-24 bg-gray-900 rounded-lg mb-2 flex items-center justify-center text-white">
+          <div className="hidden lg:block absolute -right-24 bottom-10 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 transform rotate-3 hover:rotate-0 transition">
+            <div className="w-24 h-24 bg-gray-900 dark:bg-gray-100 rounded-lg mb-2 flex items-center justify-center text-white dark:text-gray-900">
               <Instagram className="w-12 h-12" />
             </div>
-            <p className="text-xs font-bold text-gray-600">Scan to Follow</p>
+            <p className="text-xs font-bold text-gray-600 dark:text-gray-300">Scan to Follow</p>
           </div>
         </div>
       </section>
