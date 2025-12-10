@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FloatingButtons from '@/components/FloatingButtons';
 import AuthProvider from '@/components/AuthProvider';
+import SmoothScrolling from '@/components/SmoothScrolling';
 
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -57,13 +58,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-brand-bg text-gray-800`}>
         <AuthProvider>
-          <Header />
-          <main className="min-h-screen">
-            {children}
-          </main>
-          <Footer />
-          <FloatingButtons />
-
+          <SmoothScrolling>
+            <Header />
+            <main className="min-h-screen">
+              {children}
+            </main>
+            <Footer />
+            <FloatingButtons />
+          </SmoothScrolling>
         </AuthProvider>
       </body>
     </html>
