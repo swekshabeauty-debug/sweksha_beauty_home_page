@@ -106,11 +106,23 @@ Answer the customer's question now.`;
             const chat = model.startChat({ history: chatHistory });
 
             if (image) {
-                const base64Data = image.split(',')[1] || image;
+                let mimeType = 'image/jpeg';
+                let base64Data = image;
+
+                if (typeof image === 'string' && image.startsWith('data:')) {
+                    const match = image.match(/^data:([^;]+);base64,(.+)$/);
+                    if (match) {
+                        mimeType = match[1];
+                        base64Data = match[2];
+                    } else {
+                        base64Data = image.split(',')[1];
+                    }
+                }
+
                 const imagePart = {
                     inlineData: {
                         data: base64Data,
-                        mimeType: 'image/jpeg'
+                        mimeType: mimeType
                     }
                 };
                 return await chat.sendMessage([message, imagePart]);
@@ -125,13 +137,11 @@ Answer the customer's question now.`;
         // 3. gemini-2.5-flash-lite: High rate limit text model
         // 4. Fallbacks
         const models = [
-            "gemini-2.5-flash-live",
-            "gemini-2.5-flash-native-audio-dialog",
-            "gemini-2.0-flash-live",
-            "gemini-2.5-flash",
+            "gemini-2.5-flash-native-audio-dialog", // Unlimited model
+            "gemini-2.5-flash",                  // Primary fallback
             "gemini-2.5-flash-lite",
             "gemini-2.0-flash",
-            "gemini-flash-latest"
+            "gemini-1.5-flash"
         ];
 
         let result;
@@ -140,7 +150,7 @@ Answer the customer's question now.`;
         for (const modelName of models) {
             try {
                 result = await tryGenerate(modelName);
-                break; // If successful, exit loop
+                if (result) break; // If successful, exit loop
             } catch (error: any) {
                 console.warn(`Model ${modelName} failed:`, error.message);
                 lastError = error;
