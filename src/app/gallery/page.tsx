@@ -50,8 +50,8 @@ export default function GalleryPage() {
                             key={category}
                             onClick={() => setSelectedCategory(category)}
                             className={`px-6 py-2 rounded-full text-sm font-medium transition ${selectedCategory === category
-                                    ? 'bg-brand-primary text-white shadow-md'
-                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                ? 'bg-brand-primary text-white shadow-md'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                 }`}
                         >
                             {category}
@@ -71,13 +71,13 @@ export default function GalleryPage() {
                         {filteredGallery.map((img: any) => (
                             <div key={img.id} className="relative group overflow-hidden rounded-xl shadow-md aspect-square">
                                 <Image
-                                    src={img.url}
-                                    alt={img.caption || 'Gallery Image'}
+                                    src={img.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'}
+                                    alt={img.title || 'Gallery Image'}
                                     fill
                                     className="object-cover transition duration-500 group-hover:scale-110"
                                 />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col items-start justify-end p-6">
-                                    <p className="text-white font-medium text-lg">{img.caption}</p>
+                                    <p className="text-white font-medium text-lg">{img.title}</p>
                                     <p className="text-white/80 text-sm">{img.category || 'Other'}</p>
                                 </div>
                             </div>

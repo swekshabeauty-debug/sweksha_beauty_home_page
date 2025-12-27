@@ -36,8 +36,8 @@ export default function GalleryPage() {
         if (!url) return;
         const newImage = {
             id: Date.now().toString(),
-            url,
-            caption: '',
+            image: url,
+            title: '',
             category: newImageCategory,
             isInstagram: activeTab === 'instagram'
         };
@@ -106,8 +106,8 @@ export default function GalleryPage() {
                     <button
                         onClick={() => setActiveTab('gallery')}
                         className={`flex-1 px-6 py-3 font-medium transition ${activeTab === 'gallery'
-                                ? 'bg-brand-primary text-white border-b-2 border-brand-primary'
-                                : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                            ? 'bg-brand-primary text-white border-b-2 border-brand-primary'
+                            : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
                             }`}
                     >
                         Main Gallery ({images.filter(img => !img.isInstagram).length})
@@ -115,8 +115,8 @@ export default function GalleryPage() {
                     <button
                         onClick={() => setActiveTab('instagram')}
                         className={`flex-1 px-6 py-3 font-medium transition ${activeTab === 'instagram'
-                                ? 'bg-brand-primary text-white border-b-2 border-brand-primary'
-                                : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                            ? 'bg-brand-primary text-white border-b-2 border-brand-primary'
+                            : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
                             }`}
                     >
                         Instagram Feed ({images.filter(img => img.isInstagram).length})
@@ -152,7 +152,12 @@ export default function GalleryPage() {
                 {filteredImages.map((img) => (
                     <div key={img.id} className="group relative bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                         <div className="relative h-48">
-                            <Image src={img.url} alt={img.caption || 'Gallery Image'} fill className="object-cover" />
+                            <Image
+                                src={img.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'}
+                                alt={img.title || 'Gallery Image'}
+                                fill
+                                className="object-cover"
+                            />
                             <button
                                 onClick={() => handleDelete(img.id)}
                                 className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition"

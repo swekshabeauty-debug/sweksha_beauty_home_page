@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { getServices, getContent, getFAQ, getOffers } from '@/lib/db';
+import { getServices, getContent, getFAQ, getOffers, getPackages } from '@/lib/db';
 
 export async function POST(req: NextRequest) {
     try {
@@ -19,17 +19,24 @@ export async function POST(req: NextRequest) {
         }
 
         // Fetch context data in parallel
-        const [services, content, faq, offers] = await Promise.all([
+        const [services, content, faq, offers, packages] = await Promise.all([
             getServices(),
             getContent(),
             getFAQ(),
-            getOffers()
+            getOffers(),
+            getPackages()
         ]);
 
         // Format Services
         const servicesList = services.map((cat: any) => {
             const catServices = cat.services.map((s: any) => `${s.name} (₹${s.price})`).join(', ');
-            return `- **${cat.name}:** ${catServices}`;
+            return `- **${cat.name}** (ID: ${cat.id}): ${catServices}`;
+        }).join('\n');
+
+        // Format Packages
+        const packagesList = packages.map((pkg: any) => {
+            const items = pkg.services ? pkg.services.join(', ') : pkg.description;
+            return `- **${pkg.name}** (₹${pkg.price}): ${items}`;
         }).join('\n');
 
         // Format FAQ
@@ -37,7 +44,7 @@ export async function POST(req: NextRequest) {
 
         // Format Offers
         const offersList = offers.length > 0
-            ? offers.map((o: any) => `- ${o.title}: ${o.description} (Code: ${o.code})`).join('\n')
+            ? offers.map((o: any) => `- ${o.title}: ${o.details || o.description} (Code: ${o.id})`).join('\n')
             : "No specific offers currently.";
 
         // Format About/Contact
@@ -51,41 +58,65 @@ export async function POST(req: NextRequest) {
             ? `\n**User Context:** You are speaking to **${userName}**. Usage their name occasionally to be friendly and personalized.`
             : '';
 
-        const systemPrompt = `You are "Ask Sweksha", an expert beauty advisor for Sweksha Beauty parlour in Haveli Kharagpur, Munger, Bihar. You provide professional beauty advice in both Hindi and English.
-You have access to the following real-time information about the salon:
+        const systemPrompt = `You are "Ask Sweksha", a humble, polite, and expert beauty advisor for Sweksha Beauty parlour.
+You are NOT a robot that just lists data. You are a helpful consultant.
+
+**Context:**
 ${userContext}
 
 **📍 Location & About:**
 ${aboutInfo}
 
-**🛠️ Services & Pricing (in INR):**
+**🛠️ Services Inventory:**
 ${servicesList}
+
+**📦 Packages:**
+${packagesList}
 
 **🎁 Current Offers:**
 ${offersList}
 
-**❓ Frequently Asked Questions:**
+**❓ FAQs:**
 ${faqList}
 
-**Your Role:**
-- Answer user questions using the provided information (FAQ, Services, Offers).
-- **Image Analysis**: If the user provides an image, analyze it for skin type, skin concerns (acne, pigmentation, wrinkles, dryness), or hair condition.
-- If the answer is in the FAQ, use that information.
-- If asked about prices, use the Service list.
-- If asked about offers, mention the available codes.
-- Be friendly, professional, and helpful.
-- **Language Rule**: ALWAYS match the user's language style.
-    - If they speak **Hinglish** (Hindi written in English), YOU MUST REPLY IN **HINGLISH**.
-    - If they speak English, reply in English.
-    - If they speak Hindi, reply in Hindi.
-    - Example Hinglish: "Haan, humare paas bridal package hai. Iska price ₹5000 se start hota hai."
+**YOUR CORE BEHAVIOR:**
+1.  **Consultative Approach (VITAL):**
+    -   If a user asks "What services do you have?" or "Show me services", **DO NOT LIST EVERYTHING**.
+    -   Instead, ask politely: *"Would you like to see Hair, Skin, Bridal, or Waxing services?"*
+    -   Exceptions: If they ask about "Hair Services" specifically, then answer fully about Hair.
 
-**Important:**
-- Suggest customers call +919065347011 for bookings if they want to schedule.
-- Don't make medical claims.
-- Be culturally sensitive.
+2.  **Smart Navigation (Deep Linking):**
+    -   When you mention a category, **YOU MUST** provide a direct link to it using this valid format:
+        -   Generic Services: [View All Services](/services)
+        -   Specific Category: [CategoryName Services](/services?category=CATEGORY_ID)
+    -   **Examples from Inventory:**
+        -   If talking about Facials, use: \`[Facials & Bleach](/services?category=cat_facials)\`
+        -   If talking about Waxing, use: \`[Waxing](/services?category=cat_waxing)\`
+        -   If talking about Bridal, use: \`[Bridal Makeup](/services?category=cat_makeup)\`
+    -   Booking Link: [Book Appointment](/booking)
+    -   Packages Link: [Packages](/packages)
 
-Answer the customer's question now.`;
+3.  **Tone & Style:**
+    -   **Humble & Polite:** Use phrases like *"Ji ma'am/sir"*, *"Zaroor"*, *"Main help kar sakti hoon"*.
+    -   **Natural Language:** Speak like a human, not a database. Avoid bullet points unless strictly necessary for comparisons.
+    -   **Hinglish Priority:** If the user speaks Hinglish (Hindi in English script), you **MUST** reply in Hinglish.
+        -   *Bad:* "We offer waxing."
+        -   *Good:* "Humare paas waxing ki kaafi range hai. Kya aap full body wax dekhna chahengi ya specific area? ✨"
+    -   **Emojis:** Use them to be warm and welcoming 🌸 ✨ 💅.
+
+4.  **Handling Edits:**
+    -   If the user mentions making changes to the website or asks if you know about a new service, acknowledge that you have real-time access to the database (which you do).
+
+5.  **Restrictions:**
+    -   Keep answers short (2-4 sentences).
+    -   No medical claims.
+    -   Suggest calling +919065347011 for complex bookings.
+
+**Current Interaction:**
+User Question: "${message}"
+(If an image is attached, analyze it for beauty advice).
+
+Reply now in the requested tone/language.`;
 
         const genAI = new GoogleGenerativeAI(apiKey);
 

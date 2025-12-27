@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Raj - Resume</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            -webkit-print-color-adjust: exact; /* Ensures colors print correctly */
+            print-color-adjust: exact;
+        }
+
+        /* A4 Paper Styling */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 0;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styling (Left) */
+        .sidebar {
+            width: 32%;
+            background-color: #2c3e50; /* Dark Blue-Grey */
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-img-placeholder {
+            width: 120px;
+            height: 120px;
+            background-color: #ecf0f1;
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 40px;
+            border: 4px solid #34495e;
+        }
+
+        .sidebar h2 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            margin-top: 30px;
+            letter-spacing: 1px;
+        }
+
+        .contact-info {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-item {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            word-break: break-all;
+        }
+
+        .contact-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .contact-item a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .contact-item a:hover {
+            color: #fff;
+        }
+
+        .skill-tag {
+            background: #34495e;
+            padding: 5px 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            display: block;
+        }
+
+        .education-item {
+            margin-bottom: 15px;
+        }
+        
+        .education-year {
+            font-size: 0.8rem;
+            color: #bdc3c7;
+        }
+
+        /* Main Content Styling (Right) */
+        .main-content {
+            width: 68%;
+            padding: 40px;
+            background-color: #fff;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .header h3 {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title span {
+            background-color: #3498db;
+            width: 30px;
+            height: 4px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .job-card {
+            margin-bottom: 20px;
+        }
+
+        .job-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #34495e;
+        }
+
+        .job-company {
+            font-style: italic;
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .job-details li {
+            list-style-position: inside;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        .project-link {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Icons (using text for simplicity to avoid external dependency issues in preview) */
+        .icon {
+            display: inline-block;
+            width: 20px;
+            margin-right: 5px;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: none;
+            }
+            .page {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                height: 100%;
+            }
+            .sidebar {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: #2c3e50 !important;
+                color: white !important;
+            }
+            .skill-tag {
+                background-color: #34495e !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page">
+        <!-- Sidebar Section -->
+        <aside class="sidebar">
+            <div class="profile-img-placeholder">
+                SR
+            </div>
+
+            <h2>Contact</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📞</span> +91-9065347011
+                </div>
+                <div class="contact-item">
+                    <span>📧</span> <a href="mailto:jayant.kgp81@gmail.com">jayant.kgp81@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <span>🌐</span> <a href="https://swekshabeauty.vercel.app" target="_blank">swekshabeauty.vercel.app</a>
+                </div>
+                <div class="contact-item">
+                    <span>📺</span> <a href="https://www.youtube.com/channel/UCQQEdCrRq-EvYEHxa2mlnpA" target="_blank">YouTube Channel</a>
+                </div>
+                <div class="contact-item">
+                    <span>📍</span> Haveli Kharagpur, Munger, Bihar
+                </div>
+            </div>
+
+            <h2>Technical Skills</h2>
+            <span class="skill-tag">HTML, CSS, Basic JS</span>
+            <span class="skill-tag">Responsive Design</span>
+            <span class="skill-tag">Vercel Deployment</span>
+            <span class="skill-tag">Vibe Coding & AI Tools</span>
+            <span class="skill-tag">Prompt Engineering</span>
+            <span class="skill-tag">Form Handling</span>
+
+            <h2>Business Skills</h2>
+            <span class="skill-tag">Shop Management</span>
+            <span class="skill-tag">Customer Relations</span>
+            <span class="skill-tag">Stock Record Keeping</span>
+            <span class="skill-tag">Time Management</span>
+
+            <h2>Education</h2>
+            <div class="education-item">
+                <strong>Class 12 (Expected)</strong>
+                <div class="education-year">2027</div>
+            </div>
+            <div class="education-item">
+                <strong>Class 11</strong>
+                <div class="education-year">2025 - 2026</div>
+            </div>
+            <div class="education-item">
+                <strong>Class 10 (Passed)</strong>
+                <div class="education-year">2025</div>
+            </div>
+            <div class="education-item">
+                <strong>Prerna Experiential Learning</strong>
+                <div class="education-year">Student</div>
+            </div>
+
+            <h2>Interests</h2>
+            <span class="skill-tag">AI in Healthcare</span>
+            <span class="skill-tag">Medical & Biology</span>
+            <span class="skill-tag">Web Development</span>
+            <span class="skill-tag">Teaching</span>
+        </aside>
+
+        <!-- Main Content Section -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Sri Raj</h1>
+                <h3>Web Developer & Student</h3>
+            </header>
+
+            <section class="section">
+                <div class="section-title"><span></span>Career Objective</div>
+                <p>
+                    A motivated student with a strong interest in technology, AI, and the medical field. Experienced in website development, teaching, and small business management, with a learning-by-doing approach. Passionate about using technology and AI tools to make work simpler, faster, and more effective, while exploring future opportunities in the medical and healthcare domain.
+                </p>
+            </section>
+
+            <section class="section">
+                <div class="section-title"><span></span>Work Experience & Projects</div>
+
+                <div class="job-card">
+                    <div class="job-title">Sweksha Beauty – Live Website Project</div>
+                    <div class="job-company">
+                        <span>Web Developer</span>
+                        <a href="https://swekshabeauty.vercel.app" class="project-link" target="_blank">Visit Site ↗</a>
+                    </div>
+                    <ul class="job-details">
+                        <li>Designed and deployed a professional beauty parlour website.</li>
+                        <li>Structured service sections, contact details, and created a user-friendly layout.</li>
+                        <li>Focused on clean design, usability, and meeting specific business needs.</li>
+                    </ul>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-title">Freelance Website Developer</div>
+                    <div class="job-company">
+                        <span>Freelance</span>
+                        <span>Ongoing</span>
+                    </div>
+                    <ul class="job-details">
+                        <li>Building basic to medium-level websites for small businesses and individuals.</li>
+                        <li>Helping offline businesses establish a clear and effective online presence.</li>
+                        <li>Explaining technical and digital solutions in simple language.</li>
+                    </ul>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-title">Small Business / Shop Management</div>
+                    <div class="job-company">
+                        <span>Manager</span>
+                        <span>Ongoing</span>
+                    </div>
+                    <ul class="job-details">
+                        <li>Actively managing a local shop and handling daily operations.</li>
+                        <li>Handling customer interactions, basic records, and business responsibilities.</li>
+                        <li>Gaining practical experience in real-world business management.</li>
+                    </ul>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-title">Home Tuition Teacher</div>
+                    <div class="job-company">
+                        <span>Tutor</span>
+                        <span>Part-time</span>
+                    </div>
+                    <ul class="job-details">
+                        <li>Teaching students from Class 2 to Class 6 (All subjects) and Class 10 (Non-Maths).</li>
+                        <li>Focus on building strong foundational concepts and mentoring students.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-title"><span></span>Other Skills & Highlights</div>
+                <ul class="job-details">
+                    <li><strong>AI & Productivity:</strong> Efficient workflows using AI assistance, Creative thinking with AI tools.</li>
+                    <li><strong>Soft Skills:</strong> Teaching & Mentoring, Communication, Client Interaction, Problem Solving.</li>
+                    <li><strong>Online Presence:</strong> Creating Educational/Tech/Learning-based content on YouTube.</li>
+                </ul>
+            </section>
+
+            <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 10px; font-size: 0.8rem; color: #777;">
+                <p><strong>Declaration:</strong> I hereby declare that the above information is true and correct to the best of my knowledge.</p>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                    <span>Place: Haveli Kharagpur, Munger</span>
+                    <span>Date: 15/12/2025</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

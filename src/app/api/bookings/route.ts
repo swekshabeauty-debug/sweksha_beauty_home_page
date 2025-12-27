@@ -1,4 +1,4 @@
-import { getBookings, saveBookings, getSettings } from '@/lib/db';
+import { createBooking } from '@/lib/db';
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { sendAdminBookingAlert } from '@/lib/notifications';
@@ -21,8 +21,6 @@ export async function POST(request: Request) {
             }, { status: 400 });
         }
 
-        const bookings = await getBookings();
-
         const newBooking = {
             id: uuidv4(),
             name,
@@ -41,14 +39,13 @@ export async function POST(request: Request) {
             createdAt: new Date().toISOString(),
         };
 
-        // Add to beginning of list
-        // Try to save to file (works locally, might fail on Vercel)
+        // Add to database
+        let bookingId = newBooking.id;
         try {
-            const updatedBookings = [newBooking, ...bookings];
-            await saveBookings(updatedBookings);
-        } catch (fileError) {
-            console.warn('⚠️ Could not save booking to file (expected on Vercel):', fileError);
-            // Continue execution to send email
+            await createBooking(newBooking);
+        } catch (dbError) {
+            console.error('Database error:', dbError);
+            return NextResponse.json({ error: 'Failed to save booking to database' }, { status: 500 });
         }
 
         // Send email notification to admin

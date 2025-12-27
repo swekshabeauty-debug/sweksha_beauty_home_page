@@ -86,9 +86,9 @@ export default function ServicesPage() {
 
             {/* Category Tabs */}
             <div className="flex gap-2 overflow-x-auto pb-4 mb-6 border-b border-gray-200">
-                {categories.map((cat) => (
+                {categories.map((cat, index) => (
                     <button
-                        key={cat.id}
+                        key={cat.id || `category-${index}`}
                         onClick={() => setActiveCategory(cat.id)}
                         className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition ${activeCategory === cat.id
                             ? 'bg-brand-bg text-brand-primary'
@@ -102,8 +102,8 @@ export default function ServicesPage() {
 
             {/* Service List */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {categories.find(c => c.id === activeCategory)?.services.map((service: any) => (
-                    <div key={service.id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                {categories.find(c => c.id === activeCategory)?.services.map((service: any, idx: number) => (
+                    <div key={service.id || `service-${idx}`} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
                         <div className="flex justify-between items-start mb-2">
                             <h3 className="font-semibold text-gray-800">{service.name}</h3>
                             <div className="flex gap-2">

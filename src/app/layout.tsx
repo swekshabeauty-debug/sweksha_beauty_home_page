@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import { Inter, Outfit } from 'next/font/google';
+import { Playfair_Display, Outfit } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -9,7 +9,7 @@ import AuthProvider from '@/components/AuthProvider';
 import SmoothScrolling from '@/components/SmoothScrolling';
 
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' });
 
 export const metadata: Metadata = {
@@ -56,7 +56,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-brand-bg text-gray-800`}>
+      <body className={`${playfair.variable} ${outfit.variable} font-sans antialiased bg-brand-bg text-gray-800`}>
         <AuthProvider>
           <SmoothScrolling>
             <Header />

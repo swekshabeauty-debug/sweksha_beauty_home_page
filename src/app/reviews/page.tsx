@@ -16,8 +16,8 @@ export default async function ReviewsPage() {
 
             <div className="container mx-auto px-4 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                    {activeReviews.map((review: any) => (
-                        <div key={review.id} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative">
+                    {activeReviews.map((review: any, index: number) => (
+                        <div key={review.id || `review-${index}`} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative">
                             <div className="absolute -top-4 left-8 bg-brand-primary text-white p-2 rounded-lg shadow-sm">
                                 <MessageSquare className="w-5 h-5" />
                             </div>

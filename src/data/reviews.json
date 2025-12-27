@@ -2,21 +2,21 @@
   {
     "id": "rev_1",
     "name": "Anjali Kumari",
-    "text": "Best parlour in Haveli Kharagpur! The bridal makeup was perfect and natural.",
+    "comment": "Best parlour in Haveli Kharagpur! The bridal makeup was perfect and natural.",
     "rating": 5,
     "active": true
   },
   {
     "id": "rev_2",
     "name": "Sneha Roy",
-    "text": "Very hygienic and professional. Loved the hair spa service.",
+    "comment": "Very hygienic and professional. Loved the hair spa service.",
     "rating": 5,
     "active": true
   },
   {
     "id": "rev_3",
     "name": "Pooja Devi",
-    "text": "Affordable prices and great service. Highly recommended.",
+    "comment": "Affordable prices and great service. Highly recommended.",
     "rating": 4,
     "active": true
   }

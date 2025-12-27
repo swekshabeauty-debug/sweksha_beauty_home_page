@@ -28,7 +28,7 @@ export default function Header() {
     }, [pathname]);
 
     return (
-        <header className="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur-sm shadow-sm border-b border-brand-secondary/20 dark:border-white/10 transition-colors duration-300">
+        <header className="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md shadow-sm border-b border-white/20 dark:border-white/10 transition-all duration-300">
             <div className="container mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-3 sm:py-4 flex justify-between items-center">
                 {/* Logo - Responsive Size */}
                 <Link href="/" className="flex items-center">

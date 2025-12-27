@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+// import { db } from '@/lib/firebase';
+// import { doc, setDoc } from 'firebase/firestore';
+import * as db from '@/lib/db'; // Use MongoDB adapter
 
 // Import data directly
 import services from '@/data/services.json';
@@ -15,22 +16,23 @@ import content from '@/data/content.json';
 
 export async function POST() {
     try {
-        console.log('Starting migration via API...');
+        console.log('Starting migration to MongoDB...');
 
-        // 1. Migrate Lists
-        await setDoc(doc(db, 'data', 'services'), { list: services });
-        await setDoc(doc(db, 'data', 'packages'), { list: packages });
-        await setDoc(doc(db, 'data', 'offers'), { list: offers });
-        await setDoc(doc(db, 'data', 'bookings'), { list: bookings });
-        await setDoc(doc(db, 'data', 'reviews'), { list: reviews });
-        await setDoc(doc(db, 'data', 'team'), { list: team });
-        await setDoc(doc(db, 'data', 'gallery'), { list: gallery });
+        // 1. Migrate Lists using db helper functions
+        await db.saveServices(services);
+        await db.savePackages(packages);
+        await db.saveOffers(offers);
+        await db.saveBookings(bookings);
+        await db.saveReviews(reviews);
+        await db.saveTeam(team);
+        await db.saveGallery(gallery);
+        await db.saveFAQ(require('@/data/faq.json') || []);
 
         // 2. Migrate Single Docs
-        await setDoc(doc(db, 'data', 'settings'), settings);
-        await setDoc(doc(db, 'data', 'content'), content);
+        await db.saveSettings(settings);
+        await db.saveContent(content);
 
-        return NextResponse.json({ success: true, message: 'Migration completed successfully!' });
+        return NextResponse.json({ success: true, message: 'Migration to MongoDB completed successfully!' });
     } catch (error: any) {
         console.error('Migration failed:', error);
         return NextResponse.json({ success: false, error: error.message }, { status: 500 });

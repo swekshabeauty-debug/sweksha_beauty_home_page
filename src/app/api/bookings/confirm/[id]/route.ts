@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getBookings, saveBookings } from '@/lib/db';
+import { updateBooking } from '@/lib/db';
 import { sendCustomerConfirmation } from '@/lib/notifications';
 
 export async function GET(
@@ -9,19 +9,15 @@ export async function GET(
     const { id } = await params;
 
     try {
-        const bookings = await getBookings();
-        const booking = bookings.find((b: any) => b.id === id);
+        // Update booking status to confirmed
+        const booking = await updateBooking(id, {
+            status: 'Confirmed',
+            confirmedAt: new Date().toISOString()
+        });
 
         if (!booking) {
             return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
         }
-
-        // Update booking status to confirmed
-        const updatedBookings = bookings.map((b: any) =>
-            b.id === id ? { ...b, status: 'Confirmed', confirmedAt: new Date().toISOString() } : b
-        );
-
-        await saveBookings(updatedBookings);
 
         // Send confirmation email to customer
         await sendCustomerConfirmation(booking);

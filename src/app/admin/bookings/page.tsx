@@ -161,7 +161,7 @@ See you soon at Sweksha Beauty! ✨`;
                                 </tr>
                             ) : (
                                 filteredBookings.map((booking, index) => (
-                                    <tr key={booking.id} className="hover:bg-gray-50/50 transition">
+                                    <tr key={booking.id || `booking-${index}`} className="hover:bg-gray-50/50 transition">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">

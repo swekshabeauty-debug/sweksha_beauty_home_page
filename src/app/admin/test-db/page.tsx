@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getServices } from '@/lib/db';
 
 export default function TestDB() {
     const [status, setStatus] = useState('Testing...');
@@ -11,7 +10,10 @@ export default function TestDB() {
     useEffect(() => {
         async function testConnection() {
             try {
-                const services = await getServices();
+                const res = await fetch('/api/data/services');
+                if (!res.ok) throw new Error('Failed to fetch services');
+                const services = await res.json();
+
                 setData(services);
                 if (services.length > 0) {
                     setStatus('Success: Connected and found data!');
