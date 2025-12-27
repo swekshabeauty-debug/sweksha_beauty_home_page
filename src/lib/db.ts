@@ -186,7 +186,7 @@ const SettingsSchema = new mongoose.Schema({}, { strict: false });
 const Settings = mongoose.models.Settings || mongoose.model('Settings', SettingsSchema);
 
 export async function getSettings() {
-    await connect();
+    if (!await connect()) return {};
     const settings = await Settings.findOne({ type: 'general_settings' }).lean();
     if (!settings) return {};
     return JSON.parse(JSON.stringify(settings));
