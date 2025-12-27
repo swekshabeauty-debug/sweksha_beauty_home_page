@@ -31,9 +31,8 @@ async function dbConnect() {
     }
 
     if (!MONGODB_URI) {
-        throw new Error(
-            'Please define the MONGODB_URI environment variable inside .env.local'
-        );
+        console.warn('MONGODB_URI not defined in .env.local. Returning null connection.');
+        return null;
     }
 
     if (!cached.promise) {
