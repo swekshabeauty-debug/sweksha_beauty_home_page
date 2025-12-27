@@ -22,12 +22,13 @@ interface ServiceCategory {
     services: Service[];
 }
 
-function ServicesContent({ services }: { services: ServiceCategory[] }) {
+function ServicesContent({ services = [] }: { services: ServiceCategory[] }) {
     const searchParams = useSearchParams();
     const initialCategory = searchParams.get('category');
+    const safeServices = Array.isArray(services) ? services : [];
 
     // Check if initialCategory exists in services, otherwise default to 'all'
-    const validInitial = initialCategory && services.some(s => s.id === initialCategory)
+    const validInitial = initialCategory && safeServices.some(s => s.id === initialCategory)
         ? initialCategory
         : 'all';
 
@@ -36,10 +37,10 @@ function ServicesContent({ services }: { services: ServiceCategory[] }) {
     // Update state if URL changes dynamically
     useEffect(() => {
         const cat = searchParams.get('category');
-        if (cat && services.some(s => s.id === cat)) {
+        if (cat && safeServices.some(s => s.id === cat)) {
             setSelectedCategory(cat);
         }
-    }, [searchParams, services]);
+    }, [searchParams, safeServices]);
 
     const container = {
         hidden: { opacity: 0 },
@@ -58,12 +59,12 @@ function ServicesContent({ services }: { services: ServiceCategory[] }) {
 
     const categories = [
         { id: 'all', name: 'All' },
-        ...services.map(s => ({ id: s.id, name: s.name }))
+        ...safeServices.map(s => ({ id: s.id, name: s.name }))
     ];
 
     const filteredServices = selectedCategory === 'all'
-        ? services
-        : services.filter(s => s.id === selectedCategory);
+        ? safeServices
+        : safeServices.filter(s => s.id === selectedCategory);
 
     return (
         <div className="space-y-6">
