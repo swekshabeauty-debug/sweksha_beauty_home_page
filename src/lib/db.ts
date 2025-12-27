@@ -9,7 +9,7 @@ import FAQ from '@/models/FAQ';
 
 // Helper to ensure connection
 async function connect() {
-    await dbConnect();
+    return await dbConnect();
 }
 
 // ----------------------------------------------------------------------
@@ -17,7 +17,7 @@ async function connect() {
 // ----------------------------------------------------------------------
 
 export async function getBookings() {
-    await connect();
+    if (!await connect()) return [];
     const bookings = await Booking.find({}).sort({ createdAt: -1 }).lean();
     return JSON.parse(JSON.stringify(bookings));
 }
@@ -55,7 +55,7 @@ export async function saveBookings(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getServices() {
-    await connect();
+    if (!await connect()) return [];
     const services = await Service.find({}).lean();
     return JSON.parse(JSON.stringify(services));
 }
@@ -72,7 +72,7 @@ export async function saveServices(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getPackages() {
-    await connect();
+    if (!await connect()) return [];
     const packages = await Package.find({}).lean();
     return JSON.parse(JSON.stringify(packages));
 }
@@ -102,7 +102,7 @@ const OfferSchema = new mongoose.Schema({}, { strict: false });
 const Offer = mongoose.models.Offer || mongoose.model('Offer', OfferSchema);
 
 export async function getOffers() {
-    await connect();
+    if (!await connect()) return [];
     const offers = await Offer.find({}).lean();
     return JSON.parse(JSON.stringify(offers));
 }
@@ -118,7 +118,7 @@ export async function saveOffers(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getReviews() {
-    await connect();
+    if (!await connect()) return [];
     const reviews = await Review.find({}).lean();
     return JSON.parse(JSON.stringify(reviews));
 }
@@ -134,7 +134,7 @@ export async function saveReviews(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getTeam() {
-    await connect();
+    if (!await connect()) return [];
     const team = await Team.find({}).lean();
     return JSON.parse(JSON.stringify(team));
 }
@@ -150,7 +150,7 @@ export async function saveTeam(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getGallery() {
-    await connect();
+    if (!await connect()) return [];
     const gallery = await Gallery.find({}).sort({ id: -1 }).lean();
     return JSON.parse(JSON.stringify(gallery));
 }
@@ -166,7 +166,7 @@ export async function saveGallery(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getFAQ() {
-    await connect();
+    if (!await connect()) return [];
     const faq = await FAQ.find({}).lean();
     return JSON.parse(JSON.stringify(faq));
 }
@@ -226,10 +226,14 @@ const DEFAULT_CONTENT = {
 };
 
 export async function getContent() {
-    await connect();
-    const content = await Settings.findOne({ type: 'site_content' }).lean();
-    if (!content) return DEFAULT_CONTENT;
-    return { ...DEFAULT_CONTENT, ...JSON.parse(JSON.stringify(content)) };
+    if (!await connect()) return DEFAULT_CONTENT;
+    try {
+        const content = await Settings.findOne({ type: 'site_content' }).lean();
+        if (!content) return DEFAULT_CONTENT;
+        return { ...DEFAULT_CONTENT, ...JSON.parse(JSON.stringify(content)) };
+    } catch (e) {
+        return DEFAULT_CONTENT;
+    }
 }
 
 export async function saveContent(data: any) {
