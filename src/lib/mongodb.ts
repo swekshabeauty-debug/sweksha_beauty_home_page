@@ -38,6 +38,7 @@ async function dbConnect() {
     if (!cached.promise) {
         const opts = {
             bufferCommands: false,
+            serverSelectionTimeoutMS: 5000, // Fail fast (5s) if IP blocked
         };
 
         cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
