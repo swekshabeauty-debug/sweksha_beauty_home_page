@@ -70,16 +70,16 @@ function ServicesContent({ services = [] }: { services: ServiceCategory[] }) {
     return (
         <div className="space-y-6">
             {/* Category Tabs */}
-            <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 sticky top-[72px] bg-brand-bg z-10 pt-2">
+            <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 sticky top-[72px] bg-background/80 backdrop-blur-md z-10 pt-3 border-b border-brand-secondary/30">
                 {categories.map((category) => (
                     <button
                         key={category.id}
                         onClick={() => setSelectedCategory(category.id)}
                         className={`
-                            px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all
+                            px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300
                             ${selectedCategory === category.id
-                                ? 'bg-brand-primary text-white shadow-md transform scale-105'
-                                : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'}
+                                ? 'bg-gradient-to-r from-brand-primary to-brand-accent text-white shadow-lg transform scale-105'
+                                : 'glass text-foreground hover:bg-brand-secondary/50'}
                         `}
                     >
                         {category.name}
@@ -115,17 +115,17 @@ function ServicesContent({ services = [] }: { services: ServiceCategory[] }) {
                                         className="block"
                                     >
                                         <motion.div
-                                            whileHover={{ scale: 1.02, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}
+                                            whileHover={{ scale: 1.02, y: -4 }}
                                             whileTap={{ scale: 0.98 }}
-                                            className="bg-white p-4 rounded-2xl shadow-sm flex gap-4 items-center transition cursor-pointer border border-transparent hover:border-brand-primary/20"
+                                            className="card-elegant shimmer p-5 flex gap-5 items-center cursor-pointer group"
                                         >
-                                            {/* Service Image Placeholder */}
-                                            <div className="w-20 h-20 bg-gray-100 rounded-xl shrink-0 overflow-hidden relative">
+                                            {/* Service Image */}
+                                            <div className="w-24 h-24 rounded-2xl shrink-0 overflow-hidden relative shadow-md">
                                                 <Image
                                                     src={getImageUrl(service.image)}
                                                     alt={service.name}
                                                     fill
-                                                    className="object-cover"
+                                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
                                                 />
                                             </div>
 
@@ -133,12 +133,12 @@ function ServicesContent({ services = [] }: { services: ServiceCategory[] }) {
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex justify-between items-start">
                                                     <div>
-                                                        <h3 className="font-bold text-gray-900 text-sm md:text-base leading-tight mb-1">{service.name}</h3>
-                                                        <p className="text-gray-500 text-xs line-clamp-2">{service.description}</p>
+                                                        <h3 className="font-semibold text-foreground text-base md:text-lg leading-tight mb-1 group-hover:text-brand-primary transition-colors">{service.name}</h3>
+                                                        <p className="text-foreground/60 text-sm line-clamp-2">{service.description}</p>
                                                     </div>
-                                                    <div className="text-right shrink-0 ml-2">
-                                                        <span className="block font-bold text-gray-900">₹{service.price}</span>
-                                                        <span className="text-[10px] text-gray-400 block">{service.duration}</span>
+                                                    <div className="text-right shrink-0 ml-4">
+                                                        <span className="block font-bold text-lg text-brand-primary">₹{service.price}</span>
+                                                        <span className="text-xs text-foreground/50 block">{service.duration}</span>
                                                     </div>
                                                 </div>
                                             </div>

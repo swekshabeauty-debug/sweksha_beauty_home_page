@@ -84,13 +84,13 @@ export default function HeroSection({ content }: HeroSectionProps) {
                 >
                     <Link
                         href="/booking"
-                        className="bg-brand-primary hover:opacity-90 text-white px-8 py-3 rounded-full font-medium transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        className="btn-premium shimmer"
                     >
                         Book Appointment
                     </Link>
                     <a
                         href="tel:+919065347011"
-                        className="bg-brand-secondary hover:opacity-90 text-gray-900 px-8 py-3 rounded-full font-medium transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                        className="glass text-white px-8 py-3 rounded-full font-medium transition hover:bg-white/20 flex items-center justify-center gap-2"
                     >
                         Call Now <Phone className="w-4 h-4" />
                     </a>
