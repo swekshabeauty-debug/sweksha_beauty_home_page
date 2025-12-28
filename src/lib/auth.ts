@@ -6,6 +6,7 @@ const COOKIE_NAME = 'admin_session';
 
 export async function verifyPassword(password: string): Promise<boolean> {
     const settings = await getSettings();
+    if (!settings?.admin?.passwordHash) return false;
     return bcrypt.compare(password, settings.admin.passwordHash);
 }
 
