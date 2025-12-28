@@ -7,14 +7,15 @@ export async function POST(request: Request) {
         const { currentPassword, newPassword } = await request.json();
         const settings = await getSettings();
 
-        const isValid = await bcrypt.compare(currentPassword, settings.admin.passwordHash);
-        if (!isValid) {
-            return NextResponse.json({ error: 'Incorrect current password' }, { status: 400 });
+        const isValid = await bcrypt.compare(currentPassword, settings?.admin?.passwordHash || '');
+        if (!isValid || !settings?.admin) {
+            return NextResponse.json({ error: 'Incorrect current password or configuration' }, { status: 400 });
         }
 
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(newPassword, salt);
 
+        if (!settings.admin) settings.admin = {};
         settings.admin.passwordHash = hash;
         await saveSettings(settings);
 
