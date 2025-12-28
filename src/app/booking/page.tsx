@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Calendar, Clock, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, CheckCircle, Tag, Percent } from 'lucide-react';
 
 import { useSession } from 'next-auth/react';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
@@ -12,6 +12,8 @@ function BookingForm() {
     const searchParams = useSearchParams();
     const preselectedPackage = searchParams.get('package');
     const preselectedService = searchParams.get('service');
+    const preselectedOffer = searchParams.get('offer');
+    const discountPercent = parseInt(searchParams.get('discount') || '0');
 
     const [formData, setFormData] = useState({
         name: '',
@@ -19,8 +21,11 @@ function BookingForm() {
         phone: '',
         serviceCategory: '',
         service: '',
+        originalPrice: 0,
         price: 0,
+        discount: discountPercent,
         package: preselectedPackage || '',
+        offer: preselectedOffer || '',
         date: '',
         time: '',
         notes: ''
@@ -52,11 +57,18 @@ function BookingForm() {
                     for (const category of data) {
                         const foundService = category.services.find((s: any) => s.name === preselectedService);
                         if (foundService) {
+                            const originalPrice = foundService.price || 0;
+                            const discountedPrice = discountPercent > 0
+                                ? Math.round(originalPrice * (1 - discountPercent / 100))
+                                : originalPrice;
+
                             setFormData(prev => ({
                                 ...prev,
                                 serviceCategory: category.name,
                                 service: preselectedService,
-                                price: foundService.price || 0
+                                originalPrice: originalPrice,
+                                price: discountedPrice,
+                                discount: discountPercent
                             }));
                             break;
                         }
@@ -65,7 +77,7 @@ function BookingForm() {
 
                 setLoading(false);
             });
-    }, [preselectedService]);
+    }, [preselectedService, discountPercent]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -81,7 +93,7 @@ function BookingForm() {
             if (res.ok) {
                 setSuccess(true);
                 // Reset form
-                setFormData({ name: '', email: '', phone: '', serviceCategory: '', service: '', price: 0, package: '', date: '', time: '', notes: '' });
+                setFormData({ name: '', email: '', phone: '', serviceCategory: '', service: '', originalPrice: 0, price: 0, discount: 0, package: '', offer: '', date: '', time: '', notes: '' });
             } else {
                 alert('Something went wrong. Please try again.');
             }
@@ -92,9 +104,26 @@ function BookingForm() {
         }
     };
 
+    // Apply discount when service changes
+    const handleServiceChange = (serviceName: string) => {
+        const selectedService = availableServices.find((s: any) => s.name === serviceName);
+        const originalPrice = selectedService?.price || 0;
+        const discountedPrice = formData.discount > 0
+            ? Math.round(originalPrice * (1 - formData.discount / 100))
+            : originalPrice;
+
+        setFormData({
+            ...formData,
+            service: serviceName,
+            originalPrice: originalPrice,
+            price: discountedPrice
+        });
+    };
+
     const availableServices = formData.serviceCategory
         ? services.find(c => c.name === formData.serviceCategory)?.services || []
         : [];
+
 
     if (loading) return <div>Loading...</div>;
 
@@ -200,14 +229,7 @@ function BookingForm() {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Specific Service</label>
                             <select
                                 value={formData.service}
-                                onChange={e => {
-                                    const selectedService = availableServices.find((s: any) => s.name === e.target.value);
-                                    setFormData({
-                                        ...formData,
-                                        service: e.target.value,
-                                        price: selectedService ? selectedService.price : 0
-                                    });
-                                }}
+                                onChange={e => handleServiceChange(e.target.value)}
                                 disabled={!formData.serviceCategory}
                                 className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none disabled:bg-gray-50"
                             >
@@ -217,6 +239,40 @@ function BookingForm() {
                                 ))}
                             </select>
                         </div>
+                    </div>
+                )}
+
+                {formData.offer && (
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <Tag className="w-6 h-6 text-green-600" />
+                            </div>
+                            <div>
+                                <div className="flex items-center gap-2 mb-1">
+                                    <p className="font-bold text-gray-900">{formData.offer}</p>
+                                    {formData.discount > 0 && (
+                                        <span className="bg-green-500 text-white px-2 py-0.5 rounded-full text-xs font-bold">
+                                            {formData.discount}% OFF
+                                        </span>
+                                    )}
+                                </div>
+                                {formData.service && formData.discount > 0 && (
+                                    <p className="text-sm">
+                                        <span className="text-gray-500 line-through">₹{formData.originalPrice}</span>
+                                        <span className="text-green-600 font-bold ml-2">₹{formData.price}</span>
+                                        <span className="text-green-600 ml-1 text-xs">You save ₹{formData.originalPrice - formData.price}</span>
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, offer: '', discount: 0 })}
+                            className="text-xs text-gray-500 hover:text-red-500 underline"
+                        >
+                            Remove
+                        </button>
                     </div>
                 )}
 

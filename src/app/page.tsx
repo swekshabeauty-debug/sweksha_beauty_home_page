@@ -8,6 +8,8 @@ import Testimonials from '@/components/home/Testimonials';
 import FAQSection from '@/components/home/FAQSection';
 import InstagramSection from '@/components/home/InstagramSection';
 import MapSection from '@/components/home/MapSection';
+import OfferPopup from '@/components/OfferPopup';
+import OfferBanner from '@/components/OfferBanner';
 import { getContent, getOffers, getGallery, getReviews, getFAQ, getServices } from '@/lib/db';
 
 export const metadata = {
@@ -80,6 +82,9 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
+      {/* Offer Banner at top */}
+      <OfferBanner offer={activeBannerOffer} />
+
       <HeroSection content={content} />
       <QuickLinks />
       <WhyChooseUs activeBannerOffer={activeBannerOffer} />
@@ -90,6 +95,8 @@ export default async function Home() {
       <InstagramSection instagramImages={instagramImages} />
       <MapSection />
 
+      {/* Offer Popup (shows once per session for popup type offers) */}
+      <OfferPopup offers={offers} />
     </div>
   );
 }
