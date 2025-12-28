@@ -1,15 +1,71 @@
-import dbConnect from './mongodb';
-import Booking from '@/models/Booking';
-import Service from '@/models/Service';
-import Package from '@/models/Package';
-import Review from '@/models/Review';
-import Team from '@/models/Team';
-import Gallery from '@/models/Gallery';
-import FAQ from '@/models/FAQ';
 
-// Helper to ensure connection
-async function connect() {
-    return await dbConnect();
+import * as admin from 'firebase-admin';
+
+// ----------------------------------------------------------------------
+// Firebase Admin Initialization
+// ----------------------------------------------------------------------
+
+const formatPrivateKey = (key: string) => {
+    return key.replace(/\\n/g, '\n');
+};
+
+function getFirebaseCredentials() {
+    // 1. Try Environment Variable (Best for Vercel)
+    if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+        try {
+            return JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+        } catch (e) {
+            console.error('Error parsing FIREBASE_SERVICE_ACCOUNT_KEY:', e);
+        }
+    }
+
+    // 2. Try Local File (Best for Local Dev)
+    try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const serviceAccount = require('../../service-account.json');
+        return serviceAccount;
+    } catch (e) {
+        console.warn('Local service-account.json not found.');
+        return null;
+    }
+}
+
+if (!admin.apps.length) {
+    const credentials = getFirebaseCredentials();
+
+    if (credentials) {
+        admin.initializeApp({
+            credential: admin.credential.cert(credentials),
+        });
+    } else {
+        console.error('Firebase Admin could not be initialized. Missing credentials.');
+    }
+}
+
+const db = admin.firestore();
+
+// Helper to get list from a single doc (e.g. data/services)
+async function getList(docId: string) {
+    try {
+        const doc = await db.collection('data').doc(docId).get();
+        if (doc.exists) {
+            return doc.data()?.list || [];
+        }
+        return [];
+    } catch (e) {
+        console.error(`Error fetching ${docId}:`, e);
+        return [];
+    }
+}
+
+// Helper to save list to a single doc
+async function saveList(docId: string, list: any[]) {
+    try {
+        await db.collection('data').doc(docId).set({ list });
+    } catch (e) {
+        console.error(`Error saving ${docId}:`, e);
+        throw e;
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -17,37 +73,53 @@ async function connect() {
 // ----------------------------------------------------------------------
 
 export async function getBookings() {
-    if (!await connect()) return [];
-    const bookings = await Booking.find({}).sort({ createdAt: -1 }).lean();
-    return JSON.parse(JSON.stringify(bookings));
+    const bookings = await getList('bookings');
+    // Sort logic handled in memory for list storage
+    return bookings.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 
 export async function createBooking(data: any) {
-    await connect();
-    const newBooking = new Booking(data);
-    await newBooking.save();
-    return {
-        ...newBooking.toObject(),
-        _id: newBooking._id.toString(),
+    const newBooking = {
+        ...data,
+        id: `bk_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        createdAt: new Date().toISOString()
     };
+
+    // Use arrayUnion for atomic add if possible, but 'list' implies strict order/structure? 
+    // Let's use arrayUnion to be safe.
+    await db.collection('data').doc('bookings').update({
+        list: admin.firestore.FieldValue.arrayUnion(newBooking)
+    }).catch(async (e) => {
+        // If doc doesn't exist, create it
+        if (e.code === 5) { // NOT_FOUND
+            await db.collection('data').doc('bookings').set({ list: [newBooking] });
+        } else {
+            throw e;
+        }
+    });
+
+    return newBooking;
 }
 
 export async function updateBooking(id: string, data: any) {
-    await connect();
-    // Assuming 'id' is our custom UUID, not _id
-    const updated = await Booking.findOneAndUpdate({ id }, data, { new: true }).lean();
-    return updated;
+    // This is expensive with the "List in Doc" pattern (Read -> Modify -> Write)
+    // But acceptable for low volume.
+    const bookings = await getList('bookings');
+    const index = bookings.findIndex((b: any) => b.id === id);
+    if (index !== -1) {
+        const updated = { ...bookings[index], ...data };
+        bookings[index] = updated;
+        await saveList('bookings', bookings);
+        return updated;
+    }
+    return null;
 }
 
 /**
- * @deprecated Use createBooking for new bookings. This is kept for compatibility but does nothing or could be mapped to bulk write.
+ * @deprecated
  */
 export async function saveBookings(data: any[]) {
-    // This was used to save the entire list. 
-    // In MongoDB, we don't save the entire list at once usually.
-    // We could implement a bulk overwrite if really needed, but it's dangerous.
-    console.warn('saveBookings is deprecated in MongoDB mode');
-    return;
+    await saveList('bookings', data);
 }
 
 // ----------------------------------------------------------------------
@@ -55,16 +127,11 @@ export async function saveBookings(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getServices() {
-    if (!await connect()) return [];
-    const services = await Service.find({}).lean();
-    return JSON.parse(JSON.stringify(services));
+    return await getList('services');
 }
 
 export async function saveServices(data: any[]) {
-    await connect();
-    // For admin usage - replace all services
-    await Service.deleteMany({});
-    await Service.insertMany(data);
+    await saveList('services', data);
 }
 
 // ----------------------------------------------------------------------
@@ -72,45 +139,23 @@ export async function saveServices(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getPackages() {
-    if (!await connect()) return [];
-    const packages = await Package.find({}).lean();
-    return JSON.parse(JSON.stringify(packages));
+    return await getList('packages');
 }
 
 export async function savePackages(data: any[]) {
-    await connect();
-    await Package.deleteMany({});
-    await Package.insertMany(data);
+    await saveList('packages', data);
 }
 
 // ----------------------------------------------------------------------
-// Offers (Note: No specific model created yet, reusing Package logic or new model if needed. 
-// Assuming offers might be services or packages with discount, but for now let's map to 'Package' or create a generic 'Offer' collection if strict)
-// For now, I'll create a simple Offer model inline or assume it shares structure. 
-// Let's create a generic 'Data' collection for things like settings/content if they are unique documents.
-// But for lists like Offers, let's assume they are handled similar to packages.
-// actually, I missed creating an Offer model. Let's assume it's like a Package.
-// To be safe, let's create a schema for generic "Offer" here or just use a dynamic collection.
-// Let's use a dynamic approach for offers for now using mongoose.connection.db
-// OR better, let's create an Offer model quickly.
-// I'll stick to a generic "Offer" model concept here.
+// Offers
 // ----------------------------------------------------------------------
 
-// Quick Schema for Offer to allow compiling
-import mongoose from 'mongoose';
-const OfferSchema = new mongoose.Schema({}, { strict: false });
-const Offer = mongoose.models.Offer || mongoose.model('Offer', OfferSchema);
-
 export async function getOffers() {
-    if (!await connect()) return [];
-    const offers = await Offer.find({}).lean();
-    return JSON.parse(JSON.stringify(offers));
+    return await getList('offers');
 }
 
 export async function saveOffers(data: any[]) {
-    await connect();
-    await Offer.deleteMany({});
-    await Offer.insertMany(data);
+    await saveList('offers', data);
 }
 
 // ----------------------------------------------------------------------
@@ -118,15 +163,11 @@ export async function saveOffers(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getReviews() {
-    if (!await connect()) return [];
-    const reviews = await Review.find({}).lean();
-    return JSON.parse(JSON.stringify(reviews));
+    return await getList('reviews');
 }
 
 export async function saveReviews(data: any[]) {
-    await connect();
-    await Review.deleteMany({});
-    await Review.insertMany(data);
+    await saveList('reviews', data);
 }
 
 // ----------------------------------------------------------------------
@@ -134,15 +175,11 @@ export async function saveReviews(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getTeam() {
-    if (!await connect()) return [];
-    const team = await Team.find({}).lean();
-    return JSON.parse(JSON.stringify(team));
+    return await getList('team');
 }
 
 export async function saveTeam(data: any[]) {
-    await connect();
-    await Team.deleteMany({});
-    await Team.insertMany(data);
+    await saveList('team', data);
 }
 
 // ----------------------------------------------------------------------
@@ -150,15 +187,11 @@ export async function saveTeam(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getGallery() {
-    if (!await connect()) return [];
-    const gallery = await Gallery.find({}).sort({ id: -1 }).lean();
-    return JSON.parse(JSON.stringify(gallery));
+    return await getList('gallery');
 }
 
 export async function saveGallery(data: any[]) {
-    await connect();
-    await Gallery.deleteMany({});
-    await Gallery.insertMany(data);
+    await saveList('gallery', data);
 }
 
 // ----------------------------------------------------------------------
@@ -166,37 +199,31 @@ export async function saveGallery(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getFAQ() {
-    if (!await connect()) return [];
-    const faq = await FAQ.find({}).lean();
-    return JSON.parse(JSON.stringify(faq));
+    return await getList('faq');
 }
 
 export async function saveFAQ(data: any[]) {
-    await connect();
-    await FAQ.deleteMany({});
-    await FAQ.insertMany(data);
+    await saveList('faq', data);
 }
 
 // ----------------------------------------------------------------------
 // Settings & Content (Single Documents)
 // ----------------------------------------------------------------------
 
-// Generic schema for single-doc settings
-const SettingsSchema = new mongoose.Schema({}, { strict: false });
-const Settings = mongoose.models.Settings || mongoose.model('Settings', SettingsSchema);
-
 export async function getSettings() {
-    if (!await connect()) return {};
-    const settings = await Settings.findOne({ type: 'general_settings' }).lean();
-    if (!settings) return {};
-    return JSON.parse(JSON.stringify(settings));
+    try {
+        const doc = await db.collection('data').doc('settings').get();
+        return doc.exists ? doc.data() : {};
+    } catch (e) {
+        return {};
+    }
 }
 
 export async function saveSettings(data: any) {
-    await connect();
-    await Settings.updateOne({ type: 'general_settings' }, { ...data, type: 'general_settings' }, { upsert: true });
+    await db.collection('data').doc('settings').set(data, { merge: true });
 }
 
+// Default Content
 const DEFAULT_CONTENT = {
     home: {
         heroImage: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
@@ -226,18 +253,17 @@ const DEFAULT_CONTENT = {
 };
 
 export async function getContent() {
-    if (!await connect()) return DEFAULT_CONTENT;
     try {
-        const content = await Settings.findOne({ type: 'site_content' }).lean();
-        if (!content) return DEFAULT_CONTENT;
-        return { ...DEFAULT_CONTENT, ...JSON.parse(JSON.stringify(content)) };
+        const doc = await db.collection('data').doc('content').get();
+        if (doc.exists) {
+            return { ...DEFAULT_CONTENT, ...doc.data() };
+        }
+        return DEFAULT_CONTENT;
     } catch (e) {
         return DEFAULT_CONTENT;
     }
 }
 
 export async function saveContent(data: any) {
-    await connect();
-    await Settings.updateOne({ type: 'site_content' }, { ...data, type: 'site_content' }, { upsert: true });
+    await db.collection('data').doc('content').set(data, { merge: true });
 }
-
