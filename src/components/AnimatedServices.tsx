@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, Suspense, useEffect } from 'react';
+import { getImageUrl } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
 
 interface Service {
@@ -121,7 +122,7 @@ function ServicesContent({ services = [] }: { services: ServiceCategory[] }) {
                                             {/* Service Image Placeholder */}
                                             <div className="w-20 h-20 bg-gray-100 rounded-xl shrink-0 overflow-hidden relative">
                                                 <Image
-                                                    src={service.image || "/images/hero-placeholder.jpg"}
+                                                    src={getImageUrl(service.image)}
                                                     alt={service.name}
                                                     fill
                                                     className="object-cover"

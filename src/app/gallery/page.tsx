@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { getImageUrl } from '@/lib/utils';
 
 const GALLERY_CATEGORIES = [
     'All',
@@ -71,7 +72,7 @@ export default function GalleryPage() {
                         {filteredGallery.map((img: any) => (
                             <div key={img.id} className="relative group overflow-hidden rounded-xl shadow-md aspect-square">
                                 <Image
-                                    src={img.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'}
+                                    src={getImageUrl(img.image)}
                                     alt={img.title || 'Gallery Image'}
                                     fill
                                     className="object-cover transition duration-500 group-hover:scale-110"

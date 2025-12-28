@@ -1,0 +1,34 @@
+
+const { getServices, getGallery } = require('./src/lib/db');
+
+// Mock next/cache so the db script works in standalone node
+jest = { mock: () => {} }; 
+
+async function inspect() {
+    try {
+        console.log("Fetching Services...");
+        const services = await getServices();
+        console.log(`Found ${services.length} services.`);
+        if (services.length > 0) {
+            console.log("Sample Service Image:", services[0].image);
+            console.log("Sample Service Name:", services[0].name);
+        }
+
+        console.log("\nFetching Gallery...");
+        const gallery = await getGallery();
+        console.log(`Found ${gallery.length} gallery items.`);
+        if (gallery.length > 0) {
+            console.log("Sample Gallery Image:", gallery[0].image);
+            console.log("Sample Gallery Title:", gallery[0].title);
+        }
+        
+    } catch (e) {
+        console.error("Error fetching data:", e);
+    }
+}
+
+// We need to handle the TS imports. Since we can't easily run TS directly in node without ts-node,
+// let's rely on the existing 'inspect-data.js' or creating a new one that imports the built version?
+// Actually, `src/lib/db.ts` is TS.
+// BETTER APPROACH: Use the existing `debug-dump-gallery.js` mechanism if it exists or write a new one that leverages the project structure if possible.
+// Wait, I can just read the existing `inspect-data.js` to see if it's usable.

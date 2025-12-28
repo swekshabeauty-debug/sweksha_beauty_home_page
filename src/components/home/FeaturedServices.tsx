@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getImageUrl } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import FadeIn from '@/components/animations/FadeIn';
 
@@ -25,7 +26,7 @@ export default function FeaturedServices({ services }: FeaturedServicesProps) {
                             <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group h-full border border-transparent hover:border-brand-primary/20">
                                 <div className="h-48 relative overflow-hidden">
                                     <Image
-                                        src={service.image}
+                                        src={getImageUrl(service.image)}
                                         alt={service.name}
                                         fill
                                         className="object-cover group-hover:scale-110 transition duration-700 ease-out"

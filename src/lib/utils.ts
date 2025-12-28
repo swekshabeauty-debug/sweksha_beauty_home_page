@@ -12,3 +12,9 @@ export function formatCurrency(amount: string | number) {
         maximumFractionDigits: 0,
     }).format(Number(amount));
 }
+
+export function getImageUrl(path: string | undefined | null) {
+    if (!path) return '/images/hero-placeholder.jpg';
+    if (path.startsWith('http') || path.startsWith('/')) return path;
+    return `/uploads/${path}`;
+}
