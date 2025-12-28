@@ -2,41 +2,22 @@
 const fs = require('fs');
 const path = require('path');
 
+const serviceAccountPath = path.join(__dirname, 'service-account.json');
 const envPath = path.join(__dirname, '.env.local');
-const apiKey = '677998825295425';
 
 try {
-    let content = '';
-    if (fs.existsSync(envPath)) {
-        content = fs.readFileSync(envPath, 'utf8');
-    }
+    const serviceAccount = fs.readFileSync(serviceAccountPath, 'utf8');
+    // Minify JSON to single line
+    const minified = JSON.stringify(JSON.parse(serviceAccount));
 
-    const lines = content.split('\n');
-    let newContent = '';
-    let keyUpdated = false;
-    let nextKeyUpdated = false;
+    // Prepare the new line
+    const newLine = `\nFIREBASE_SERVICE_ACCOUNT_KEY='${minified}'\n`;
 
-    for (const line of lines) {
-        if (line.startsWith('CLOUDINARY_API_KEY=')) {
-            newContent += `CLOUDINARY_API_KEY=${apiKey}\n`;
-            keyUpdated = true;
-        } else if (line.startsWith('NEXT_PUBLIC_CLOUDINARY_API_KEY=')) {
-            newContent += `NEXT_PUBLIC_CLOUDINARY_API_KEY=${apiKey}\n`;
-            nextKeyUpdated = true;
-        } else {
-            newContent += line + '\n';
-        }
-    }
+    // Append to .env.local
+    fs.appendFileSync(envPath, newLine);
 
-    if (!keyUpdated) newContent += `CLOUDINARY_API_KEY=${apiKey}\n`;
-    if (!nextKeyUpdated) newContent += `NEXT_PUBLIC_CLOUDINARY_API_KEY=${apiKey}\n`;
-
-    // Clean up multiple newlines
-    newContent = newContent.replace(/\n\n+/g, '\n').trim() + '\n';
-
-    fs.writeFileSync(envPath, newContent);
-    console.log('✅ Updated .env.local with API Key');
-
-} catch (e) {
-    console.error('Error updating .env.local:', e);
+    console.log('Successfully appended FIREBASE_SERVICE_ACCOUNT_KEY to .env.local');
+} catch (err) {
+    console.error('Error:', err);
+    process.exit(1);
 }
