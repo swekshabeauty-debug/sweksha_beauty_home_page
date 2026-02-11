@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { User, LogOut, Menu } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export default function AdminHeader() {
@@ -30,8 +31,14 @@ export default function AdminHeader() {
             <div className="container mx-auto px-6 h-16 flex items-center justify-between">
                 {/* Logo / Brand */}
                 <div className="flex items-center gap-8">
-                    <Link href="/admin/dashboard" className="text-xl font-bold font-serif text-brand-primary">
-                        Sweksha Admin
+                    <Link href="/admin/dashboard" className="flex items-center">
+                        <Image
+                            src="/images/logo.jpg"
+                            alt="Sweksha Admin"
+                            width={140}
+                            height={40}
+                            className="h-8 w-auto object-contain"
+                        />
                     </Link>
 
                     {/* Desktop Nav */}
@@ -41,8 +48,8 @@ export default function AdminHeader() {
                                 key={link.href}
                                 href={link.href}
                                 className={`text-sm font-medium transition-colors ${pathname === link.href
-                                        ? 'text-brand-primary font-semibold'
-                                        : 'text-gray-500 hover:text-brand-primary'
+                                    ? 'text-brand-primary font-semibold'
+                                    : 'text-gray-500 hover:text-brand-primary'
                                     }`}
                             >
                                 {link.name}
