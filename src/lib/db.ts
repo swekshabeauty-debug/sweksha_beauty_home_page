@@ -1,5 +1,6 @@
 
 import * as admin from 'firebase-admin';
+import servicesData from '@/data/services.json';
 
 // ----------------------------------------------------------------------
 // Firebase Admin Initialization
@@ -127,7 +128,7 @@ export async function saveBookings(data: any[]) {
 // ----------------------------------------------------------------------
 
 export async function getServices() {
-    return await getList('services');
+    return servicesData;
 }
 
 export async function saveServices(data: any[]) {
