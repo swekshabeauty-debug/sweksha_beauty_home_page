@@ -14,7 +14,8 @@ interface FeaturedServicesProps {
 export default function FeaturedServices({ services }: FeaturedServicesProps) {
     const allServices = (Array.isArray(services) ? services : [])
         .flatMap(cat => cat.services || [])
-        .filter(s => s.active && s.image)
+        .filter(s => s.active)
+        .sort((a, b) => (b.featured === true ? 1 : 0) - (a.featured === true ? 1 : 0))
         .slice(0, 4);
 
     return (
