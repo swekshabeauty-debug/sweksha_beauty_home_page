@@ -59,8 +59,8 @@ export default function Header() {
 
     return (
         <header className={`sticky top-0 z-50 transition-all duration-300 safe-area-top ${scrolled
-                ? 'bg-white/95 dark:bg-gray-900/95 shadow-lg backdrop-blur-xl'
-                : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md'
+            ? 'bg-white/95 dark:bg-gray-900/95 shadow-lg backdrop-blur-xl'
+            : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md'
             } border-b border-brand-primary/10`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
                 {/* Logo */}
@@ -69,14 +69,9 @@ export default function Header() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                     >
-                        <Image
-                            src="/images/logo.jpg"
-                            alt="Sweksha Beauty"
-                            width={180}
-                            height={60}
-                            className="h-10 sm:h-12 md:h-14 w-auto object-contain"
-                            priority
-                        />
+                        <span className="font-serif text-2xl sm:text-3xl font-bold text-brand-primary tracking-wide">
+                            Sweksha Beauty
+                        </span>
                     </motion.div>
                 </Link>
 
@@ -87,8 +82,8 @@ export default function Header() {
                             key={link.name}
                             href={link.href}
                             className={`relative text-sm xl:text-base font-medium transition-colors hover:text-brand-primary ${pathname === link.href
-                                    ? 'text-brand-primary'
-                                    : 'text-foreground/70'
+                                ? 'text-brand-primary'
+                                : 'text-foreground/70'
                                 }`}
                         >
                             {link.name}
@@ -202,8 +197,8 @@ export default function Header() {
                                         href={link.href}
                                         onClick={() => setIsOpen(false)}
                                         className={`block py-3 px-4 rounded-xl text-base font-medium transition-all ${pathname === link.href
-                                                ? 'bg-brand-primary/10 text-brand-primary'
-                                                : 'text-foreground/70 active:bg-foreground/5'
+                                            ? 'bg-brand-primary/10 text-brand-primary'
+                                            : 'text-foreground/70 active:bg-foreground/5'
                                             }`}
                                     >
                                         {link.name}
