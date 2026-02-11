@@ -43,26 +43,26 @@ export const metadata: Metadata = {
     description: 'Expert beauty services including bridal makeup, facials, and hair care.',
     images: ['/images/og-image.jpg'],
   },
-  icons: {
-    icon: '/images/logo.jpg',
-    shortcut: '/images/logo.jpg',
-    apple: '/images/logo.jpg',
-  },
+
   robots: {
     index: true,
     follow: true,
   },
 };
 
-export default function RootLayout({
+import { auth } from "@/auth";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${playfair.variable} ${outfit.variable} font-sans antialiased bg-brand-bg text-gray-800`}>
-        <AuthProvider>
+        <AuthProvider session={session}>
           <SmoothScrolling>
             <Header />
             <main className="min-h-screen">
