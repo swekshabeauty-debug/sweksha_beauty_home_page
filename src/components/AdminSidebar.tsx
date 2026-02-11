@@ -16,6 +16,8 @@ import {
     TrendingUp
 } from 'lucide-react';
 
+import Image from 'next/image';
+
 const menuItems = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Services', href: '/admin/services', icon: Scissors },
@@ -40,8 +42,14 @@ export default function AdminSidebar() {
 
     return (
         <div className="w-64 bg-white border-r border-gray-200 h-screen fixed left-0 top-0 flex flex-col">
-            <div className="p-6 border-b border-gray-200">
-                <h1 className="text-xl font-bold text-pink-600">Sweksha Admin</h1>
+            <div className="p-6 border-b border-gray-200 flex justify-center">
+                <Image
+                    src="/images/logo.jpg"
+                    alt="Sweksha Admin"
+                    width={160}
+                    height={50}
+                    className="h-12 w-auto object-contain"
+                />
             </div>
 
             <nav className="flex-1 overflow-y-auto p-4 space-y-1">
@@ -53,8 +61,8 @@ export default function AdminSidebar() {
                             key={item.href}
                             href={item.href}
                             className={`flex items-center gap-3 px-4 py-3 rounded-md transition-colors ${isActive
-                                    ? 'bg-pink-50 text-pink-700'
-                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                ? 'bg-pink-50 text-pink-700'
+                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                 }`}
                         >
                             <Icon className="w-5 h-5" />
