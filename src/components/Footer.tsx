@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Instagram, MapPin, Phone, Mail, Sparkles } from 'lucide-react';
 
@@ -14,8 +15,13 @@ export default function Footer() {
                     {/* Brand */}
                     <div>
                         <div className="flex items-center gap-2 mb-4">
-                            <Sparkles className="w-6 h-6 text-brand-primary" />
-                            <h3 className="text-2xl font-bold heading-elegant gradient-text">Sweksha Beauty</h3>
+                            <Image
+                                src="/images/logo.jpg"
+                                alt="Sweksha Beauty"
+                                width={180}
+                                height={60}
+                                className="h-12 w-auto object-contain brightness-0 invert"
+                            />
                         </div>
                         <p className="text-gray-400 text-sm mb-6 leading-relaxed">
                             Your go-to parlour for glow, gloss, and confidence. Premium beauty services with hygiene and care.
