@@ -1,12 +1,11 @@
-import { getToken } from 'next-auth/jwt';
+import { auth } from "@/auth"
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 
-export async function middleware(req: NextRequest) {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+export default auth((req) => {
+    const isLoggedIn = !!req.auth;
     const { pathname } = req.nextUrl;
 
-    console.log(`[Middleware] Path: ${pathname}, Token: ${token ? 'Found' : 'Missing'}`);
+    console.log(`[Middleware] Path: ${pathname}, User: ${isLoggedIn ? 'Authenticated' : 'Guest'}`);
 
     // 1. Allow public assets and auth routes
     if (
@@ -19,7 +18,6 @@ export async function middleware(req: NextRequest) {
     }
 
     // 2. Protected Routes: Only redirect to login for specific paths
-    // 2. Protected Routes: Only redirect to login for specific paths
     // const protectedPaths = ['/admin'];
     // const isProtected = protectedPaths.some(path => pathname.startsWith(path));
     const isProtected = false; // Temporarily disabled to rely on client-side check in AdminLayout
@@ -29,7 +27,7 @@ export async function middleware(req: NextRequest) {
         return NextResponse.next();
     }
 
-    if (isProtected && !token) {
+    if (isProtected && !isLoggedIn) {
         // If trying to access admin, go to admin login
         if (pathname.startsWith('/admin')) {
             return NextResponse.redirect(new URL('/admin/login', req.url));
@@ -40,13 +38,8 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(url);
     }
 
-    // 3. Admin Lock: REMOVED
-    // if (pathname.startsWith('/admin')) {
-    //    // Logic removed to ensure access
-    // }
-
     return NextResponse.next();
-}
+})
 
 export const config = {
     matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
