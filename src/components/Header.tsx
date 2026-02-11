@@ -69,9 +69,14 @@ export default function Header() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                     >
-                        <span className="font-serif text-2xl sm:text-3xl font-bold text-brand-primary tracking-wide">
-                            Sweksha Beauty
-                        </span>
+                        <Image
+                            src="/images/logo.jpg"
+                            alt="Sweksha Beauty"
+                            width={150}
+                            height={50}
+                            className="h-10 w-auto sm:h-12 object-contain"
+                            priority
+                        />
                     </motion.div>
                 </Link>
 
