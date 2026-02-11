@@ -75,7 +75,7 @@ export default function ServicesPage() {
                 <h1 className="text-2xl font-bold text-gray-800">Manage Services</h1>
                 <button
                     onClick={() => {
-                        setEditingService({ name: '', price: '', duration: '', description: '', active: true });
+                        setEditingService({ name: '', price: '', duration: '', description: '', active: true, featured: false });
                         setIsNew(true);
                     }}
                     className="bg-brand-primary text-white px-4 py-2 rounded-md flex items-center gap-2 hover:opacity-90 transition"
@@ -105,7 +105,10 @@ export default function ServicesPage() {
                 {categories.find(c => c.id === activeCategory)?.services.map((service: any, idx: number) => (
                     <div key={service.id || `service-${idx}`} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
                         <div className="flex justify-between items-start mb-2">
-                            <h3 className="font-semibold text-gray-800">{service.name}</h3>
+                            <h3 className="font-semibold text-gray-800">
+                                {service.name}
+                                {service.featured && <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">Featured</span>}
+                            </h3>
                             <div className="flex gap-2">
                                 <button onClick={() => { setEditingService(service); setIsNew(false); }} className="text-blue-500 hover:text-blue-700">
                                     <Edit2 className="w-4 h-4" />
@@ -199,6 +202,16 @@ export default function ServicesPage() {
                                     id="active"
                                 />
                                 <label htmlFor="active" className="text-sm">Active (Show on website)</label>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    checked={editingService.featured || false}
+                                    onChange={(e) => setEditingService({ ...editingService, featured: e.target.checked })}
+                                    id="featured"
+                                />
+                                <label htmlFor="featured" className="text-sm">Featured (Show on Home Page)</label>
                             </div>
 
                             <button type="submit" className="w-full bg-brand-primary text-white py-2 rounded hover:opacity-90">
