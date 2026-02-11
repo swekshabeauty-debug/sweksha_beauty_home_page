@@ -12,6 +12,8 @@ import OfferPopup from '@/components/OfferPopup';
 import OfferBanner from '@/components/OfferBanner';
 import { getContent, getOffers, getGallery, getReviews, getFAQ, getServices } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Sweksha Beauty | Best Beauty Parlour in Haveli Kharagpur',
   description: 'Experience premium beauty services at Sweksha Beauty. We offer bridal makeup, facials, hair styling, and more in a relaxing ambience.',
