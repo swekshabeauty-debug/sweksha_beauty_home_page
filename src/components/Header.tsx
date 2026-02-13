@@ -64,20 +64,24 @@ export default function Header() {
             } border-b border-brand-primary/10`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
                 {/* Logo */}
-                <Link href="/" className="flex items-center">
+                <Link href="/" className="flex items-center gap-3">
                     <motion.div
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
+                        className="relative"
                     >
                         <Image
                             src="/images/logo.jpg"
                             alt="Sweksha Beauty"
-                            width={150}
+                            width={50}
                             height={50}
-                            className="h-10 w-auto sm:h-12 object-contain"
+                            className="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover border border-brand-primary/20"
                             priority
                         />
                     </motion.div>
+                    <span className="font-serif font-bold text-xl sm:text-2xl text-foreground tracking-tight">
+                        Sweksha Beauty
+                    </span>
                 </Link>
 
                 {/* Desktop Nav */}
