@@ -1,21 +1,21 @@
 'use client';
 
 import GoogleSignInButton from '@/components/GoogleSignInButton';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/components/AuthProvider';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, Suspense } from 'react';
 
 function LoginContent() {
-    const { data: session } = useSession();
+    const { user } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get('callbackUrl') || '/';
 
     useEffect(() => {
-        if (session) {
+        if (user) {
             router.push(callbackUrl);
         }
-    }, [session, router, callbackUrl]);
+    }, [user, router, callbackUrl]);
 
     return (
         <div className="min-h-screen bg-brand-bg flex items-center justify-center p-4">
