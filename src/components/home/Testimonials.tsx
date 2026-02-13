@@ -11,40 +11,59 @@ interface TestimonialsProps {
 
 export default function Testimonials({ reviews }: TestimonialsProps) {
     return (
-        <section className="py-16 px-4 bg-brand-bg/30 dark:bg-black/50 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-                <Sparkles className="w-full h-full text-brand-primary" />
-            </div>
-            <div className="container mx-auto max-w-4xl">
+        <section className="py-16 md:py-24 px-4 relative overflow-hidden">
+            {/* Darker Premium Background */}
+            <div className="absolute inset-0 bg-brand-secondary/20 dark:bg-black/40 -z-20" />
+            <div className="absolute inset-0 bg-[url('/pattern-grid.svg')] opacity-5 -z-10" />
+
+            <div className="container mx-auto max-w-6xl">
                 <FadeIn>
-                    <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-10 text-center font-serif">What Our Clients Say</h2>
+                    <div className="text-center mb-16">
+                        <div className="inline-flex items-center justify-center p-3 rounded-full bg-brand-primary/10 text-brand-primary mb-4">
+                            <Quote className="w-6 h-6" />
+                        </div>
+                        <h2 className="heading-elegant text-3xl md:text-5xl text-foreground mb-4">Love Stories</h2>
+                        <p className="text-muted text-lg max-w-2xl mx-auto">
+                            Hear from our cherished clients about their transformative experiences
+                        </p>
+                    </div>
                 </FadeIn>
 
-                <div className="flex overflow-x-auto pb-6 -mx-4 px-4 md:grid md:grid-cols-3 gap-6 snap-x snap-mandatory hide-scrollbar">
+                <div className="flex overflow-x-auto pb-10 -mx-4 px-4 md:grid md:grid-cols-3 gap-6 md:gap-8 snap-x snap-mandatory hide-scrollbar">
                     {reviews.filter(r => r.active).slice(0, 3).map((review, i) => (
-                        <FadeIn key={review._id || i} delay={i * 0.2} className="min-w-[280px] sm:min-w-[320px] md:min-w-0 snap-center h-full">
-                            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl relative shadow-sm h-full border border-transparent hover:border-brand-primary/20 transition-colors">
-                                <Quote className="w-8 h-8 text-brand-primary/20 absolute top-4 right-4" />
-                                <div className="flex gap-1 mb-3">
+                        <FadeIn key={review._id || i} delay={i * 0.2} className="min-w-[300px] snap-center h-full">
+                            <div className="glass dark:glass-dark p-8 rounded-3xl relative h-full flex flex-col border border-white/50 dark:border-white/5 shadow-soft hover:shadow-elegant transition-all duration-300 group">
+                                <div className="absolute -top-4 -right-4 w-12 h-12 bg-brand-primary rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                                    <Quote className="w-5 h-5 fill-current" />
+                                </div>
+
+                                <div className="flex gap-1 mb-6">
                                     {[...Array(5)].map((_, starI) => (
-                                        <Star key={starI} className={`w-4 h-4 ${starI < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300 dark:text-gray-600'}`} />
+                                        <Star key={starI} className={`w-4 h-4 ${starI < review.rating ? 'text-brand-primary fill-brand-primary' : 'text-gray-300 dark:text-gray-700'}`} />
                                     ))}
                                 </div>
-                                <p className="text-gray-700 dark:text-gray-300 italic mb-4 text-sm leading-relaxed">"{review.comment || review.text}"</p>
-                                <div className="flex items-center gap-3 mt-auto">
-                                    <div className="w-8 h-8 bg-brand-primary/10 rounded-full flex items-center justify-center text-brand-primary font-bold text-xs">
+
+                                <blockquote className="text-foreground/80 dark:text-gray-300 text-lg leading-relaxed italic mb-8 flex-grow font-light">
+                                    "{review.comment || review.text}"
+                                </blockquote>
+
+                                <div className="flex items-center gap-4 mt-auto pt-6 border-t border-brand-primary/10 dark:border-white/5">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-brand-primary to-brand-accent rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
                                         {review.name[0]}
                                     </div>
-                                    <p className="font-bold text-gray-900 dark:text-white text-sm">{review.name}</p>
+                                    <div>
+                                        <p className="font-bold text-foreground text-base">{review.name}</p>
+                                        <p className="text-xs text-muted">Verified Client</p>
+                                    </div>
                                 </div>
                             </div>
                         </FadeIn>
                     ))}
                 </div>
 
-                <div className="text-center mt-8">
-                    <Link href="/reviews" className="inline-block border border-brand-primary text-brand-primary px-6 py-2 rounded-full text-sm font-medium hover:bg-brand-primary hover:text-white transition">
-                        Read More Reviews
+                <div className="text-center mt-12">
+                    <Link href="/reviews" className="inline-flex items-center justify-center px-8 py-3 rounded-full border border-foreground/10 hover:border-brand-primary text-foreground hover:text-white hover:bg-brand-primary transition-all duration-300 font-medium">
+                        Read All Love Stories
                     </Link>
                 </div>
             </div>
