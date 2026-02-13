@@ -3,8 +3,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { MessageCircle, X, Send, Loader2, ImagePlus, Calendar, Sparkles, Gift, Phone, ChevronRight } from 'lucide-react';
-import { useSession } from 'next-auth/react';
+
 import Link from 'next/link';
+import { useAuth } from '@/components/AuthProvider';
 
 interface Message {
     role: 'user' | 'assistant';
@@ -12,7 +13,6 @@ interface Message {
     services?: SuggestedService[];
     quickActions?: string[];
 }
-
 interface SuggestedService {
     name: string;
     price: string;
@@ -97,7 +97,7 @@ function ServiceCard({ service }: { service: SuggestedService }) {
 }
 
 export default function AskSwekshaChat({ customTrigger }: AskSwekshaChatProps) {
-    const { data: session } = useSession();
+    const { user } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
@@ -150,7 +150,7 @@ export default function AskSwekshaChat({ customTrigger }: AskSwekshaChatProps) {
             message: input,
             image: selectedImage,
             history: messages.slice(1).map(m => ({ role: m.role, content: m.content })),
-            userName: session?.user?.name || "Guest"
+            userName: user?.displayName || "Guest"
         };
 
         setInput('');
