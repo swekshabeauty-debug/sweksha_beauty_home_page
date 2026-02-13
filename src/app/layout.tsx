@@ -50,19 +50,16 @@ export const metadata: Metadata = {
   },
 };
 
-import { auth } from "@/auth";
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${playfair.variable} ${outfit.variable} font-sans antialiased bg-brand-bg text-gray-800`}>
-        <AuthProvider session={session}>
+        <AuthProvider>
           <SmoothScrolling>
             <Header />
             <main className="min-h-screen">
