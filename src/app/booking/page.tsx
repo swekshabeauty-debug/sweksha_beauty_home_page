@@ -4,11 +4,11 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Calendar, Clock, CheckCircle, Tag, Percent } from 'lucide-react';
 
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/components/AuthProvider';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 
 function BookingForm() {
-    const { data: session } = useSession();
+    const { user } = useAuth();
     const searchParams = useSearchParams();
     const preselectedPackage = searchParams.get('package');
     const preselectedService = searchParams.get('service');
@@ -37,14 +37,14 @@ function BookingForm() {
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
-        if (session?.user) {
+        if (user) {
             setFormData(prev => ({
                 ...prev,
-                name: session.user?.name || prev.name,
-                email: session.user?.email || prev.email,
+                name: user.displayName || prev.name,
+                email: user.email || prev.email,
             }));
         }
-    }, [session]);
+    }, [user]);
 
     useEffect(() => {
         fetch('/api/data/services')
@@ -147,7 +147,7 @@ function BookingForm() {
         );
     }
 
-    if (!session) {
+    if (!user) {
         return (
             <div className="bg-white p-8 rounded-2xl shadow-lg border border-brand-secondary/20 text-center">
                 <h2 className="text-2xl font-bold font-serif text-gray-900 mb-4">Sign In to Book</h2>
@@ -166,15 +166,15 @@ function BookingForm() {
             {/* Auth Info */}
             <div className="mb-8">
                 <div className="bg-green-50 border border-green-100 rounded-xl p-4 flex items-center gap-4">
-                    {session.user?.image && (
+                    {user?.photoURL && (
                         <>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={session.user.image} alt={session.user.name || 'User'} className="w-10 h-10 rounded-full" />
+                            <img src={user.photoURL} alt={user.displayName || 'User'} className="w-10 h-10 rounded-full" />
                         </>
                     )}
                     <div>
-                        <p className="text-green-800 font-medium">Welcome, {session.user?.name}!</p>
-                        <p className="text-green-600 text-xs">Booking as {session.user?.email}</p>
+                        <p className="text-green-800 font-medium">Welcome, {user?.displayName}!</p>
+                        <p className="text-green-600 text-xs">Booking as {user?.email}</p>
                     </div>
                 </div>
             </div>
