@@ -1,7 +1,7 @@
 'use client';
 
 import AdminHeader from '@/components/AdminHeader';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/components/AuthProvider';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -10,26 +10,27 @@ export default function AdminLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const { data: session, status } = useSession();
+    const { user, loading } = useAuth();
     const router = useRouter();
     const pathname = usePathname();
 
     useEffect(() => {
         // Skip check for login page to avoid loop
         if (pathname === '/admin/login') return;
+        if (loading) return;
 
-        if (status === 'unauthenticated') {
+        if (!user) {
             router.push('/admin/login');
-        } else if (status === 'authenticated') {
+        } else {
             const allowedEmails = ['swekshabeauty@gmail.com', 'jayant.kgp81@gmail.com', 'admin@swekshabeauty.com'];
-            if (session?.user?.email && !allowedEmails.includes(session.user.email)) {
+            if (user.email && !allowedEmails.includes(user.email)) {
                 // User is logged in but not authorized
                 router.push('/admin/login?error=AccessDenied');
             }
         }
-    }, [status, router, pathname, session]);
+    }, [user, loading, router, pathname]);
 
-    if (status === 'loading') {
+    if (loading) {
         return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
     }
 
