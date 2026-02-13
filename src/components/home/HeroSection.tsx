@@ -87,7 +87,7 @@ export default function HeroSection({ content }: HeroSectionProps) {
         let offsetX = 0;
         let offsetY = 0;
 
-        // object-cover logic
+        // object-cover logic: center both horizontally and vertically
         if (canvasRatio > imgRatio) {
             drawHeight = canvas.width / imgRatio;
             offsetY = (canvas.height - drawHeight) / 2;
@@ -132,9 +132,9 @@ export default function HeroSection({ content }: HeroSectionProps) {
     return (
         <section
             ref={containerRef}
-            className="relative h-[200vh] w-full"
+            className="relative w-full h-[180vh] md:h-[200vh]"
         >
-            <div className="sticky top-0 h-screen w-full overflow-hidden">
+            <div className="sticky top-0 w-full overflow-hidden h-[90vh] md:h-screen aspect-[10/16] md:aspect-auto">
                 {/* Canvas Image Sequence Player */}
                 <motion.div
                     style={{ y: yParallax }}
@@ -171,7 +171,7 @@ export default function HeroSection({ content }: HeroSectionProps) {
                 </div>
 
                 {/* Content Overlay */}
-                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center text-white px-4">
+                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center text-white px-4 pb-20 md:pb-0">
                     <motion.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
