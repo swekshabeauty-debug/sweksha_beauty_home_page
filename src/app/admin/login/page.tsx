@@ -1,46 +1,25 @@
 'use client';
 
-import { signIn, useSession } from 'next-auth/react';
+import { useAuth } from '@/components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function AdminLoginPage() {
-    const { data: session, status } = useSession();
+    const { user, loading, signInWithGoogle } = useAuth();
     const router = useRouter();
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (status === 'authenticated') {
+        if (user) {
             router.push('/admin/dashboard');
         }
-    }, [status, router]);
+    }, [user, router]);
 
     const handleGoogleLogin = () => {
-        signIn('google');
+        signInWithGoogle();
     };
 
-    const handlePasswordLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
 
-        const result = await signIn('credentials', {
-            password: password,
-            redirect: false,
-        });
-
-        if (result?.error) {
-            setError('Invalid password');
-            setLoading(false);
-        } else {
-            // Successful login will trigger the useEffect to redirect
-            router.refresh();
-        }
-    };
-
-    if (status === 'loading') {
+    if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="animate-spin w-8 h-8 border-4 border-brand-primary border-t-transparent rounded-full"></div>
@@ -53,7 +32,7 @@ export default function AdminLoginPage() {
             <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
                 <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Admin Login</h1>
 
-                {status === 'authenticated' ? (
+                {user ? (
                     <div className="text-center flex flex-col gap-4">
                         <p className="text-green-600 mb-2">You are logged in!</p>
                         <a
@@ -63,7 +42,7 @@ export default function AdminLoginPage() {
                             Go to Dashboard
                         </a>
                         <button
-                            onClick={() => signIn('google')}
+                            onClick={signInWithGoogle}
                             className="text-sm text-gray-500 hover:text-gray-700 underline"
                         >
                             Switch Account
@@ -71,45 +50,11 @@ export default function AdminLoginPage() {
                     </div>
                 ) : (
                     <>
-                        <form onSubmit={handlePasswordLogin} className="mb-6">
-                            <div className="mb-4">
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Admin Password
-                                </label>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-brand-primary focus:border-brand-primary outline-none transition"
-                                    placeholder="Enter admin password"
-                                    required
-                                />
-                            </div>
-
-                            {error && (
-                                <p className="text-red-500 text-sm mb-4">{error}</p>
-                            )}
-
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full bg-brand-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {loading ? 'Verifying...' : 'Login with Password'}
-                            </button>
-                        </form>
-
-                        <div className="relative mb-6">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-300"></div>
-                            </div>
-                            <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">Or continue with</span>
-                            </div>
+                        <div className="text-center mb-8">
+                            <p className="text-gray-600">Please sign in with an authorized Google account to access the admin dashboard.</p>
                         </div>
 
-                        <div className="flex justify-center">
+                        <div className="flex justify-center mb-6">
                             <button
                                 onClick={handleGoogleLogin}
                                 className="flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-full px-6 py-3 hover:bg-gray-50 transition shadow-sm w-full font-medium text-gray-700"
@@ -119,7 +64,7 @@ export default function AdminLoginPage() {
                             </button>
                         </div>
                         <p className="mt-4 text-center text-xs text-gray-400">
-                            Status: {status}
+                            Status: {user ? 'Logged In' : 'Logged Out'}
                         </p>
                     </>
                 )}
