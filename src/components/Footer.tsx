@@ -14,14 +14,19 @@ export default function Footer() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
                     {/* Brand */}
                     <div>
-                        <div className="flex items-center gap-2 mb-4">
-                            <Image
-                                src="/images/logo.jpg"
-                                alt="Sweksha Beauty"
-                                width={180}
-                                height={60}
-                                className="h-12 w-auto object-contain brightness-0 invert"
-                            />
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center overflow-hidden border-2 border-brand-primary/50 shadow-lg">
+                                <Image
+                                    src="/images/logo.jpg"
+                                    alt="Sweksha Beauty"
+                                    width={64}
+                                    height={64}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <span className="font-serif font-bold text-2xl text-white tracking-wide">
+                                Sweksha Beauty
+                            </span>
                         </div>
                         <p className="text-gray-400 text-sm mb-6 leading-relaxed">
                             Your go-to parlour for glow, gloss, and confidence. Premium beauty services with hygiene and care.
