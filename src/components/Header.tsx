@@ -5,7 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X, Instagram, LogOut, User, Sun, Moon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { useSession, signIn, signOut } from 'next-auth/react';
+
+import { useAuth } from '@/components/AuthProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Header() {
@@ -13,7 +14,7 @@ export default function Header() {
     const [isDark, setIsDark] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const pathname = usePathname();
-    const { data: session } = useSession();
+    const { user, signInWithGoogle, logout } = useAuth();
 
     const navLinks = [
         { name: 'Home', href: '/' },
@@ -58,26 +59,28 @@ export default function Header() {
     }, [isOpen]);
 
     return (
-        <header className={`sticky top-0 z-50 transition-all duration-300 safe-area-top ${scrolled
-            ? 'bg-white/95 dark:bg-gray-900/95 shadow-lg backdrop-blur-xl'
-            : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md'
-            } border-b border-brand-primary/10`}>
+        <header className={`sticky top-0 z-50 transition-all duration-500 safe-area-top ${scrolled
+            ? 'bg-white/80 dark:bg-black/80 backdrop-blur-xl shadow-lg border-b border-white/10'
+            : 'bg-transparent border-b border-transparent'
+            }`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3">
                     <motion.div
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="relative"
+                        className="relative flex-shrink-0"
                     >
-                        <Image
-                            src="/images/logo.jpg"
-                            alt="Sweksha Beauty"
-                            width={50}
-                            height={50}
-                            className="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover border border-brand-primary/20"
-                            priority
-                        />
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-brand-primary/20 shadow-sm">
+                            <Image
+                                src="/images/logo.jpg"
+                                alt="Sweksha Beauty"
+                                width={50}
+                                height={50}
+                                className="w-full h-full object-cover"
+                                priority
+                            />
+                        </div>
                     </motion.div>
                     <span className="font-serif font-bold text-xl sm:text-2xl text-foreground tracking-tight">
                         Sweksha Beauty
@@ -115,17 +118,17 @@ export default function Header() {
                     </a>
 
                     {/* User Profile / Sign In */}
-                    {session ? (
+                    {user ? (
                         <div className="flex items-center gap-3 pl-4 border-l border-foreground/10">
-                            {session.user?.image ? (
-                                <img src={session.user.image} alt="User" className="w-8 h-8 rounded-full border-2 border-brand-primary/30" />
+                            {user.photoURL ? (
+                                <img src={user.photoURL} alt="User" className="w-8 h-8 rounded-full border-2 border-brand-primary/30" />
                             ) : (
                                 <div className="w-8 h-8 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center font-bold text-sm">
-                                    {session.user?.name?.[0] || <User className="w-4 h-4" />}
+                                    {user.displayName?.[0] || <User className="w-4 h-4" />}
                                 </div>
                             )}
                             <button
-                                onClick={() => signOut()}
+                                onClick={logout}
                                 className="text-foreground/50 hover:text-red-500 transition"
                                 title="Sign Out"
                             >
@@ -134,7 +137,7 @@ export default function Header() {
                         </div>
                     ) : (
                         <button
-                            onClick={() => signIn('google')}
+                            onClick={signInWithGoogle}
                             className="text-sm font-medium text-foreground/70 hover:text-brand-primary transition"
                         >
                             Sign In
@@ -221,20 +224,20 @@ export default function Header() {
                                 transition={{ delay: 0.4 }}
                                 className="border-t border-foreground/10 pt-4 mt-4 space-y-3"
                             >
-                                {session ? (
+                                {user ? (
                                     <div className="flex items-center justify-between px-4 py-3 bg-foreground/5 rounded-xl">
                                         <div className="flex items-center gap-3">
-                                            {session.user?.image ? (
-                                                <img src={session.user.image} alt="User" className="w-10 h-10 rounded-full" />
+                                            {user.photoURL ? (
+                                                <img src={user.photoURL} alt="User" className="w-10 h-10 rounded-full" />
                                             ) : (
                                                 <div className="w-10 h-10 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center font-bold">
-                                                    {session.user?.name?.[0] || 'U'}
+                                                    {user.displayName?.[0] || 'U'}
                                                 </div>
                                             )}
-                                            <span className="font-medium text-foreground">{session.user?.name}</span>
+                                            <span className="font-medium text-foreground">{user.displayName}</span>
                                         </div>
                                         <button
-                                            onClick={() => signOut()}
+                                            onClick={logout}
                                             className="text-sm text-red-500 font-medium px-3 py-1.5 rounded-lg hover:bg-red-500/10 transition"
                                         >
                                             Sign Out
@@ -242,7 +245,7 @@ export default function Header() {
                                     </div>
                                 ) : (
                                     <button
-                                        onClick={() => signIn('google')}
+                                        onClick={signInWithGoogle}
                                         className="w-full text-left py-3 px-4 font-medium text-foreground/70 active:bg-foreground/5 rounded-xl transition"
                                     >
                                         Sign In with Google
