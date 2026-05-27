@@ -35,9 +35,9 @@ export default function Testimonials({ reviews }: TestimonialsProps) {
 
                 <div className="flex overflow-x-auto pb-10 -mx-4 px-4 md:grid md:grid-cols-3 gap-6 md:gap-8 snap-x snap-mandatory hide-scrollbar">
                     {reviews.filter(r => r.active).slice(0, 3).map((review, i) => (
-                        <FadeIn key={review._id || i} delay={i * 0.2} className="min-w-[300px] snap-center h-full">
+                        <FadeIn key={review._id || i} delay={i * 0.2} className="min-w-[300px] snap-center h-full shrink-0">
                             <div className="card-elegant p-6 md:p-8 relative h-full flex flex-col shadow-soft hover:shadow-elegant transition-all duration-300 group">
-                                <div className="absolute -top-3 -right-3 w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
+                                <div className="absolute top-4 right-4 md:-top-3 md:-right-3 w-10 h-10 bg-brand-primary rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
                                     <Quote className="w-5 h-5 fill-current" />
                                 </div>
 
