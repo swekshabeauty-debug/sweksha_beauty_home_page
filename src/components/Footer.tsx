@@ -1,15 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Instagram, MapPin, Phone, Mail, Sparkles } from 'lucide-react';
+import { Instagram, MapPin, Phone, Mail } from 'lucide-react';
 
 export default function Footer() {
     return (
         <footer className="relative bg-gradient-to-b from-gray-900 to-black text-white pt-16 pb-8 overflow-hidden">
             {/* Decorative Elements */}
             <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-primary/50 to-transparent"></div>
-            <div className="absolute top-10 right-10 w-32 h-32 bg-brand-primary/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 left-10 w-48 h-48 bg-brand-accent/10 rounded-full blur-3xl"></div>
-
             <div className="container mx-auto px-4 lg:px-8 relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
                     {/* Brand */}
@@ -101,7 +98,7 @@ export default function Footer() {
                                 <span className="text-brand-primary font-medium">10:00 AM – 7:30 PM</span>
                             </li>
                         </ul>
-                        <div className="glass p-4 rounded-xl">
+                        <div className="glass p-4 rounded-lg">
                             <p className="font-semibold text-brand-primary mb-1 text-sm">Payment Methods</p>
                             <p className="text-gray-400 text-xs">Cash & UPI accepted at parlour</p>
                         </div>

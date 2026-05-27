@@ -58,7 +58,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${playfair.variable} ${outfit.variable} font-sans antialiased bg-brand-bg text-gray-800`}>
+      <body className={`${playfair.variable} ${outfit.variable} font-sans antialiased bg-brand-bg text-foreground pb-20 lg:pb-0`}>
         <AuthProvider>
           <SmoothScrolling>
             <Header />

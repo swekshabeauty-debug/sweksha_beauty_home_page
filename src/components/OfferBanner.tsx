@@ -44,31 +44,25 @@ export default function OfferBanner({ offer }: OfferBannerProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-gradient-to-r from-brand-primary via-rose-500 to-brand-accent text-white relative overflow-hidden"
+            className="bg-[linear-gradient(90deg,var(--brand-accent),var(--brand-primary),var(--brand-accent))] text-white relative overflow-hidden"
         >
-            {/* Background glow */}
-            <div className="absolute inset-0 opacity-30">
-                <div className="absolute top-0 left-1/4 w-32 h-32 bg-white rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 right-1/4 w-24 h-24 bg-white rounded-full blur-3xl"></div>
-            </div>
-
             <div className="container mx-auto px-4 py-3 relative z-10">
-                <div className="flex items-center justify-center gap-3 flex-wrap">
+                <div className="flex items-center justify-center gap-2 sm:gap-3 pr-9 text-center">
                     <Sparkles className="w-4 h-4 animate-pulse hidden sm:block" />
                     <Link
                         href={buildBookingUrl()}
-                        className="flex items-center gap-2 group"
+                        className="flex items-center justify-center gap-2 group min-w-0 flex-wrap"
                     >
                         {offer.discountPercent && (
-                            <span className="bg-white text-brand-primary px-2 py-0.5 rounded-full text-xs font-bold">
+                            <span className="bg-white text-brand-accent px-2 py-0.5 rounded-full text-xs font-bold shrink-0">
                                 {offer.discountPercent}% OFF
                             </span>
                         )}
-                        <span className="font-bold text-sm sm:text-base">{offer.title}</span>
+                        <span className="font-bold text-sm sm:text-base leading-tight">{offer.title}</span>
                         {offer.serviceName && (
                             <span className="hidden sm:inline text-white/80 text-sm">on {offer.serviceName}</span>
                         )}
-                        <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-medium group-hover:bg-white group-hover:text-brand-primary transition-all">
+                        <span className="bg-white/18 border border-white/20 px-3 py-1 rounded-full text-xs font-bold group-hover:bg-white group-hover:text-brand-accent transition-all shrink-0">
                             Book Now →
                         </span>
                     </Link>

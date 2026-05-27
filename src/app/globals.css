@@ -1,44 +1,79 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Premium Color Palette - Light Theme */
 :root {
   /* Base Colors */
-  --background: #FDF8F5;
-  --foreground: #2D2D2D;
-  --muted: #6B6B6B;
+  --background: #fffaf7;
+  --foreground: #241d1b;
+  --muted: #746760;
   
   /* Brand Colors */
-  --brand-primary: #D4A373;
-  --brand-secondary: #F5E1DA;
-  --brand-accent: #722F37;
-  --brand-highlight: #F7E7CE;
+  --brand-primary: #c88958;
+  --brand-secondary: #f6ded4;
+  --brand-accent: #7a343d;
+  --brand-highlight: #fff0dc;
   
   /* UI Colors */
-  --card-bg: rgba(255, 255, 255, 0.85);
-  --card-border: rgba(212, 163, 115, 0.2);
-  --header-bg: rgba(255, 255, 255, 0.9);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(129, 72, 54, 0.12);
+  --header-bg: rgba(255, 250, 247, 0.86);
+  --surface-soft: #fff3ec;
   
   /* Shadows */
-  --shadow-soft: 0 4px 30px rgba(0, 0, 0, 0.08);
-  --shadow-elegant: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
+  --app-shadow-soft: 0 12px 35px rgba(50, 24, 14, 0.08);
+  --app-shadow-elegant: 0 24px 55px rgba(70, 31, 17, 0.14);
 }
 
 /* Dark Theme */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0D0B0A;
-    --foreground: #F5E1DA;
-    --muted: #9B8B80;
+    --background: #0f0c0b;
+    --foreground: #fff3ec;
+    --muted: #b6a59b;
     
-    --brand-primary: #E8B896;
-    --brand-secondary: #1A1412;
+    --brand-primary: #e0a06f;
+    --brand-secondary: #1a1513;
     --card-bg: rgba(26, 20, 18, 0.9);
-    --card-border: rgba(232, 184, 150, 0.15);
-    --header-bg: rgba(13, 11, 10, 0.95);
+    --card-border: rgba(224, 160, 111, 0.18);
+    --header-bg: rgba(15, 12, 11, 0.86);
+    --surface-soft: #171210;
     
-    --shadow-soft: 0 4px 30px rgba(0, 0, 0, 0.4);
-    --shadow-elegant: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    --app-shadow-soft: 0 4px 30px rgba(0, 0, 0, 0.4);
+    --app-shadow-elegant: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
+}
+
+html[data-theme="light"] {
+  --background: #fffaf7;
+  --foreground: #241d1b;
+  --muted: #746760;
+  --brand-primary: #c88958;
+  --brand-secondary: #f6ded4;
+  --brand-accent: #7a343d;
+  --brand-highlight: #fff0dc;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(129, 72, 54, 0.12);
+  --header-bg: rgba(255, 250, 247, 0.86);
+  --surface-soft: #fff3ec;
+  --app-shadow-soft: 0 12px 35px rgba(50, 24, 14, 0.08);
+  --app-shadow-elegant: 0 24px 55px rgba(70, 31, 17, 0.14);
+}
+
+html[data-theme="dark"] {
+  --background: #0f0c0b;
+  --foreground: #fff3ec;
+  --muted: #b6a59b;
+  --brand-primary: #e0a06f;
+  --brand-secondary: #1a1513;
+  --brand-accent: #9a4651;
+  --brand-highlight: #2b211d;
+  --card-bg: rgba(26, 20, 18, 0.92);
+  --card-border: rgba(224, 160, 111, 0.18);
+  --header-bg: rgba(15, 12, 11, 0.86);
+  --surface-soft: #171210;
+  --app-shadow-soft: 0 4px 30px rgba(0, 0, 0, 0.42);
+  --app-shadow-elegant: 0 25px 50px -12px rgba(0, 0, 0, 0.55);
 }
 
 @theme inline {
@@ -50,6 +85,10 @@
   --color-brand-secondary: var(--brand-secondary);
   --color-brand-accent: var(--brand-accent);
   --color-brand-highlight: var(--brand-highlight);
+  --color-card-bg: var(--card-bg);
+  --color-surface-soft: var(--surface-soft);
+  --shadow-soft: var(--app-shadow-soft);
+  --shadow-elegant: var(--app-shadow-elegant);
   --font-sans: var(--font-outfit);
   --font-serif: var(--font-playfair);
 }
@@ -59,27 +98,31 @@ html {
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--brand-primary) 16%, transparent), transparent 32rem),
+    linear-gradient(180deg, var(--background), var(--surface-soft) 46%, var(--background));
   color: var(--foreground);
   font-family: 'Outfit', Arial, Helvetica, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+  text-rendering: optimizeLegibility;
+  min-width: 320px;
 }
 
 /* Glassmorphism */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  background: color-mix(in srgb, var(--card-bg) 86%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--app-shadow-soft);
 }
 
 .glass-dark {
-  background: rgba(20, 20, 20, 0.6);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--app-shadow-soft);
 }
 
 .glass-ultra {
@@ -95,9 +138,9 @@ body {
   background: linear-gradient(135deg, var(--brand-primary) 0%, #C9956A 100%);
   color: white;
   padding: 0.875rem 2rem;
-  border-radius: 50px;
-  font-weight: 500;
-  letter-spacing: 0.025em;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba(212, 163, 115, 0.4);
 }
@@ -115,15 +158,15 @@ body {
 .card-elegant {
   background: var(--card-bg);
   backdrop-filter: blur(12px);
-  border-radius: 1.25rem;
+  border-radius: 0.5rem;
   border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--app-shadow-soft);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-elegant:hover {
   transform: translateY(-6px);
-  box-shadow: var(--shadow-elegant);
+  box-shadow: var(--app-shadow-elegant);
 }
 
 /* Mobile Touch Friendly */
@@ -234,7 +277,7 @@ body {
 .heading-elegant {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   font-size: 1.75rem;
 }
 
@@ -296,6 +339,17 @@ button:focus-visible,
 a:focus-visible {
   outline: 2px solid var(--brand-primary);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 /* Safe Area for Mobile Notch */

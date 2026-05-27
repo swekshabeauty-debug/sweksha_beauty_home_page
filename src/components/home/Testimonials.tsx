@@ -2,19 +2,23 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Sparkles, Quote, Star } from 'lucide-react';
+import { Quote, Star } from 'lucide-react';
 import FadeIn from '@/components/animations/FadeIn';
 
 interface TestimonialsProps {
-    reviews: any[];
+    reviews: Array<{
+        _id?: string;
+        active?: boolean;
+        rating?: number;
+        comment?: string;
+        text?: string;
+        name?: string;
+    }>;
 }
 
 export default function Testimonials({ reviews }: TestimonialsProps) {
     return (
-        <section className="py-16 md:py-24 px-4 relative overflow-hidden">
-            {/* Darker Premium Background */}
-            <div className="absolute inset-0 bg-brand-secondary/20 dark:bg-black/40 -z-20" />
-            <div className="absolute inset-0 bg-[url('/pattern-grid.svg')] opacity-5 -z-10" />
+        <section className="py-16 md:py-24 px-4 relative overflow-hidden bg-surface-soft/70 dark:bg-black/30">
 
             <div className="container mx-auto max-w-6xl">
                 <FadeIn>
@@ -32,27 +36,27 @@ export default function Testimonials({ reviews }: TestimonialsProps) {
                 <div className="flex overflow-x-auto pb-10 -mx-4 px-4 md:grid md:grid-cols-3 gap-6 md:gap-8 snap-x snap-mandatory hide-scrollbar">
                     {reviews.filter(r => r.active).slice(0, 3).map((review, i) => (
                         <FadeIn key={review._id || i} delay={i * 0.2} className="min-w-[300px] snap-center h-full">
-                            <div className="glass dark:glass-dark p-8 rounded-3xl relative h-full flex flex-col border border-white/50 dark:border-white/5 shadow-soft hover:shadow-elegant transition-all duration-300 group">
-                                <div className="absolute -top-4 -right-4 w-12 h-12 bg-brand-primary rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                            <div className="card-elegant p-6 md:p-8 relative h-full flex flex-col shadow-soft hover:shadow-elegant transition-all duration-300 group">
+                                <div className="absolute -top-3 -right-3 w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
                                     <Quote className="w-5 h-5 fill-current" />
                                 </div>
 
                                 <div className="flex gap-1 mb-6">
                                     {[...Array(5)].map((_, starI) => (
-                                        <Star key={starI} className={`w-4 h-4 ${starI < review.rating ? 'text-brand-primary fill-brand-primary' : 'text-gray-300 dark:text-gray-700'}`} />
+                                        <Star key={starI} className={`w-4 h-4 ${starI < (review.rating ?? 5) ? 'text-brand-primary fill-brand-primary' : 'text-gray-300 dark:text-gray-700'}`} />
                                     ))}
                                 </div>
 
-                                <blockquote className="text-foreground/80 dark:text-gray-300 text-lg leading-relaxed italic mb-8 flex-grow font-light">
-                                    "{review.comment || review.text}"
+                                <blockquote className="text-foreground/80 text-base md:text-lg leading-relaxed italic mb-8 flex-grow font-light">
+                                    &ldquo;{review.comment || review.text}&rdquo;
                                 </blockquote>
 
                                 <div className="flex items-center gap-4 mt-auto pt-6 border-t border-brand-primary/10 dark:border-white/5">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-brand-primary to-brand-accent rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
-                                        {review.name[0]}
+                                    <div className="w-12 h-12 bg-gradient-to-br from-brand-primary to-brand-accent rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-md">
+                                        {review.name?.[0] || 'S'}
                                     </div>
                                     <div>
-                                        <p className="font-bold text-foreground text-base">{review.name}</p>
+                                        <p className="font-bold text-foreground text-base">{review.name || 'Sweksha Client'}</p>
                                         <p className="text-xs text-muted">Verified Client</p>
                                     </div>
                                 </div>

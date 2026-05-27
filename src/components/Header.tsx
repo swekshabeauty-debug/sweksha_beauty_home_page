@@ -26,12 +26,26 @@ export default function Header() {
         { name: 'Contact', href: '/contact' },
     ];
 
-    // Check system theme preference
-    useEffect(() => {
-        const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        setIsDark(darkModeQuery.matches);
+    const applyTheme = (dark: boolean) => {
+        const root = document.documentElement;
+        root.classList.toggle('dark', dark);
+        root.dataset.theme = dark ? 'dark' : 'light';
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+        setIsDark(dark);
+    };
 
-        const handler = (e: MediaQueryListEvent) => setIsDark(e.matches);
+    // Check saved theme first, then system preference.
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const shouldUseDark = savedTheme ? savedTheme === 'dark' : darkModeQuery.matches;
+        requestAnimationFrame(() => applyTheme(shouldUseDark));
+
+        const handler = (e: MediaQueryListEvent) => {
+            if (!localStorage.getItem('theme')) {
+                requestAnimationFrame(() => applyTheme(e.matches));
+            }
+        };
         darkModeQuery.addEventListener('change', handler);
         return () => darkModeQuery.removeEventListener('change', handler);
     }, []);
@@ -39,13 +53,14 @@ export default function Header() {
     // Handle scroll effect
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     // Close menu when route changes
     useEffect(() => {
-        setIsOpen(false);
+        requestAnimationFrame(() => setIsOpen(false));
     }, [pathname]);
 
     // Prevent body scroll when mobile menu is open
@@ -60,9 +75,10 @@ export default function Header() {
 
     return (
         <header className={`sticky top-0 z-50 transition-all duration-500 safe-area-top ${scrolled
-            ? 'bg-white/80 dark:bg-black/80 backdrop-blur-xl shadow-lg border-b border-white/10'
-            : 'bg-transparent border-b border-transparent'
+            ? 'shadow-soft'
+            : ''
             }`}>
+            <div className="absolute inset-0 -z-10 bg-[var(--header-bg)] backdrop-blur-xl border-b border-[var(--card-border)]" />
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3">
@@ -82,7 +98,7 @@ export default function Header() {
                             />
                         </div>
                     </motion.div>
-                    <span className="font-serif font-bold text-xl sm:text-2xl text-foreground tracking-tight">
+                    <span className="font-serif font-bold text-lg sm:text-2xl text-foreground tracking-normal whitespace-nowrap">
                         Sweksha Beauty
                     </span>
                 </Link>
@@ -113,6 +129,7 @@ export default function Header() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-brand-primary hover:scale-110 transition-transform"
+                        aria-label="Sweksha Beauty Instagram"
                     >
                         <Instagram className="w-5 h-5" />
                     </a>
@@ -138,11 +155,20 @@ export default function Header() {
                     ) : (
                         <button
                             onClick={signInWithGoogle}
-                            className="text-sm font-medium text-foreground/70 hover:text-brand-primary transition"
+                            className="text-sm font-medium text-foreground/70 hover:text-brand-primary transition whitespace-nowrap"
                         >
                             Sign In
                         </button>
                     )}
+
+                    <button
+                        onClick={() => applyTheme(!isDark)}
+                        className="w-10 h-10 rounded-full border border-foreground/10 bg-foreground/5 text-foreground/70 hover:text-brand-primary hover:bg-brand-primary/10 transition grid place-items-center"
+                        aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+                        title={isDark ? 'Light theme' : 'Dark theme'}
+                    >
+                        {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                    </button>
 
                     <Link
                         href="/booking"
@@ -156,9 +182,18 @@ export default function Header() {
                 <div className="flex items-center gap-2 lg:hidden">
                     <motion.button
                         whileTap={{ scale: 0.9 }}
-                        className="p-2.5 rounded-full text-foreground/70 hover:bg-brand-primary/10 transition"
+                        className="w-10 h-10 rounded-full text-foreground/70 bg-foreground/5 border border-foreground/10 grid place-items-center"
+                        onClick={() => applyTheme(!isDark)}
+                        aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+                    >
+                        {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                    </motion.button>
+                    <motion.button
+                        whileTap={{ scale: 0.9 }}
+                        className="w-10 h-10 rounded-full text-foreground/70 bg-foreground/5 border border-foreground/10 grid place-items-center"
                         onClick={() => setIsOpen(!isOpen)}
-                        aria-label="Menu"
+                        aria-label={isOpen ? 'Close menu' : 'Open menu'}
+                        aria-expanded={isOpen}
                     >
                         <AnimatePresence mode="wait">
                             {isOpen ? (
@@ -195,9 +230,9 @@ export default function Header() {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="lg:hidden bg-background border-t border-foreground/5 overflow-hidden"
+                        className="lg:hidden bg-background/95 backdrop-blur-xl border-t border-foreground/5 overflow-hidden"
                     >
-                        <nav className="flex flex-col p-5 space-y-1 safe-area-bottom">
+                        <nav className="flex flex-col p-4 space-y-1 safe-area-bottom">
                             {navLinks.map((link, index) => (
                                 <motion.div
                                     key={link.name}
@@ -208,7 +243,7 @@ export default function Header() {
                                     <Link
                                         href={link.href}
                                         onClick={() => setIsOpen(false)}
-                                        className={`block py-3 px-4 rounded-xl text-base font-medium transition-all ${pathname === link.href
+                                        className={`block py-3 px-4 rounded-lg text-base font-medium transition-all ${pathname === link.href
                                             ? 'bg-brand-primary/10 text-brand-primary'
                                             : 'text-foreground/70 active:bg-foreground/5'
                                             }`}
@@ -225,7 +260,7 @@ export default function Header() {
                                 className="border-t border-foreground/10 pt-4 mt-4 space-y-3"
                             >
                                 {user ? (
-                                    <div className="flex items-center justify-between px-4 py-3 bg-foreground/5 rounded-xl">
+                                    <div className="flex items-center justify-between px-4 py-3 bg-foreground/5 rounded-lg">
                                         <div className="flex items-center gap-3">
                                             {user.photoURL ? (
                                                 <img src={user.photoURL} alt="User" className="w-10 h-10 rounded-full" />
@@ -246,7 +281,7 @@ export default function Header() {
                                 ) : (
                                     <button
                                         onClick={signInWithGoogle}
-                                        className="w-full text-left py-3 px-4 font-medium text-foreground/70 active:bg-foreground/5 rounded-xl transition"
+                                        className="w-full text-left py-3 px-4 font-medium text-foreground/70 active:bg-foreground/5 rounded-lg transition"
                                     >
                                         Sign In with Google
                                     </button>
@@ -256,7 +291,7 @@ export default function Header() {
                                     href="https://instagram.com/sweksha_beauty"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-3 py-3 px-4 text-brand-primary font-medium rounded-xl active:bg-brand-primary/5 transition"
+                                    className="flex items-center gap-3 py-3 px-4 text-brand-primary font-medium rounded-lg active:bg-brand-primary/5 transition"
                                 >
                                     <Instagram className="w-5 h-5" />
                                     Follow on Instagram

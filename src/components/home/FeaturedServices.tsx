@@ -4,11 +4,22 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { getImageUrl } from '@/lib/utils';
+import { formatCurrency, getImageUrl } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 
 interface FeaturedServicesProps {
-    services: any[];
+    services: Array<{
+        services?: Array<{
+            _id?: string;
+            id?: string;
+            active?: boolean;
+            featured?: boolean;
+            name: string;
+            image?: string;
+            price: string | number;
+            description?: string;
+        }>;
+    }>;
 }
 
 export default function FeaturedServices({ services }: FeaturedServicesProps) {
@@ -19,10 +30,7 @@ export default function FeaturedServices({ services }: FeaturedServicesProps) {
         .slice(0, 4);
 
     return (
-        <section className="py-12 md:py-20 px-4 relative overflow-hidden">
-            {/* Background Gradients */}
-            <div className="absolute inset-0 bg-brand-bg/50 dark:bg-black/80 -z-20" />
-
+        <section className="py-12 md:py-20 px-4 relative overflow-hidden bg-brand-bg/70 dark:bg-black/40">
             <div className="container mx-auto max-w-6xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -53,7 +61,7 @@ export default function FeaturedServices({ services }: FeaturedServicesProps) {
                                 href={`/booking?service=${encodeURIComponent(service.name)}`}
                                 className="block h-full group"
                             >
-                                <div className="glass dark:glass-dark overflow-hidden rounded-2xl h-full transition-all duration-300 hover:shadow-elegant border border-white/40 dark:border-white/5 relative">
+                                <div className="card-elegant overflow-hidden h-full transition-all duration-300 hover:shadow-elegant relative">
                                     {/* Image */}
                                     <div className="h-56 relative overflow-hidden">
                                         <Image
@@ -66,7 +74,7 @@ export default function FeaturedServices({ services }: FeaturedServicesProps) {
 
                                         {/* Price Tag Overlay */}
                                         <div className="absolute bottom-4 right-4 bg-white/20 backdrop-blur-md border border-white/30 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                                            ₹{service.price}
+                                            {formatCurrency(service.price)}
                                         </div>
                                     </div>
 

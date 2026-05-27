@@ -10,17 +10,20 @@ import { Phone, MessageCircle } from 'lucide-react';
 import AskSwekshaChat from '@/components/AskSwekshaChat';
 
 interface HeroSectionProps {
-    content: any;
+    content?: unknown;
 }
 
-export default function HeroSection({ content }: HeroSectionProps) {
+export default function HeroSection({ content: _content }: HeroSectionProps) {
+    void _content;
     const containerRef = React.useRef<HTMLElement>(null);
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
     const [isLoading, setIsLoading] = React.useState(true);
     const [images, setImages] = React.useState<HTMLImageElement[]>([]);
+    const [frameIndices, setFrameIndices] = React.useState<number[]>(() =>
+        Array.from({ length: 80 }, (_, index) => index)
+    );
 
-    // Image Sequence Configuration
-    const frameCount = 80;
+    const frameCount = frameIndices.length;
 
     // Scroll Hooks
     const { scrollYProgress } = useScroll({
@@ -40,30 +43,52 @@ export default function HeroSection({ content }: HeroSectionProps) {
     // Parallax effect: Move canvas slower than scroll
     const yParallax = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
-    // Helper to format frame number
     const getFramePath = (index: number) =>
         `/images/hero-sequence/hero_seq_${index.toString().padStart(3, '0')}.jpg`;
 
-    // Preload Images
     React.useEffect(() => {
-        const loadedImages: HTMLImageElement[] = [];
+        const media = window.matchMedia('(max-width: 767px)');
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const saveData = Boolean((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData);
+
+        const buildFrames = () => {
+            const count = reducedMotion || saveData ? 1 : media.matches ? 28 : 80;
+            if (count === 1) return [0];
+            return Array.from({ length: count }, (_, index) =>
+                Math.min(79, Math.round(index * (79 / (count - 1))))
+            );
+        };
+
+        const updateFrames = () => setFrameIndices(buildFrames());
+        updateFrames();
+        media.addEventListener('change', updateFrames);
+        return () => media.removeEventListener('change', updateFrames);
+    }, []);
+
+    React.useEffect(() => {
+        let cancelled = false;
+        const loadedImages: HTMLImageElement[] = new Array(frameCount);
         let loadedCount = 0;
+        setIsLoading(true);
 
         const handleImageLoad = () => {
             loadedCount++;
-            if (loadedCount === frameCount) {
+            if (!cancelled && loadedCount === frameCount) {
                 setIsLoading(false);
             }
         };
 
-        for (let i = 0; i < frameCount; i++) {
+        frameIndices.forEach((frame, index) => {
             const img = new window.Image();
-            img.src = getFramePath(i);
+            img.decoding = 'async';
             img.onload = handleImageLoad;
-            loadedImages.push(img);
-        }
+            img.onerror = handleImageLoad;
+            img.src = getFramePath(frame);
+            loadedImages[index] = img;
+        });
         setImages(loadedImages);
-    }, []);
+        return () => { cancelled = true; };
+    }, [frameCount, frameIndices]);
 
     // Draw frame on canvas
     const drawFrame = React.useCallback((index: number) => {
@@ -186,7 +211,7 @@ export default function HeroSection({ content }: HeroSectionProps) {
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="text-lg md:text-xl font-medium mb-8 opacity-90"
                     >
-                        – Radiance Awaits You
+                        Radiance Awaits You
                     </motion.p>
 
                     <motion.div
@@ -203,7 +228,7 @@ export default function HeroSection({ content }: HeroSectionProps) {
                         </Link>
                         <a
                             href="tel:+919065347011"
-                            className="glass text-white px-8 py-3 rounded-full font-medium transition hover:bg-white/20 flex items-center justify-center gap-2"
+                            className="glass text-white px-8 py-3 rounded-full font-bold transition hover:bg-white/20 flex items-center justify-center gap-2"
                         >
                             Call Now <Phone className="w-4 h-4" />
                         </a>
@@ -217,7 +242,7 @@ export default function HeroSection({ content }: HeroSectionProps) {
                     >
                         <AskSwekshaChat
                             customTrigger={
-                                <button className="w-full sm:w-auto bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 text-white px-6 py-3 sm:py-2 rounded-full font-medium transition shadow-lg flex items-center justify-center gap-2 group">
+                                <button className="w-full sm:w-auto bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 text-white px-6 py-3 sm:py-2 rounded-full font-bold transition shadow-lg flex items-center justify-center gap-2 group">
                                     <MessageCircle className="w-5 h-5 group-hover:scale-110 transition" />
                                     Ask Sweksha AI Assistant
                                 </button>
@@ -234,7 +259,11 @@ function Particles() {
     const [particles, setParticles] = React.useState<Array<{ left: string; top: string; duration: number; delay: number }>>([]);
 
     React.useEffect(() => {
-        const newParticles = [...Array(15)].map(() => ({
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobile = window.matchMedia('(max-width: 767px)').matches;
+        if (reducedMotion || isMobile) return;
+
+        const newParticles = [...Array(8)].map(() => ({
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
             duration: 3 + Math.random() * 4,
