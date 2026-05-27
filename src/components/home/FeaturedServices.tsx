@@ -55,7 +55,7 @@ export default function FeaturedServices({ services }: FeaturedServicesProps) {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1, duration: 0.5 }}
-                            className="min-w-[280px] sm:min-w-0 snap-center h-full"
+                            className="min-w-[280px] sm:min-w-0 snap-center h-full shrink-0"
                         >
                             <Link
                                 href={`/booking?service=${encodeURIComponent(service.name)}`}
